@@ -7,7 +7,6 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
   <style>
     :root{
       --bg:#111111;
@@ -21,14 +20,12 @@
     *{box-sizing:border-box}
     body{margin:0;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg)}
     .app-shell{width:100%;min-height:calc(100 * min(var(--vh, 1vh), 1vh));background:#111}
-    
     .soft-grid{
       background-image:
         linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
       background-size:34px 34px;
     }
-    
     .glass-panel{
       background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
       border:1px solid rgba(255,255,255,.08);
@@ -36,21 +33,10 @@
     }
     .focus-ring:focus-visible{outline:3px solid rgba(215,224,208,.8);outline-offset:3px}
     
-    /* Navigation Active State - Clean Sage fill that works on Desktop and Mobile */
-    .nav-item.active { 
-        background-color: #d7e0d0 !important; 
-    }
-    .nav-item.active,
-    .nav-item.active .canva-text,
-    .nav-item.active span,
-    .nav-item.active button,
-    .nav-item.active div {
-        color: #111 !important;
-    }
-    .nav-item.active svg { 
-        stroke: #111 !important; 
-        fill: none !important; 
-    }
+    /* Sidebar Active State - Sage background with crisp line-art icons */
+    .nav-item.active { background-color: #d7e0d0 !important; }
+    .nav-item.active, .nav-item.active .canva-text, .nav-item.active span, .nav-item.active button, .nav-item.active div { color: #111 !important; }
+    .nav-item.active svg { stroke: #111 !important; fill: none !important; }
     
     .view-panel{display:none}
     .view-panel.active{display:block}
@@ -72,25 +58,82 @@
       content:"";position:absolute;width:46px;height:46px;background:#1a1a1a;border-radius:999px
     }
     .progress-ring span{position:relative;z-index:1;font-size:12px;font-weight:700}
-    .toast{animation:fadeIn .2s ease both}
     
-    /* Pixel Art Quality Fix - keeps illustrations sharp */
+    /* Pixel Art Quality Fix */
     .course-img, .detail-img, .canva-image {
       image-rendering: pixelated !important;
       image-rendering: crisp-edges !important;
       image-rendering: -moz-crisp-edges !important;
-      image-rendering: -webkit-optimize-contrast !important;
-      object-fit: cover !important;
+    }
+
+    /* Flip Clock Styles */
+    .flip-card {
+        position: relative;
+        background: #f5f5f0;
+        color: #111;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 800;
+        font-size: 3.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 90px;
+    }
+    .flip-card::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 2px;
+        background: rgba(0,0,0,0.15);
+        transform: translateY(-50%);
+    }
+    @media(max-width: 640px) {
+        .flip-card { font-size: 2.5rem; min-width: 65px; padding: 0.5rem; }
+    }
+
+    /* Custom iOS-style Checkboxes for Focus cards */
+    .focus-cb {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid currentColor;
+        border-radius: 4px;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: 0.2s;
+    }
+    .focus-cb:checked {
+        background: #2563eb;
+        border-color: #2563eb;
+        opacity: 1;
+    }
+    .focus-cb:checked::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+
+    @media (max-width:900px){
+      .sidebar-desktop{display:none}
+      .main-area{padding-left:0!important}
     }
   </style>
   <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  </head>
- 
  <body data-template-id="__page-root">
-  <div class="app-shell soft-grid">
+  <div class="app-shell soft-grid pb-24 lg:pb-0">
    
-   <aside class="sidebar-desktop fixed left-0 top-0 bottom-0 w-[248px] border-r border-white/10 bg-[#141414] px-4 py-5 hidden lg:flex flex-col z-40">
+   <aside class="sidebar-desktop fixed left-0 top-0 bottom-0 w-[248px] border-r border-white/10 bg-[#141414] px-4 py-5 flex flex-col z-40">
     <div class="flex items-center gap-3 px-2 mb-8">
      <div class="w-9 h-9 rounded-full bg-[#d7e0d0] flex items-center justify-center text-[#111]"><i data-lucide="book-open" class="w-4 h-4"></i></div>
      <div>
@@ -98,13 +141,12 @@
       <p data-template-id="brand-subtitle" class="canva-text text-xs text-[#8f8f89]">Dashboard</p>
      </div>
     </div>
-    
     <nav class="space-y-1" aria-label="Primary">
-     <button type="button" onclick="setView('today')" data-view="today" class="nav-item active focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left transition"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span data-template-id="nav-today" class="canva-text">Today</span></button> 
-     <button type="button" onclick="setView('courses')" data-view="courses" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="graduation-cap" class="w-4 h-4"></i><span data-template-id="nav-courses" class="canva-text">Courses</span></button> 
-     <button type="button" onclick="setView('tracker')" data-view="tracker" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="table" class="w-4 h-4"></i><span data-template-id="nav-tracker" class="canva-text">Tracker</span></button> 
-     <button type="button" onclick="setView('notes')" data-view="notes" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="timer" class="w-4 h-4"></i><span data-template-id="nav-notes" class="canva-text">Study</span></button> 
-     <button type="button" onclick="setView('habits')" data-view="habits" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="sprout" class="w-4 h-4"></i><span data-template-id="nav-habits" class="canva-text">Habits</span></button>
+     <button type="button" data-view="today" class="nav-item active focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left transition"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span data-template-id="nav-today" class="canva-text">Today</span></button> 
+     <button type="button" data-view="courses" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="graduation-cap" class="w-4 h-4"></i><span data-template-id="nav-courses" class="canva-text">Courses</span></button> 
+     <button type="button" data-view="tracker" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="table" class="w-4 h-4"></i><span data-template-id="nav-tracker" class="canva-text">Tracker</span></button> 
+     <button type="button" data-view="notes" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="timer" class="w-4 h-4"></i><span data-template-id="nav-notes" class="canva-text">Study</span></button> 
+     <button type="button" data-view="habits" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="sprout" class="w-4 h-4"></i><span data-template-id="nav-habits" class="canva-text">Habits</span></button>
     </nav>
     <div data-template-id="quote-card" class="canva-card mt-auto rounded-2xl bg-[#1d241e] p-4 border border-white/10">
      <div class="w-8 h-8 rounded-full bg-[#d7e0d0] flex items-center justify-center text-[#111] mb-4"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
@@ -113,74 +155,118 @@
     </div>
    </aside>
    
-   <main class="main-area min-h-screen pl-0 lg:pl-[248px] pb-24 lg:pb-0">
+   <main class="main-area min-h-screen pl-0 lg:pl-[248px]">
     <header class="border-b border-white/10 bg-[#111]/90 backdrop-blur-md sticky top-0 z-30">
-     <div class="px-5 md:px-8 py-4 md:py-5 flex flex-row items-start md:items-center justify-between gap-4">
+     <div class="px-5 md:px-8 py-4 flex flex-row items-center justify-between gap-4">
       <div>
-       <p data-template-id="top-eyebrow" class="canva-text uppercase tracking-[0.18em] text-[#9fb398] text-[10px] md:text-[11px] font-bold mb-1 md:mb-2">Workspace</p>
-       <h2 data-template-id="page-title" class="canva-text font-extrabold tracking-[-0.05em] leading-tight text-2xl md:text-3xl"></h2>
-       <p id="today-date" class="text-xs md:text-sm text-[#9b9b95] mt-1 md:mt-2"></p>
+       <p data-template-id="top-eyebrow" class="canva-text uppercase tracking-[0.18em] text-[#9fb398] text-[10px] font-bold mb-1">Workspace</p>
+       <h2 data-template-id="page-title" class="canva-text font-extrabold tracking-[-0.05em] leading-none text-2xl md:text-3xl"></h2>
+       <p id="today-date" class="text-xs text-[#9b9b95] mt-1.5"></p>
       </div>
-      <!-- Responsive FAB/Button -->
       <button id="open-modal" type="button" data-template-id="add-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full w-12 h-12 md:w-auto md:h-auto md:px-5 md:py-3 bg-[#d7e0d0] text-[#111] font-bold text-sm hover:bg-white transition flex-shrink-0"> 
-       <i data-lucide="plus" class="w-6 h-6 md:w-4 md:h-4"></i>
+       <i data-lucide="plus" class="w-5 h-5 md:w-4 md:h-4"></i>
        <span class="hidden md:inline">New Item</span>
       </button>
      </div>
     </header>
     
     <div class="px-4 md:px-8 py-6 md:py-8">
+     <!-- ---------------- TODAY VIEW ---------------- -->
      <section id="view-today" class="view-panel active fade-in">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
-       <article data-template-id="stat-card-1" class="canva-card glass-panel rounded-2xl p-4 md:p-5">
-        <p data-template-id="stat-label-1" class="canva-text text-xs md:text-sm text-[#a4a49d]">Pending Tasks</p>
-        <p id="stat-tasks" class="text-2xl md:text-3xl font-bold mt-3 md:mt-5">0</p>
+      
+      <!-- HERO: FLIP CLOCK -->
+      <div class="flex items-center justify-center gap-2 md:gap-3 mb-8 select-none">
+       <div class="flip-card" id="flip-h">00</div>
+       <div class="text-white font-bold text-3xl pb-2">:</div>
+       <div class="flip-card" id="flip-m">00</div>
+       <div class="text-white font-bold text-3xl pb-2">:</div>
+       <div class="flip-card" id="flip-s">00</div>
+      </div>
+
+      <!-- STATS GRID -->
+      <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+       <article data-template-id="stat-card-1" class="canva-card glass-panel rounded-2xl p-5">
+        <p data-template-id="stat-label-1" class="canva-text text-sm text-[#a4a49d]">Pending Tasks</p>
+        <p id="stat-tasks" class="text-3xl font-bold mt-5">0</p>
        </article>
-       <article data-template-id="stat-card-2" class="canva-card glass-panel rounded-2xl p-4 md:p-5">
-        <p data-template-id="stat-label-2" class="canva-text text-xs md:text-sm text-[#a4a49d]">Completed</p>
-        <p id="stat-complete" class="text-2xl md:text-3xl font-bold mt-3 md:mt-5">0</p>
+       <article data-template-id="stat-card-2" class="canva-card glass-panel rounded-2xl p-5">
+        <p data-template-id="stat-label-2" class="canva-text text-sm text-[#a4a49d]">Completed</p>
+        <p id="stat-complete" class="text-3xl font-bold mt-5">0</p>
        </article>
-       <article data-template-id="stat-card-3" class="canva-card glass-panel rounded-2xl p-4 md:p-5">
-        <p data-template-id="stat-label-3" class="canva-text text-xs md:text-sm text-[#a4a49d]">Active Habits</p>
-        <p id="stat-budget" class="text-2xl md:text-3xl font-bold mt-3 md:mt-5">0</p>
+       <article data-template-id="stat-card-3" class="canva-card glass-panel rounded-2xl p-5">
+        <p data-template-id="stat-label-3" class="canva-text text-sm text-[#a4a49d]">Active Habits</p>
+        <p id="stat-habits" class="text-3xl font-bold mt-5">0</p>
        </article>
-       <article data-template-id="stat-card-4" class="canva-card glass-panel rounded-2xl p-4 md:p-5">
-        <p data-template-id="stat-label-4" class="canva-text text-xs md:text-sm text-[#a4a49d]">Active Courses</p>
-        <p id="stat-courses" class="text-2xl md:text-3xl font-bold mt-3 md:mt-5">0</p>
+       <article data-template-id="stat-card-4" class="canva-card glass-panel rounded-2xl p-5">
+        <p data-template-id="stat-label-4" class="canva-text text-sm text-[#a4a49d]">Active Courses</p>
+        <p id="stat-courses" class="text-3xl font-bold mt-5">0</p>
        </article>
       </div>
       
-      <div class="grid lg:grid-cols-[1.05fr_.95fr] gap-6">
-       <section data-template-id="today-card" class="canva-card glass-panel rounded-3xl p-5 md:p-6">
-        <p data-template-id="section-kicker-1" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">To Do List</p>
-        <h3 data-template-id="section-title-1" class="canva-text font-bold tracking-[-0.04em] mb-5 text-xl">Today's Focus</h3>
-        <div id="today-list" class="space-y-3"></div>
-        <div id="today-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center">
-         <p data-template-id="empty-today-title" class="canva-text font-semibold">You're all caught up!</p>
-         <p data-template-id="empty-today-copy" class="canva-text text-sm text-[#8f8f89] mt-1">Enjoy your free time.</p>
+      <!-- MAIN LAYOUT: Deadlines & Focus -->
+      <div class="grid xl:grid-cols-[1.1fr_.9fr] gap-6 mb-8">
+       
+       <!-- LEFT: TODAY'S DEADLINES TABBED SECTION -->
+       <section class="canva-card glass-panel rounded-3xl p-5 md:p-6 bg-[#1a201c] border border-white/5">
+        <h3 class="text-[#9fb398] font-bold text-lg mb-4">Today's Deadlines</h3>
+        
+        <!-- Tabs -->
+        <div class="flex gap-2 p-1 bg-black/40 w-max rounded-[14px] mb-5 overflow-x-auto max-w-full">
+            <button class="today-tab active px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-white transition flex items-center gap-2" data-target="tt-tasks"><i data-lucide="check-circle-2" class="w-4 h-4"></i> Tasks</button>
+            <button class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2" data-target="tt-assignments"><i data-lucide="pen-line" class="w-4 h-4"></i> Assignments</button>
+            <button class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2" data-target="tt-exams"><i data-lucide="file-text" class="w-4 h-4"></i> Exams</button>
+        </div>
+
+        <!-- Tab Contents -->
+        <div id="tt-tasks" class="today-tab-content space-y-1"></div>
+        <div id="tt-assignments" class="today-tab-content hidden space-y-1"></div>
+        <div id="tt-exams" class="today-tab-content hidden space-y-1"></div>
+        
+        <div id="tt-empty" class="hidden rounded-2xl border border-dashed border-white/10 p-7 text-center mt-4">
+         <p class="canva-text font-semibold">Clear schedule!</p>
+         <p class="canva-text text-sm text-[#8f8f89] mt-1">Nothing due in this category.</p>
         </div>
        </section>
        
-       <div class="space-y-6">
+       <!-- RIGHT: FOCUS CARDS -->
+       <div class="space-y-4">
+        <!-- Today's Focus -->
+        <div class="bg-[#eef2ec] rounded-3xl p-6 text-[#2d3b31] shadow-lg">
+            <h4 class="font-bold flex items-center gap-2 mb-4 text-lg">Today's Focus 🌱</h4>
+            <div id="focus-today-list" class="space-y-3 mb-4"></div>
+            <form onsubmit="addFocus(event, 'today')" class="mt-2 border-t border-[#c6d1c4] pt-3">
+                <input type="text" placeholder="+ Add focus item..." class="w-full bg-transparent border-none text-sm font-medium outline-none placeholder-[#8f9b93] text-[#2d3b31]">
+            </form>
+        </div>
+
+        <!-- This Week's Focus -->
+        <div class="bg-[#1c281e] rounded-3xl p-6 text-[#eef2ec] shadow-lg border border-[#2a3c2f]">
+            <h4 class="font-bold flex items-center gap-2 mb-4 text-lg">This Weeks Focus ✨</h4>
+            <div id="focus-week-list" class="space-y-3 mb-4"></div>
+            <form onsubmit="addFocus(event, 'week')" class="mt-2 border-t border-[#314234] pt-3">
+                <input type="text" placeholder="+ Add focus item..." class="w-full bg-transparent border-none text-sm font-medium outline-none placeholder-[#6b7b70] text-[#eef2ec]">
+            </form>
+        </div>
+       </div>
+
+      </div>
+
+      <!-- EXISTING PREVIEWS -->
+      <div class="grid md:grid-cols-2 gap-6">
         <section data-template-id="course-preview-card" class="canva-card glass-panel rounded-3xl p-5">
-         <h3 data-template-id="course-preview-title" class="canva-text font-bold mb-4">Course Progress</h3>
+         <h3 data-template-id="course-preview-title" class="canva-text font-bold mb-4 text-[#9fb398]">Course Progress</h3>
          <div id="course-preview-list" class="space-y-3"></div>
-         <p id="course-preview-empty" data-template-id="course-preview-empty" class="canva-text text-sm text-[#8f8f89]">No courses added yet.</p>
-        </section>
-        <section data-template-id="deadline-card" class="canva-card glass-panel rounded-3xl p-5">
-         <h3 data-template-id="deadline-title" class="canva-text font-bold mb-4">Upcoming Deadlines</h3>
-         <div id="deadline-list" class="space-y-3"></div>
-         <p id="deadline-empty" data-template-id="deadline-empty" class="canva-text text-sm text-[#8f8f89]">No immediate deadlines.</p>
+         <p id="course-preview-empty" class="canva-text text-sm text-[#8f8f89] hidden">No courses added yet.</p>
         </section>
         <section data-template-id="habit-card" class="canva-card glass-panel rounded-3xl p-5">
-         <h3 data-template-id="habit-title" class="canva-text font-bold mb-4">Daily Habits</h3>
+         <h3 data-template-id="habit-title" class="canva-text font-bold mb-4 text-[#9fb398]">Daily Habits</h3>
          <div id="habit-preview-list" class="space-y-3"></div>
-         <p id="habit-empty" data-template-id="habit-empty" class="canva-text text-sm text-[#8f8f89]">Start building a streak today.</p>
+         <p id="habit-empty" class="canva-text text-sm text-[#8f8f89] hidden">Start building a streak today.</p>
         </section>
-       </div>
       </div>
      </section>
-     
+
+     <!-- ---------------- COURSES VIEW ---------------- -->
      <section id="view-courses" class="view-panel fade-in">
       <div id="course-overview">
        <div class="mb-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -189,7 +275,7 @@
          <h3 data-template-id="courses-title" class="canva-text font-bold tracking-[-0.04em] text-2xl">My Courses</h3>
          <p data-template-id="courses-subtitle" class="canva-text text-sm text-[#9b9b95] mt-2">Manage your classes and specific syllabus goals.</p>
         </div>
-        <div class="rounded-2xl bg-white/[0.03] border border-white/10 px-4 py-3 w-full md:w-auto md:min-w-[190px]">
+        <div class="rounded-2xl bg-white/[0.03] border border-white/10 px-4 py-3 min-w-[190px]">
          <p data-template-id="overall-progress-label" class="canva-text text-[11px] uppercase tracking-[0.14em] text-[#9fb398] font-bold">Total Completion</p>
          <div class="flex items-end justify-between mt-2">
           <p id="overall-progress-value" class="text-2xl font-bold">0%</p>
@@ -197,24 +283,23 @@
          </div>
         </div>
        </div>
-       <div id="courses-list" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
-       <div id="courses-empty" class="rounded-3xl border border-dashed border-white/10 p-10 text-center">
+       <div id="courses-list" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+       <div id="courses-empty" class="rounded-3xl border border-dashed border-white/10 p-10 text-center hidden">
         <p data-template-id="courses-empty-title" class="canva-text font-semibold">Ready for a new semester?</p>
         <p data-template-id="courses-empty-copy" class="canva-text text-sm text-[#8f8f89] mt-1">Add your first course to get started.</p>
        </div>
       </div>
-      
       <div id="course-detail" class="hidden">
        <button id="back-to-courses" type="button" class="focus-ring inline-flex items-center gap-2 text-sm text-[#bfcab9] mb-5 hover:text-white transition"> <i data-lucide="arrow-left" class="w-4 h-4"></i><span data-template-id="back-to-courses" class="canva-text">Back to courses</span> </button>
        <section data-template-id="course-detail-card" class="canva-card glass-panel rounded-3xl overflow-hidden mb-5">
         <div id="detail-course-image-wrap" class="w-full aspect-video md:aspect-[21/9] overflow-hidden bg-[#0f0f0f] flex items-center justify-center">
-         <img src="" class="detail-img w-full h-full object-cover object-center" loading="lazy">
+         <img src="" class="detail-img w-full h-full object-cover" loading="lazy">
         </div>
         <div class="p-5 md:p-6">
          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-5">
           <div class="flex-1 min-w-0">
            <p data-template-id="course-detail-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Syllabus Overview</p>
-           <h3 id="detail-course-title" class="font-bold tracking-[-0.05em] text-3xl md:text-4xl break-words"></h3>
+           <h3 id="detail-course-title" class="font-bold tracking-[-0.05em] text-3xl md:text-4xl"></h3>
            <p id="detail-course-description" class="text-sm text-[#9b9b95] mt-3 leading-6"></p>
           </div>
           <div class="flex items-center gap-3 shrink-0">
@@ -222,8 +307,7 @@
            <div class="relative">
             <button id="course-menu-btn" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-[#d7e0d0] hover:bg-white/10"><i data-lucide="more-vertical" class="w-4 h-4"></i></button>
             <div id="course-menu" class="hidden absolute right-0 top-full mt-2 bg-[#0f0f0f] border border-white/15 rounded-xl shadow-lg overflow-hidden z-40 min-w-[180px]">
-             <button type="button" id="course-edit-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2"><i data-lucide="edit-2" class="w-4 h-4"></i><span>Edit course</span></button> 
-             <button type="button" id="course-delete-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2 text-[#d98b7f]"><i data-lucide="trash-2" class="w-4 h-4"></i><span data-template-id="course-delete-label" class="canva-text">Delete course</span></button>
+             <button type="button" id="course-edit-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2"><i data-lucide="edit-2" class="w-4 h-4"></i><span>Edit course</span></button> <button type="button" id="course-delete-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2 text-[#d98b7f]"><i data-lucide="trash-2" class="w-4 h-4"></i><span data-template-id="course-delete-label" class="canva-text">Delete course</span></button>
             </div>
            </div>
           </div>
@@ -231,48 +315,47 @@
          <div id="course-delete-confirm" class="rounded-2xl border border-[#d98b7f]/30 bg-[#2a1715] p-4 hidden">
           <p class="text-sm text-[#f0c0b8] mb-3">Delete this course and all of its actions?</p>
           <div class="flex gap-2">
-           <button id="confirm-course-delete" type="button" class="focus-ring rounded-full px-4 py-2 bg-[#d98b7f] text-[#111] text-sm font-bold">Delete</button> 
-           <button id="cancel-course-delete" type="button" class="focus-ring rounded-full px-4 py-2 bg-white/10 text-sm font-semibold">Cancel</button>
+           <button id="confirm-course-delete" type="button" class="focus-ring rounded-full px-4 py-2 bg-[#d98b7f] text-[#111] text-sm font-bold">Delete</button> <button id="cancel-course-delete" type="button" class="focus-ring rounded-full px-4 py-2 bg-white/10 text-sm font-semibold">Cancel</button>
           </div>
          </div>
         </div>
        </section>
-       
        <section data-template-id="course-actions-card" class="canva-card glass-panel rounded-3xl p-5 md:p-6">
         <div class="flex items-center justify-between mb-5">
          <div>
           <p data-template-id="actions-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Milestones</p>
           <h4 data-template-id="actions-title" class="canva-text font-bold text-lg">Action Items</h4>
-         </div>
-         <button id="open-action-modal" type="button" data-template-id="add-action-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> <span class="hidden sm:inline">Add Action</span></button>
+         </div><button id="open-action-modal" type="button" data-template-id="add-action-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Action</button>
         </div>
         <div id="course-actions-list" class="space-y-3"></div>
-        <div id="course-actions-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center">
+        <div id="course-actions-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center hidden">
          <p data-template-id="course-actions-empty-title" class="canva-text font-semibold">No actions yet</p>
          <p data-template-id="course-actions-empty-copy" class="canva-text text-sm text-[#8f8f89] mt-1">Break your course into smaller pieces.</p>
         </div>
        </section>
       </div>
      </section>
-     
+
+     <!-- ---------------- TRACKER VIEW ---------------- -->
      <section id="view-tracker" class="view-panel fade-in">
-      <div class="flex flex-wrap gap-2 mb-6">
-       <button type="button" class="tracker-tab active focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#d7e0d0] hover:bg-white/10 transition" data-tracker="assignments-card"><i data-lucide="pen-line" class="w-4 h-4 inline mr-2"></i>Assignments</button> 
-       <button type="button" class="tracker-tab focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#8f8f89] hover:bg-white/10 transition" data-tracker="exams-card"><i data-lucide="file-text" class="w-4 h-4 inline mr-2"></i>Exams</button>
+      <div class="flex gap-2 mb-6 overflow-x-auto w-full">
+       <button type="button" class="tracker-tab active focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#d7e0d0] hover:bg-white/10 transition whitespace-nowrap" data-tracker="assignments-card"><i data-lucide="pen-line" class="w-4 h-4 inline mr-2"></i>Assignments</button> 
+       <button type="button" class="tracker-tab focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#8f8f89] hover:bg-white/10 transition whitespace-nowrap" data-tracker="exams-card"><i data-lucide="file-text" class="w-4 h-4 inline mr-2"></i>Exams</button>
       </div>
       <div class="space-y-8">
+       <!-- Assignments -->
        <section data-template-id="assignments-card" class="canva-card glass-panel rounded-3xl overflow-hidden">
-        <!-- Aspect ratio fix + object-position for Assignment Banner -->
-        <img data-template-id="tracker-assignments-banner" src="https://i.ibb.co/Kpz7NDtW/a4.png" class="canva-image w-full aspect-video md:aspect-[4/1] object-cover rounded-t-2xl" style="object-position: center 72% !important;">
-        <div class="p-4 md:p-6">
+        <img src="https://i.ibb.co/Kpz7NDtW/a4.png" class="canva-image w-full aspect-[4/1] object-cover rounded-t-2xl" style="object-position: center 72% !important;">
+        <div class="p-5 md:p-6">
          <div class="flex items-center justify-between mb-5">
           <div>
-           <p data-template-id="assignments-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[10px] md:text-[11px] font-bold mb-1 md:mb-2">Projects & Homework</p>
-           <h3 data-template-id="assignments-title" class="canva-text font-bold tracking-[-0.04em] text-lg md:text-xl">Assignment Tracker</h3>
-          </div><button id="add-assignment-btn" type="button" data-template-id="add-assignment-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-3 md:px-4 py-2 md:py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-xs md:text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Entry</button>
+           <p class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Projects & Homework</p>
+           <h3 class="canva-text font-bold tracking-[-0.04em] text-xl">Assignment Tracker</h3>
+          </div>
+          <button id="add-assignment-btn" type="button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Entry</button>
          </div>
-         <div class="overflow-x-auto w-full max-w-[90vw] md:max-w-none pb-4">
-          <table class="w-full text-left text-sm border-collapse min-w-[700px]">
+         <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm border-collapse min-w-[600px]">
            <thead>
             <tr class="border-b border-white/10">
              <th class="px-4 py-3 font-semibold text-[#9fb398] text-xs uppercase tracking-wider">Name</th>
@@ -287,25 +370,26 @@
            <tbody id="assignment-list" class="divide-y divide-white/5"></tbody>
           </table>
          </div>
-         <div id="assignments-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center hidden">
-          <p data-template-id="assignments-empty-title" class="canva-text font-semibold">No upcoming assignments</p>
-          <p data-template-id="assignments-empty-copy" class="canva-text text-sm text-[#8f8f89] mt-1">Check your syllabus to stay ahead.</p>
+         <div id="assignments-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center hidden mt-4">
+          <p class="canva-text font-semibold">No upcoming assignments</p>
+          <p class="canva-text text-sm text-[#8f8f89] mt-1">Check your syllabus to stay ahead.</p>
          </div>
         </div>
        </section>
-       
+
+       <!-- Exams -->
        <section data-template-id="exams-card" class="canva-card glass-panel rounded-3xl overflow-hidden">
-        <!-- Aspect ratio fix for Exam Banner -->
-        <img data-template-id="tracker-exams-banner" src="https://i.ibb.co/21YStsZ1/g4.png" class="canva-image w-full aspect-video md:aspect-[4/1] object-cover rounded-t-2xl">
-        <div class="p-4 md:p-6">
+        <img src="https://i.ibb.co/21YStsZ1/g4.png" class="canva-image w-full aspect-[4/1] object-cover object-center rounded-t-2xl">
+        <div class="p-5 md:p-6">
          <div class="flex items-center justify-between mb-5">
           <div>
-           <p data-template-id="exams-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[10px] md:text-[11px] font-bold mb-1 md:mb-2">Tests & Quizzes</p>
-           <h3 data-template-id="exams-title" class="canva-text font-bold tracking-[-0.04em] text-lg md:text-xl">Exam Tracker</h3>
-          </div><button id="add-exam-btn" type="button" data-template-id="add-exam-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-3 md:px-4 py-2 md:py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-xs md:text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Exam</button>
+           <p class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Tests & Quizzes</p>
+           <h3 class="canva-text font-bold tracking-[-0.04em] text-xl">Exam Tracker</h3>
+          </div>
+          <button id="add-exam-btn" type="button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Exam</button>
          </div>
-         <div class="overflow-x-auto w-full max-w-[90vw] md:max-w-none pb-4">
-          <table class="w-full text-left text-sm border-collapse min-w-[700px]">
+         <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm border-collapse min-w-[600px]">
            <thead>
             <tr class="border-b border-white/10">
              <th class="px-4 py-3 font-semibold text-[#9fb398] text-xs uppercase tracking-wider">Name</th>
@@ -319,25 +403,26 @@
            <tbody id="exam-list" class="divide-y divide-white/5"></tbody>
           </table>
          </div>
-         <div id="exams-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center hidden">
-          <p data-template-id="exams-empty-title" class="canva-text font-semibold">No exams coming up</p>
-          <p data-template-id="exams-empty-copy" class="canva-text text-sm text-[#8f8f89] mt-1">Breathe easy!</p>
+         <div id="exams-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center hidden mt-4">
+          <p class="canva-text font-semibold">No exams coming up</p>
+          <p class="canva-text text-sm text-[#8f8f89] mt-1">Breathe easy!</p>
          </div>
         </div>
        </section>
       </div>
      </section>
-     
+
+     <!-- ---------------- STUDY VIEW ---------------- -->
      <section id="view-notes" class="view-panel fade-in">
       <div class="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto mt-4">
        <!-- Pomodoro Timer -->
        <article id="pomodoro-container" class="rounded-[2.5rem] p-6 md:p-12 text-center border border-white/10 bg-gradient-to-br from-[#1a1c1a] to-[#111] shadow-2xl relative overflow-hidden">
-        <div class="flex flex-wrap justify-center gap-1 items-center bg-white/5 rounded-[2rem] p-1.5 w-full max-w-sm mx-auto mb-8 md:mb-10 border border-white/5">
-         <button class="pomo-tab active px-4 md:px-6 py-2.5 rounded-[1.5rem] text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm flex-1 whitespace-nowrap transition-colors" data-time="25">Pomodoro</button> 
-         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-[1.5rem] text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] flex-1 whitespace-nowrap transition-colors" data-time="5">Short Break</button> 
-         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-[1.5rem] text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] flex-1 whitespace-nowrap transition-colors" data-time="15">Long Break</button>
+        <div class="flex justify-between items-center bg-white/5 rounded-full p-1.5 w-max mx-auto mb-10 border border-white/5">
+         <button class="pomo-tab active px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm" data-time="25">Pomodoro</button> 
+         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0]" data-time="5">Short Break</button> 
+         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0]" data-time="15">Long Break</button>
         </div>
-        <h2 id="timer-display" class="text-[5rem] sm:text-[6rem] md:text-[8rem] font-bold tracking-tighter text-white mb-8 md:mb-10 tabular-nums leading-none">25:00</h2>
+        <h2 id="timer-display" class="text-[5rem] md:text-[8rem] font-bold tracking-tighter text-white mb-10 tabular-nums leading-none">25:00</h2>
         <div class="flex justify-center items-center gap-4">
          <button id="timer-toggle" class="px-8 md:px-10 py-3 md:py-4 rounded-full bg-[#d7e0d0] text-[#111] font-bold text-base md:text-lg flex items-center gap-2 hover:bg-white transition-all"> <i data-lucide="play" id="timer-icon"></i> <span id="toggle-text">Start</span> </button> 
          <button id="timer-reset" class="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-white/10 flex items-center justify-center text-[#8f8f89] hover:border-white/30 transition-all"> <i data-lucide="rotate-ccw"></i> </button>
@@ -350,7 +435,8 @@
        </div>
       </div>
      </section>
-     
+
+     <!-- ---------------- HABITS VIEW ---------------- -->
      <section id="view-habits" class="view-panel fade-in">
       <div class="mb-5 flex items-center justify-between">
        <div>
@@ -359,68 +445,79 @@
        </div>
        <button type="button" onclick="document.getElementById('entry-type').value='habit'; document.getElementById('entry-type').dispatchEvent(new Event('change')); document.getElementById('open-modal').click();" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Habit</button>
       </div>
-      <div id="habits-list" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
-      <div id="habits-empty" class="rounded-3xl border border-dashed border-white/10 p-10 text-center">
+      <div id="habits-list" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+      <div id="habits-empty" class="rounded-3xl border border-dashed border-white/10 p-10 text-center hidden">
        <p data-template-id="habits-empty-title" class="canva-text font-semibold">Build positive routines</p>
        <p data-template-id="habits-empty-copy" class="canva-text text-sm text-[#8f8f89] mt-1">Add a habit to track your daily progress.</p>
       </div>
      </section>
+
     </div>
    </main>
    
+   <!-- Mobile Bottom Nav -->
    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#111]/95 backdrop-blur-xl border-t border-white/10 flex items-center justify-around px-2 py-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.3)]">
-       <button type="button" onclick="setView('today')" data-view="today" class="nav-item active focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+       <button type="button" data-view="today" class="nav-item active focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
          <i data-lucide="layout-dashboard" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Today</span>
        </button>
-       <button type="button" onclick="setView('courses')" data-view="courses" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+       <button type="button" data-view="courses" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
          <i data-lucide="graduation-cap" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Courses</span>
        </button>
-       <button type="button" onclick="setView('tracker')" data-view="tracker" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+       <button type="button" data-view="tracker" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
          <i data-lucide="table" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Tracker</span>
        </button>
-       <button type="button" onclick="setView('notes')" data-view="notes" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+       <button type="button" data-view="notes" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
          <i data-lucide="timer" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Study</span>
        </button>
-       <button type="button" onclick="setView('habits')" data-view="habits" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+       <button type="button" data-view="habits" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
          <i data-lucide="sprout" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Habits</span>
        </button>
    </nav>
   </div>
+
+  <!-- MAIN ADD MODAL -->
   <div id="modal" class="hidden fixed inset-0 z-[60] modal-backdrop items-center justify-center p-4">
-   <div data-template-id="modal-card" class="canva-card w-full max-w-xl rounded-[28px] bg-[#181818] border border-white/10 p-5 md:p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
-    <div class="flex justify-between mb-5 sticky top-0 bg-[#181818] z-10 pt-2 pb-2">
+   <div data-template-id="modal-card" class="canva-card w-full max-w-xl rounded-[28px] bg-[#181818] border border-white/10 p-5 md:p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between mb-5 sticky top-0 bg-[#181818] pt-1 pb-2 z-10">
      <div>
       <p data-template-id="modal-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Create</p>
       <h2 data-template-id="modal-title" class="canva-text font-bold text-xl">New Entry</h2>
      </div><button id="close-modal" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
     </div>
     <form id="entry-form" class="space-y-4">
-     <div><label for="entry-type" data-template-id="type-label" class="canva-text block text-sm font-semibold mb-2">Type</label><select id="entry-type" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"><option value="task">Assignment/Task</option><option value="course">Course</option><option value="habit">Habit</option><option value="exam">Exam</option></select></div>
-     <div><label for="entry-title" data-template-id="title-label" class="canva-text block text-sm font-semibold mb-2">Title</label><input id="entry-title" type="text" required class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
-     <div id="description-field"><label for="entry-description" data-template-id="description-label" class="canva-text block text-sm font-semibold mb-2">Notes</label><textarea id="entry-description" rows="3" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white resize-none"></textarea></div>
-     <div id="due-field"><label for="entry-due" data-template-id="due-label" class="canva-text block text-sm font-semibold mb-2">Date</label><input id="entry-due" type="date" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
-     <div id="parent-course-field" class="hidden"><label for="entry-parent-course" class="canva-text block text-sm font-semibold mb-2">Course</label><select id="entry-parent-course" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></select></div>
-     <div id="custom-type-field" class="hidden"><label for="entry-custom-type" class="canva-text block text-sm font-semibold mb-2">Assignment Type</label><input id="entry-custom-type" type="text" placeholder="e.g. Research Paper, Project" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
-     <div id="course-fields" class="hidden"><label for="entry-instructor" data-template-id="instructor-label" class="canva-text block text-sm font-semibold mb-2">Instructor</label><input id="entry-instructor" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
-     <div id="budget-fields" class="hidden grid grid-cols-2 gap-3">
-      <div><label for="entry-amount" data-template-id="amount-label" class="canva-text block text-sm font-semibold mb-2">Amount</label><input id="entry-amount" type="number" min="0" step="0.01" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
-      <div><label for="entry-category" data-template-id="category-label" class="canva-text block text-sm font-semibold mb-2">Category</label><input id="entry-category" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+     <div><label for="entry-type" class="canva-text block text-sm font-semibold mb-2">Type</label>
+      <select id="entry-type" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
+        <!-- Separate Task and Assignment! -->
+        <option value="task">Task</option>
+        <option value="assignment">Assignment</option>
+        <option value="course">Course</option>
+        <option value="habit">Habit</option>
+        <option value="exam">Exam</option>
+      </select>
      </div>
+     <div><label for="entry-title" class="canva-text block text-sm font-semibold mb-2">Title</label><input id="entry-title" type="text" required class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+     <div id="description-field"><label for="entry-description" class="canva-text block text-sm font-semibold mb-2">Notes</label><textarea id="entry-description" rows="3" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white resize-none"></textarea></div>
+     <div id="due-field"><label for="entry-due" class="canva-text block text-sm font-semibold mb-2">Date</label><input id="entry-due" type="date" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+     <div id="parent-course-field" class="hidden"><label for="entry-parent-course" class="canva-text block text-sm font-semibold mb-2">Course</label><select id="entry-parent-course" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></select></div>
+     <div id="custom-type-field" class="hidden"><label for="entry-custom-type" class="canva-text block text-sm font-semibold mb-2">Assignment Type</label><input id="entry-custom-type" type="text" placeholder="e.g. Essay, Project" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+     <div id="course-fields" class="hidden"><label for="entry-instructor" class="canva-text block text-sm font-semibold mb-2">Instructor</label><input id="entry-instructor" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
      <p id="form-message" class="text-sm text-[#d98b7f] hidden"></p>
      <div class="flex justify-end gap-3 pt-2">
-      <button type="button" id="cancel-modal" data-template-id="cancel-button" class="canva-button focus-ring rounded-full px-5 py-3 bg-white/5 text-sm font-semibold">Cancel</button> <button type="submit" id="save-entry" data-template-id="save-button" class="canva-button focus-ring rounded-full px-5 py-3 bg-[#d7e0d0] text-[#111] text-sm font-bold">Save Entry</button>
+      <button type="button" id="cancel-modal" class="canva-button focus-ring rounded-full px-5 py-3 bg-white/5 text-sm font-semibold">Cancel</button> 
+      <button type="submit" id="save-entry" class="canva-button focus-ring rounded-full px-5 py-3 bg-[#d7e0d0] text-[#111] text-sm font-bold">Save Entry</button>
      </div>
     </form>
    </div>
   </div>
   
+  <!-- ACTION MODAL -->
   <div id="action-modal" class="hidden fixed inset-0 z-[60] modal-backdrop items-center justify-center p-4">
-   <div data-template-id="action-modal-card" class="canva-card w-full max-w-lg rounded-[28px] bg-[#181818] border border-white/10 p-5 md:p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+   <div data-template-id="action-modal-card" class="canva-card w-full max-w-lg rounded-[28px] bg-[#181818] border border-white/10 p-5 md:p-6 shadow-2xl">
     <div class="flex justify-between mb-5">
      <div>
       <p data-template-id="action-modal-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Course Plan</p>
@@ -439,6 +536,7 @@
    </div>
   </div>
   
+  <!-- TEMPLATES -->
   <template id="course-template">
    <article data-template-id="course-card" class="canva-card course-card rounded-3xl bg-[#1a1a1a] border border-white/10 overflow-hidden cursor-pointer relative group flex flex-col h-full min-h-[320px]">
     <div class="course-image-slot w-full aspect-video bg-[#0f0f0f] overflow-hidden flex-shrink-0">
@@ -511,7 +609,7 @@
     <td class="px-4 py-3 text-[#9b9b95] whitespace-nowrap"><span class="assignment-due">—</span></td>
     <td class="px-4 py-3 text-[#9b9b95] whitespace-nowrap"><span class="assignment-time">—</span></td>
     <td class="px-4 py-3"><span class="inline-flex rounded-full bg-[#223024] text-[#cfe0ca] px-2 py-1 text-[10px] uppercase tracking-[0.14em] font-bold assignment-type">Assignment</span></td>
-    <td class="px-4 py-3"><button type="button" class="toggle-assignment-status inline-flex rounded-full bg-white/5 text-white px-2.5 py-1 text-xs font-medium hover:bg-white/10 transition focus-ring assignment-status whitespace-nowrap">Not Started</button></td>
+    <td class="px-4 py-3"><button type="button" class="toggle-assignment-status inline-flex rounded-full bg-white/5 text-white px-2.5 py-1 text-[10px] font-bold border hover:bg-white/10 transition focus-ring assignment-status whitespace-nowrap">Not Started</button></td>
     <td class="px-4 py-3 relative">
      <div class="flex justify-center">
       <button type="button" class="assignment-menu-btn focus-ring w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
@@ -549,11 +647,9 @@
     ];
 
     const state = { records: [], currentView: 'today', selectedCourseId: null, editingRecord: null, editingAction: null, busyIds: new Set() };
-    const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
     
     // --- SUPABASE CLOUD DATABASE INTEGRATION ---
     const supabaseUrl = 'https://iblcxziwvcfstznlcliv.supabase.co';
-    // ⚠️ IMPORTANT: Paste your 'anon' public key below
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlibGN4eml3dmNmc3R6bmxjbGl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyODY2MTksImV4cCI6MjA5Nzg2MjYxOX0.-e44e500H4fiw4Mwt2_-c3IxCruASD3e8pGSARnz3yI'; 
     const supabaseClient = window.supabase ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 
@@ -600,9 +696,15 @@
         }
     };
 
-    function byType(type){return state.records.filter(r=>r.type===type)}
+    function byType(type){return state.records.filter(r => r.type === type);}
+    
+    // Safely mapping legacy records if needed
+    function getAssignments() { return state.records.filter(r => r.type === 'assignment' || (r.type === 'task' && r.time_slot === 'Assignment')); }
+    function getTasks() { return state.records.filter(r => r.type === 'task' && r.time_slot !== 'Assignment' && r.category !== 'exam'); }
+    function getExams() { return state.records.filter(r => r.type === 'exam' || (r.type === 'task' && r.category === 'exam')); }
+
     function formatDate(v){if(!v)return ''; const d=new Date(v); return Number.isNaN(d.getTime())?'':d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}
-    function setEmpty(id,show){document.getElementById(id).classList.toggle('hidden',!show)}
+    function setEmpty(id,show){const e = document.getElementById(id); if(e) e.classList.toggle('hidden',!show);}
     function getCourseActions(id){return state.records.filter(r=>r.type==='course_action'&&r.parent_course===id)}
     function getProgress(id){const a=getCourseActions(id),done=a.filter(x=>x.completed).length;return{total:a.length,done,percent:a.length?Math.round(done/a.length*100):0}}
 
@@ -616,29 +718,125 @@
     }
 
     function updateStats(){
-      const tasks=byType('task'), habits=byType('habit'), courses=byType('course');
+      const tasks = getTasks();
+      const habits = byType('habit');
+      const courses = byType('course');
       document.getElementById('stat-tasks').textContent=tasks.length;
-      document.getElementById('stat-complete').textContent=tasks.filter(t=>t.completed).length+habits.filter(h=>h.completed).length;
-      document.getElementById('stat-budget').textContent=habits.length;
+      document.getElementById('stat-complete').textContent=tasks.filter(t=>t.completed).length + getAssignments().filter(a=>a.completed).length + getExams().filter(e=>e.completed).length;
+      document.getElementById('stat-habits').textContent=habits.length;
       document.getElementById('stat-courses').textContent=courses.length;
     }
 
-    function renderPreview(containerId,items,mode){
-      const c=document.getElementById(containerId);
-      c.innerHTML='';
-      items.slice(0,4).forEach(item=>{
-        const row=document.createElement('div');
-        row.className='rounded-xl bg-white/[0.03] border border-white/5 px-3 py-3 flex items-center justify-between gap-3';
-        const left=document.createElement('div'); left.className='min-w-0 flex-1';
-        const title=document.createElement('p'); title.className='text-sm font-semibold truncate'; title.textContent=item.title||'Untitled';
-        const meta=document.createElement('p'); meta.className='text-xs text-[#8f8f89] mt-1';
-        meta.textContent=mode==='task'?(item.due_date?'Due '+formatDate(item.due_date):'No due date'):(item.completed?'Done today':'Not done yet');
-        left.append(title,meta);
-        const dot=document.createElement('div'); dot.className='w-2.5 h-2.5 rounded-full shrink-0 '+(item.completed?'bg-[#a9c7a3]':'bg-[#4f4f4b]');
-        row.append(left,dot);
-        c.appendChild(row);
-      });
+    // New Today's Deadlines Rendering (Horizontal List items)
+    function renderTodayDeadline(containerId, items, type) {
+        const c = document.getElementById(containerId);
+        c.innerHTML = '';
+        items.slice(0, 6).forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'flex flex-row items-center justify-between py-2.5 border-b border-white/5 last:border-0 group';
+            
+            const left = document.createElement('div');
+            left.className = 'flex items-center gap-3 min-w-0';
+            
+            let icon = type === 'assignment' ? 'pen-line' : type === 'exam' ? 'file-text' : 'list';
+            left.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 text-[#8f8f89] shrink-0"></i> <span class="text-sm font-medium truncate ${item.completed ? 'line-through text-[#8f8f89]' : 'text-[#f5f5f0]'}">${item.title || 'Untitled'}</span>`;
+            
+            const right = document.createElement('div');
+            right.className = 'flex items-center gap-2 shrink-0 ml-2';
+            
+            // Render Prio/Course pill based on type
+            const meta = document.createElement('span');
+            meta.className = 'hidden sm:inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-white/5 text-[#8f8f89]';
+            meta.textContent = type === 'task' ? 'Priority' : (item.parent_course || 'No Course');
+            
+            // Status Pill
+            const status = document.createElement('button');
+            let currentStatus = item.day || 'Not started';
+            if (item.completed) currentStatus = 'Completed';
+            
+            const statusColors = {
+               'Not started': 'bg-[#2a303c] border-[#374151] text-[#9ca3af]',
+               'In Progress': 'bg-[#b45309]/20 border-[#b45309]/50 text-[#fbbf24]',
+               'Completed': 'bg-[#166534]/20 border-[#166534]/50 text-[#86efac]',
+               'Submitted': 'bg-[#1e3a8a]/20 border-[#1e3a8a]/50 text-[#93c5fd]'
+            };
+            
+            status.className = `px-2 py-0.5 rounded-full text-[10px] font-bold border flex items-center gap-1.5 hover:brightness-110 transition focus-ring ${statusColors[currentStatus] || statusColors['Not started']}`;
+            status.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-current"></span> ${currentStatus}`;
+            
+            status.onclick = async () => {
+                 if (state.busyIds.has(item.__backendId)) return;
+                 state.busyIds.add(item.__backendId);
+                 
+                 const statuses = type === 'task' ? ['Not started', 'In Progress', 'Completed'] : ['Not started', 'In Progress', 'Completed', 'Submitted'];
+                 let next = statuses[(statuses.indexOf(currentStatus) + 1) % statuses.length];
+                 
+                 item.day = next;
+                 item.completed = (next === 'Completed' || next === 'Submitted');
+                 status.textContent = '...';
+                 await mySdk.update(item);
+                 state.busyIds.delete(item.__backendId);
+            };
+
+            right.appendChild(meta);
+            right.appendChild(status);
+            div.appendChild(left);
+            div.appendChild(right);
+            c.appendChild(div);
+        });
     }
+
+    // New Focus Items Rendering
+    function renderFocusList(containerId, items) {
+        const c = document.getElementById(containerId);
+        c.innerHTML = '';
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'flex items-start gap-2.5';
+            
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.className = 'focus-cb shrink-0 mt-0.5';
+            cb.checked = item.completed;
+            cb.onchange = async (e) => {
+                e.preventDefault();
+                if (state.busyIds.has(item.__backendId)) return;
+                state.busyIds.add(item.__backendId);
+                cb.disabled = true;
+                item.completed = !item.completed;
+                await mySdk.update(item);
+                state.busyIds.delete(item.__backendId);
+            };
+
+            const span = document.createElement('span');
+            span.className = `text-sm font-medium ${item.completed ? 'line-through opacity-50' : 'opacity-90'}`;
+            span.textContent = item.title;
+
+            div.appendChild(cb);
+            div.appendChild(span);
+            c.appendChild(div);
+        });
+    }
+
+    window.addFocus = async function(e, category) {
+        e.preventDefault();
+        const input = e.target.querySelector('input');
+        const title = input.value.trim();
+        if (!title) return;
+        input.disabled = true;
+        
+        await mySdk.create({
+            type: 'focus',
+            title: title,
+            category: category,
+            completed: false,
+            created_at: new Date().toISOString()
+        });
+        
+        input.value = '';
+        input.disabled = false;
+        input.focus();
+    };
 
     function renderCoursePreview(courses){
       const c=document.getElementById('course-preview-list');
@@ -658,7 +856,6 @@
       const c=document.getElementById(containerId);
       c.innerHTML='';
       items.forEach(i=>c.appendChild(creator(i)));
-      lucide.createIcons();
     }
 
     function createCourseElement(course){
@@ -681,14 +878,6 @@
       return node;
     }
 
-    function showInline(anchor,text){
-      const n=document.createElement('span');
-      n.className='ml-2 text-xs text-[#d98b7f]';
-      n.textContent=text;
-      anchor.parentElement.appendChild(n);
-      setTimeout(()=>n.remove(),2200);
-    }
-
     function createRecordElement(item){
       const node=document.getElementById('record-template').content.firstElementChild.cloneNode(true);
       node.querySelector('[data-template-id="record-type"]').textContent=item.type;
@@ -708,10 +897,9 @@
           state.busyIds.add(item.__backendId);
           toggle.classList.add('opacity-50');
           item.completed=!item.completed;
-          const r=await mySdk.update(item);
+          await mySdk.update(item);
           state.busyIds.delete(item.__backendId);
           toggle.classList.remove('opacity-50');
-          if(r.isError){item.completed=!item.completed;showInline(toggle,'Could not update')}
         };
       }
 
@@ -723,9 +911,8 @@
         if(state.busyIds.has(item.__backendId))return;
         state.busyIds.add(item.__backendId);
         confirm.textContent='Deleting...';
-        const r=await mySdk.delete(item);
+        await mySdk.delete(item);
         state.busyIds.delete(item.__backendId);
-        if(r.isError){confirm.textContent='Try again';showInline(confirm,'Could not delete')}
       };
       return node;
     }
@@ -742,10 +929,9 @@
         state.busyIds.add(item.__backendId);
         toggle.classList.add('opacity-50');
         item.completed=!item.completed;
-        const r=await mySdk.update(item);
+        await mySdk.update(item);
         state.busyIds.delete(item.__backendId);
         toggle.classList.remove('opacity-50');
-        if(r.isError){item.completed=!item.completed;showInline(toggle,'Could not update')}
       };
 
       node.querySelector('.edit-action').onclick=()=>openEditActionModal(item);
@@ -756,54 +942,70 @@
         if(state.busyIds.has(item.__backendId))return;
         state.busyIds.add(item.__backendId);
         confirm.textContent='Deleting...';
-        const r=await mySdk.delete(item);
+        await mySdk.delete(item);
         state.busyIds.delete(item.__backendId);
-        if(r.isError){confirm.textContent='Try again';showInline(confirm,'Could not delete')}
       };
       return node;
     }
 
     function render(){
       updateStats();
-      const tasks=byType('task').filter(t=>t.category!=='exam'),courses=byType('course'),budget=byType('budget'),notes=byType('note'),habits=byType('habit');
-      renderPreview('today-list',tasks.filter(t=>!t.completed),'task');
-      renderPreview('deadline-list',tasks.filter(t=>t.due_date&&!t.completed),'task');
-      renderPreview('habit-preview-list',habits,'habit');
+      const tasks = getTasks();
+      const assignments = getAssignments();
+      const exams = getExams();
+      const courses = byType('course');
+      const habits = byType('habit');
+      const focusToday = byType('focus').filter(r => r.category === 'today');
+      const focusWeek = byType('focus').filter(r => r.category === 'week');
+
+      // Main Today Deadlines
+      renderTodayDeadline('tt-tasks', tasks.filter(t => !t.completed), 'task');
+      renderTodayDeadline('tt-assignments', assignments.filter(t => !t.completed), 'assignment');
+      renderTodayDeadline('tt-exams', exams.filter(t => !t.completed), 'exam');
+      
+      // Checking for empty in the active tab (Requires JS check on tab switch, but we'll set defaults)
+      const activeTabId = document.querySelector('.today-tab.active')?.dataset.target || 'tt-tasks';
+      const targetItems = activeTabId === 'tt-tasks' ? tasks : activeTabId === 'tt-assignments' ? assignments : exams;
+      setEmpty('tt-empty', targetItems.filter(t => !t.completed).length === 0);
+
+      // Focus Lists
+      renderFocusList('focus-today-list', focusToday);
+      renderFocusList('focus-week-list', focusWeek);
+
+      // Previews
       renderCoursePreview(courses);
+      syncList('habit-preview-list', habits.slice(0,4), createRecordElement);
       
-      setEmpty('today-empty',tasks.filter(t=>!t.completed).length===0);
-      setEmpty('deadline-empty',tasks.filter(t=>t.due_date&&!t.completed).length===0);
-      setEmpty('habit-empty',habits.length===0);
-      setEmpty('course-preview-empty',courses.length===0);
+      setEmpty('course-preview-empty', courses.length === 0);
+      setEmpty('habit-empty', habits.length === 0);
       
-      syncList('courses-list',courses,createCourseElement);
-      syncList('habits-list',habits,createRecordElement);
-      
-      setEmpty('courses-empty',courses.length===0);
-      setEmpty('habits-empty',habits.length===0);
+      // Courses & Habits Tabs
+      syncList('courses-list', courses, createCourseElement);
+      syncList('habits-list', habits, createRecordElement);
+      setEmpty('courses-empty', courses.length === 0);
+      setEmpty('habits-empty', habits.length === 0);
       
       const allActions=state.records.filter(r=>r.type==='course_action'),done=allActions.filter(a=>a.completed).length;
       document.getElementById('overall-progress-value').textContent=(allActions.length?Math.round(done/allActions.length*100):0)+'%';
       document.getElementById('overall-progress-meta').textContent=done+'/'+allActions.length+' actions';
-      if(state.selectedCourseId)renderSelectedCourse();
-      renderTrackerTables();
+      
+      if(state.selectedCourseId) renderSelectedCourse();
+      renderTrackerTables(assignments, exams);
+      
+      lucide.createIcons();
     }
 
-    function renderTrackerTables(){
-      const allTasks=byType('task');
-      const assignments=allTasks.filter(t=>t.category!=='exam');
-      const exams=allTasks.filter(t=>t.category==='exam');
-      syncTrackerList('assignment-list',assignments,'assignment');
-      syncTrackerList('exam-list',exams,'exam');
-      setEmpty('assignments-empty',assignments.length===0);
-      setEmpty('exams-empty',exams.length===0);
+    function renderTrackerTables(assignments, exams){
+      syncTrackerList('assignment-list', assignments, 'assignment');
+      syncTrackerList('exam-list', exams, 'exam');
+      setEmpty('assignments-empty', assignments.length === 0);
+      setEmpty('exams-empty', exams.length === 0);
     }
 
     function syncTrackerList(containerId,items,type){
       const container=document.getElementById(containerId);
       container.innerHTML='';
       items.forEach(item=>container.appendChild(createTrackerRow(item,type)));
-      lucide.createIcons();
     }
 
     function createTrackerRow(item,type){
@@ -847,12 +1049,15 @@
         row.querySelector('.assignment-type').textContent=item.time_slot||'Assignment';
         let currentStatus=item.day||'Not Started';
         const statusColors={
-          'Not Started':'border-[#d98b7f]/30 text-[#d98b7f]', 'In Progress':'border-[#ead7a5]/30 text-[#ead7a5]',
-          'Completed':'border-[#7f9f7c]/30 text-[#7f9f7c]', 'Submitted':'border-[#7fb5d9]/30 text-[#7fb5d9]'
+          'Not started': 'border-[#374151] text-[#9ca3af]',
+          'Not Started': 'border-[#374151] text-[#9ca3af]',
+          'In Progress': 'border-[#b45309]/50 text-[#fbbf24] bg-[#b45309]/20',
+          'Completed': 'border-[#166534]/50 text-[#86efac] bg-[#166534]/20',
+          'Submitted': 'border-[#1e3a8a]/50 text-[#93c5fd] bg-[#1e3a8a]/20'
         };
         const applyStatusColor=(btn,status)=>{
           btn.textContent=status;
-          btn.className=`toggle-assignment-status inline-flex rounded-full bg-white/5 px-2.5 py-1 text-[10px] font-bold border hover:bg-white/10 transition focus-ring assignment-status whitespace-nowrap ${statusColors[status]||statusColors['Not Started']}`;
+          btn.className=`toggle-assignment-status inline-flex rounded-full bg-white/5 text-white px-2.5 py-1 text-[10px] font-bold border hover:bg-white/10 transition focus-ring assignment-status whitespace-nowrap ${statusColors[status]||statusColors['Not Started']}`;
         };
         applyStatusColor(row.querySelector('.assignment-status'),currentStatus);
         row.querySelector('.assignment-menu-btn').onclick=()=>row.querySelector('.assignment-menu').classList.toggle('hidden');
@@ -866,7 +1071,7 @@
         row.querySelector('.toggle-assignment-status').onclick=async()=>{
           if(state.busyIds.has(item.__backendId))return;
           state.busyIds.add(item.__backendId);
-          const statuses=['Not Started','In Progress','Completed','Submitted'];
+          const statuses=['Not started','In Progress','Completed','Submitted'];
           let nextStatus=statuses[(statuses.indexOf(currentStatus)+1)%4];
           item.day=nextStatus;
           item.completed=(nextStatus==='Completed'||nextStatus==='Submitted');
@@ -927,7 +1132,6 @@
       document.getElementById('course-delete-confirm').classList.add('hidden');
       renderSelectedCourse();
       lucide.createIcons();
-      window.scrollTo({top:0, behavior:'smooth'});
     }
 
     function closeCourseDetail(){
@@ -947,19 +1151,18 @@
 
     function updateFormFields(){
       const type=document.getElementById('entry-type').value;
-      document.getElementById('due-field').classList.toggle('hidden',type!=='task' && type!=='exam');
-      document.getElementById('parent-course-field').classList.toggle('hidden',type!=='task' && type!=='exam');
-      document.getElementById('custom-type-field').classList.toggle('hidden',type!=='task');
+      const isDeadlineType = (type === 'task' || type === 'assignment' || type === 'exam');
+      
+      document.getElementById('due-field').classList.toggle('hidden', !isDeadlineType);
+      document.getElementById('parent-course-field').classList.toggle('hidden', !isDeadlineType);
+      document.getElementById('custom-type-field').classList.toggle('hidden', type !== 'assignment');
       document.getElementById('budget-fields').classList.toggle('hidden',type!=='budget');
       document.getElementById('course-fields').classList.toggle('hidden',type!=='course');
       document.getElementById('description-field').classList.toggle('hidden',type==='budget');
     }
 
-    function openCreateModal(){
-      state.editingRecord=null;
-      document.getElementById('entry-form').reset();
-      document.getElementById('entry-type').disabled=false;
-      const courseSelect=document.getElementById('entry-parent-course');
+    function populateCourseSelect(selectElementId, prefillVal) {
+      const courseSelect=document.getElementById(selectElementId);
       courseSelect.innerHTML='<option value="">Select a Course...</option>';
       byType('course').forEach(c=>{
         const opt=document.createElement('option');
@@ -967,6 +1170,14 @@
         opt.textContent=c.title||'Untitled Course';
         courseSelect.appendChild(opt);
       });
+      if(prefillVal) courseSelect.value = prefillVal;
+    }
+
+    function openCreateModal(){
+      state.editingRecord=null;
+      document.getElementById('entry-form').reset();
+      document.getElementById('entry-type').disabled=false;
+      populateCourseSelect('entry-parent-course');
       document.getElementById('modal').classList.remove('hidden');
       document.getElementById('modal').classList.add('flex');
       updateFormFields();
@@ -974,24 +1185,24 @@
 
     function openEditModal(item){
       state.editingRecord=item;
-      document.getElementById('entry-type').value=item.type;
+      // Map old 'exam' categories visually back to exam type
+      let visualType = item.type;
+      if (visualType === 'task' && item.category === 'exam') visualType = 'exam';
+      if (visualType === 'task' && item.time_slot === 'Assignment') visualType = 'assignment';
+      
+      document.getElementById('entry-type').value=visualType;
       document.getElementById('entry-type').disabled=true;
       document.getElementById('entry-title').value=item.title||'';
       document.getElementById('entry-description').value=item.description||'';
       document.getElementById('entry-due').value=item.due_date||'';
-      const courseSelect=document.getElementById('entry-parent-course');
-      courseSelect.innerHTML='<option value="">Select a Course...</option>';
-      byType('course').forEach(c=>{
-        const opt=document.createElement('option');
-        opt.value=c.title;
-        opt.textContent=c.title||'Untitled Course';
-        courseSelect.appendChild(opt);
-      });
-      document.getElementById('entry-parent-course').value=item.parent_course||'';
+      
+      populateCourseSelect('entry-parent-course', item.parent_course);
+      
       document.getElementById('entry-custom-type').value=item.time_slot||'';
       document.getElementById('entry-instructor').value=item.instructor||'';
       document.getElementById('entry-amount').value=item.amount||'';
       document.getElementById('entry-category').value=item.category||'';
+      
       document.getElementById('modal').classList.remove('hidden');
       document.getElementById('modal').classList.add('flex');
       updateFormFields();
@@ -1025,9 +1236,22 @@
       document.getElementById('action-modal').classList.remove('flex');
       document.getElementById('action-form-message').classList.add('hidden');
     }
+    
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const flipH = document.getElementById('flip-h');
+        const flipM = document.getElementById('flip-m');
+        const flipS = document.getElementById('flip-s');
+        if(flipH) flipH.textContent = h;
+        if(flipM) flipM.textContent = m;
+        if(flipS) flipS.textContent = s;
+    }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      // Dynamic Greeting
+      // Dynamic Greeting & Clock
       const hour=new Date().getHours();
       let greeting='Good evening.';
       if(hour<12)greeting='Good morning.';
@@ -1035,6 +1259,9 @@
       const titleEl=document.querySelector('[data-template-id="page-title"]');
       if(titleEl)titleEl.textContent=greeting;
       document.getElementById('today-date').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+      
+      setInterval(updateClock, 1000);
+      updateClock();
 
       // Pomodoro Logic
       let timerInterval, timerRunning = false, timeLeft = 25 * 60;
@@ -1050,45 +1277,56 @@
         if (display) display.textContent = `${m}:${s}`;
       }
       
-      toggleBtn?.addEventListener('click', () => {
-        if (timerRunning) {
-          clearInterval(timerInterval);
-          toggleText.textContent = 'Start';
-          timerIcon.setAttribute('data-lucide', 'play');
-        } else {
-          timerInterval = setInterval(() => {
-            if (timeLeft > 0) { timeLeft--; updateDisplay(); }
-            else { clearInterval(timerInterval); timerRunning = false; toggleText.textContent = 'Start'; lucide.createIcons(); }
-          }, 1000);
-          toggleText.textContent = 'Pause';
-          timerIcon.setAttribute('data-lucide', 'pause');
-        }
-        timerRunning = !timerRunning;
-        lucide.createIcons();
-      });
+      if(toggleBtn) {
+          toggleBtn.addEventListener('click', () => {
+            if (timerRunning) {
+              clearInterval(timerInterval);
+              toggleText.textContent = 'Start';
+              timerIcon.setAttribute('data-lucide', 'play');
+            } else {
+              timerInterval = setInterval(() => {
+                if (timeLeft > 0) { timeLeft--; updateDisplay(); }
+                else { clearInterval(timerInterval); timerRunning = false; toggleText.textContent = 'Start'; lucide.createIcons(); }
+              }, 1000);
+              toggleText.textContent = 'Pause';
+              timerIcon.setAttribute('data-lucide', 'pause');
+            }
+            timerRunning = !timerRunning;
+            lucide.createIcons();
+          });
+      }
       
-      resetBtn?.addEventListener('click', () => {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        const active = document.querySelector('.pomo-tab.active');
-        timeLeft = active ? parseInt(active.dataset.time) * 60 : 25 * 60;
-        updateDisplay();
-        toggleText.textContent = 'Start';
-        timerIcon.setAttribute('data-lucide', 'play');
-        lucide.createIcons();
-      });
+      if(resetBtn) {
+          resetBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            const active = document.querySelector('.pomo-tab.active');
+            timeLeft = active ? parseInt(active.dataset.time) * 60 : 25 * 60;
+            updateDisplay();
+            toggleText.textContent = 'Start';
+            timerIcon.setAttribute('data-lucide', 'play');
+            lucide.createIcons();
+          });
+      }
       
       document.querySelectorAll('.pomo-tab').forEach(tab => {
         tab.addEventListener('click', (e) => {
           if (timerRunning) return;
-          document.querySelectorAll('.pomo-tab').forEach(t => t.className = 'pomo-tab px-6 py-2.5 rounded-full text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0]');
-          e.target.className = 'pomo-tab active px-6 py-2.5 rounded-full text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm';
+          document.querySelectorAll('.pomo-tab').forEach(t => t.className = 'pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0]');
+          e.target.className = 'pomo-tab active px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm';
           timeLeft = parseInt(e.target.dataset.time) * 60;
           updateDisplay();
         });
       });
 
       // Events bindings
+      document.querySelectorAll('.nav-item').forEach(b=>{
+        b.addEventListener('click', (e) => {
+            e.preventDefault();
+            setView(b.dataset.view);
+        });
+      });
+      
       document.querySelectorAll('.tracker-tab').forEach(btn=>{
         btn.addEventListener('click',()=>{
           document.querySelectorAll('.tracker-tab').forEach(b=>{
@@ -1103,6 +1341,24 @@
         });
       });
       document.querySelector('[data-template-id="exams-card"]').style.display='none';
+      
+      // Today Tabs Logic
+      document.querySelectorAll('.today-tab').forEach(btn => {
+          btn.addEventListener('click', () => {
+              document.querySelectorAll('.today-tab').forEach(b => {
+                  b.classList.remove('bg-white/10', 'text-white');
+                  b.classList.add('text-[#8f8f89]');
+              });
+              btn.classList.add('bg-white/10', 'text-white');
+              btn.classList.remove('text-[#8f8f89]');
+              
+              document.querySelectorAll('.today-tab-content').forEach(c => c.classList.add('hidden'));
+              document.getElementById(btn.dataset.target).classList.remove('hidden');
+              
+              // Recalculate empty state
+              render(); 
+          });
+      });
       
       document.getElementById('open-modal').onclick=openCreateModal;
       document.getElementById('close-modal').onclick=closeModal;
@@ -1127,7 +1383,7 @@
       
       document.getElementById('add-assignment-btn').onclick=()=>{
         openCreateModal();
-        document.getElementById('entry-type').value='task';
+        document.getElementById('entry-type').value='assignment';
         document.getElementById('entry-type').disabled=true;
         updateFormFields();
       };
@@ -1160,8 +1416,8 @@
         const original=btn.textContent;
         btn.textContent='Saving...';
 
-        let dbType=type==='exam'?'task':type;
-        let dbCategory=type==='exam'?'exam':(type==='budget'?document.getElementById('entry-category').value.trim():'');
+        let dbType=type;
+        let dbCategory=type==='budget'?document.getElementById('entry-category').value.trim():'';
 
         let result;
         if(state.editingRecord){
@@ -1169,26 +1425,26 @@
           record.type=dbType;
           record.title=title;
           record.description=type==='budget'?'':document.getElementById('entry-description').value.trim();
-          record.due_date=(type==='task'||type==='exam')?document.getElementById('entry-due').value:'';
+          record.due_date=(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-due').value:'';
           record.amount=type==='budget'?(parseFloat(document.getElementById('entry-amount').value)||0):0;
           record.instructor=type==='course'?document.getElementById('entry-instructor').value.trim():'';
-          record.parent_course=(type==='task'||type==='exam')?document.getElementById('entry-parent-course').value.trim():'';
-          record.time_slot=(type==='task')?document.getElementById('entry-custom-type').value.trim():'';
+          record.parent_course=(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-parent-course').value.trim():'';
+          record.time_slot=(type==='assignment')?document.getElementById('entry-custom-type').value.trim():'';
           result=await mySdk.update(record);
         }else{
           result=await mySdk.create({
             type:dbType,
             title,
             description:type==='budget'?'':document.getElementById('entry-description').value.trim(),
-            due_date:(type==='task'||type==='exam')?document.getElementById('entry-due').value:'',
+            due_date:(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-due').value:'',
             completed:false,
             amount:type==='budget'?(parseFloat(document.getElementById('entry-amount').value)||0):0,
             category:dbCategory,
-            day:type==='task'?'Not Started':'',
-            time_slot:(type==='task')?document.getElementById('entry-custom-type').value.trim():'',
+            day:(type==='task'||type==='assignment')?'Not started':'',
+            time_slot:(type==='assignment')?document.getElementById('entry-custom-type').value.trim():'',
             instructor:type==='course'?document.getElementById('entry-instructor').value.trim():'',
             created_at:new Date().toISOString(),
-            parent_course:(type==='task'||type==='exam')?document.getElementById('entry-parent-course').value.trim():'',
+            parent_course:(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-parent-course').value.trim():'',
             cover_image_id: type==='course' ? COURSE_IMAGE_URLS[Math.floor(Math.random() * COURSE_IMAGE_URLS.length)] : ''
           });
         }
@@ -1234,8 +1490,9 @@
         if(result.isOk)closeActionModal(); else {msg.textContent='Could not save. Try again.';msg.classList.remove('hidden')}
       };
 
-      if (window.lucide) lucide.createIcons();
-      await fetchRecords(); // Load data from Supabase on startup
+      // Start initial load
+      if(window.lucide) lucide.createIcons();
+      await fetchRecords(); 
     });
   </script>
  </body>
