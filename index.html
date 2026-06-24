@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
     :root{
       --bg:#111111;
@@ -20,23 +21,25 @@
     *{box-sizing:border-box}
     body{margin:0;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg)}
     .app-shell{width:100%;min-height:calc(100 * min(var(--vh, 1vh), 1vh));background:#111}
+    
     .soft-grid{
       background-image:
         linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
       background-size:34px 34px;
     }
+    
     .glass-panel{
       background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
       border:1px solid rgba(255,255,255,.08);
       box-shadow:0 18px 48px rgba(0,0,0,.18);
     }
     .focus-ring:focus-visible{outline:3px solid rgba(215,224,208,.8);outline-offset:3px}
-    /* Sidebar Active State - Sage background with crisp line-art icons */
+    
+    /* Navigation Active State - Clean Sage fill that works on Desktop and Mobile */
     .nav-item.active { 
         background-color: #d7e0d0 !important; 
     }
-
     .nav-item.active,
     .nav-item.active .canva-text,
     .nav-item.active span,
@@ -44,20 +47,22 @@
     .nav-item.active div {
         color: #111 !important;
     }
-
     .nav-item.active svg { 
         stroke: #111 !important; 
         fill: none !important; 
     }
+    
     .view-panel{display:none}
     .view-panel.active{display:block}
     .modal-backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(6px)}
     .fade-in{animation:fadeIn .25s ease both}
     @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    
     .record-card{transition:.2s ease}
     .record-card:hover{transform:translateY(-2px);background:#202020;border-color:rgba(215,224,208,.28)}
     .course-card{transition:.2s ease;position:relative}
     .course-card:hover{transform:translateY(-2px);border-color:rgba(215,224,208,.28)}
+    
     .progress-ring{
       width:62px;height:62px;border-radius:999px;
       background:conic-gradient(#d7e0d0 var(--progress), #2a2a2a 0);
@@ -68,79 +73,84 @@
     }
     .progress-ring span{position:relative;z-index:1;font-size:12px;font-weight:700}
     .toast{animation:fadeIn .2s ease both}
-
+    
+    /* Pixel Art Quality Fix - keeps illustrations sharp */
     .course-img, .detail-img, .canva-image {
       image-rendering: pixelated !important;
       image-rendering: crisp-edges !important;
       image-rendering: -moz-crisp-edges !important;
       image-rendering: -webkit-optimize-contrast !important;
       object-fit: cover !important;
-      object-position: center 38% !important; /* Locks on the best details of your landscape scenes */
-    }
-
-    @media (max-width:900px){
-      .sidebar-desktop{display:none}
-      .main-area{padding-left:0!important}
     }
   </style>
   <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  </head>
+ 
  <body data-template-id="__page-root">
   <div class="app-shell soft-grid">
-   <aside class="sidebar-desktop fixed left-0 top-0 bottom-0 w-[248px] border-r border-white/10 bg-[#141414] px-4 py-5 flex flex-col">
+   
+   <aside class="sidebar-desktop fixed left-0 top-0 bottom-0 w-[248px] border-r border-white/10 bg-[#141414] px-4 py-5 hidden lg:flex flex-col z-40">
     <div class="flex items-center gap-3 px-2 mb-8">
-     <div class="w-9 h-9 rounded-full bg-[#d7e0d0] flex items-center justify-center text-[#111]"><i data-lucide="book-open" class="w-4 h-4"></i>
-     </div>
+     <div class="w-9 h-9 rounded-full bg-[#d7e0d0] flex items-center justify-center text-[#111]"><i data-lucide="book-open" class="w-4 h-4"></i></div>
      <div>
       <h1 data-template-id="brand-name" class="canva-text font-bold tracking-[-0.03em]">Student OS</h1>
       <p data-template-id="brand-subtitle" class="canva-text text-xs text-[#8f8f89]">Dashboard</p>
      </div>
     </div>
+    
     <nav class="space-y-1" aria-label="Primary">
-     <button type="button" data-view="today" class="nav-item active focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left transition"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span data-template-id="nav-today" class="canva-text">Today</span></button> <button type="button" data-view="courses" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="graduation-cap" class="w-4 h-4"></i><span data-template-id="nav-courses" class="canva-text">Courses</span></button> <button type="button" data-view="tracker" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="table" class="w-4 h-4"></i><span data-template-id="nav-tracker" class="canva-text">Tracker</span></button> <button type="button" data-view="notes" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="timer" class="w-4 h-4"></i><span data-template-id="nav-notes" class="canva-text">Study</span></button> <button type="button" data-view="habits" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="sprout" class="w-4 h-4"></i><span data-template-id="nav-habits" class="canva-text">Habits</span></button>
+     <button type="button" onclick="setView('today')" data-view="today" class="nav-item active focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left transition"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span data-template-id="nav-today" class="canva-text">Today</span></button> 
+     <button type="button" onclick="setView('courses')" data-view="courses" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="graduation-cap" class="w-4 h-4"></i><span data-template-id="nav-courses" class="canva-text">Courses</span></button> 
+     <button type="button" onclick="setView('tracker')" data-view="tracker" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="table" class="w-4 h-4"></i><span data-template-id="nav-tracker" class="canva-text">Tracker</span></button> 
+     <button type="button" onclick="setView('notes')" data-view="notes" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="timer" class="w-4 h-4"></i><span data-template-id="nav-notes" class="canva-text">Study</span></button> 
+     <button type="button" onclick="setView('habits')" data-view="habits" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="sprout" class="w-4 h-4"></i><span data-template-id="nav-habits" class="canva-text">Habits</span></button>
     </nav>
     <div data-template-id="quote-card" class="canva-card mt-auto rounded-2xl bg-[#1d241e] p-4 border border-white/10">
-     <div class="w-8 h-8 rounded-full bg-[#d7e0d0] flex items-center justify-center text-[#111] mb-4"><i data-lucide="sparkles" class="w-4 h-4"></i>
-     </div>
+     <div class="w-8 h-8 rounded-full bg-[#d7e0d0] flex items-center justify-center text-[#111] mb-4"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
      <p data-template-id="quote-text" class="canva-text text-sm leading-5 text-[#ebeee8]">"Success is the sum of small efforts, repeated day in and day out."</p>
      <p data-template-id="quote-author" class="canva-text mt-3 text-xs text-[#9ca998]">Robert Collier</p>
     </div>
    </aside>
    
-   <main class="main-area min-h-screen pl-[248px]">
-    <header class="border-b border-white/10 bg-[#111]/90 backdrop-blur-md">
-     <div class="px-5 md:px-8 py-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+   <main class="main-area min-h-screen pl-0 lg:pl-[248px] pb-24 lg:pb-0">
+    <header class="border-b border-white/10 bg-[#111]/90 backdrop-blur-md sticky top-0 z-30">
+     <div class="px-5 md:px-8 py-4 md:py-5 flex flex-row items-start md:items-center justify-between gap-4">
       <div>
-       <p data-template-id="top-eyebrow" class="canva-text uppercase tracking-[0.18em] text-[#9fb398] text-[11px] font-bold mb-2">Workspace</p>
-       <h2 data-template-id="page-title" class="canva-text font-extrabold tracking-[-0.05em] leading-none text-3xl"></h2>
-       <p id="today-date" class="text-sm text-[#9b9b95] mt-2"></p>
-      </div><button id="open-modal" type="button" data-template-id="add-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 bg-[#d7e0d0] text-[#111] font-bold text-sm hover:bg-white transition"> <i data-lucide="plus" class="w-4 h-4"></i> New Item</button>
+       <p data-template-id="top-eyebrow" class="canva-text uppercase tracking-[0.18em] text-[#9fb398] text-[10px] md:text-[11px] font-bold mb-1 md:mb-2">Workspace</p>
+       <h2 data-template-id="page-title" class="canva-text font-extrabold tracking-[-0.05em] leading-tight text-2xl md:text-3xl"></h2>
+       <p id="today-date" class="text-xs md:text-sm text-[#9b9b95] mt-1 md:mt-2"></p>
+      </div>
+      <!-- Responsive FAB/Button -->
+      <button id="open-modal" type="button" data-template-id="add-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full w-12 h-12 md:w-auto md:h-auto md:px-5 md:py-3 bg-[#d7e0d0] text-[#111] font-bold text-sm hover:bg-white transition flex-shrink-0"> 
+       <i data-lucide="plus" class="w-6 h-6 md:w-4 md:h-4"></i>
+       <span class="hidden md:inline">New Item</span>
+      </button>
      </div>
     </header>
     
-    <div class="px-5 md:px-8 py-6 md:py-8">
+    <div class="px-4 md:px-8 py-6 md:py-8">
      <section id="view-today" class="view-panel active fade-in">
-      <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-       <article data-template-id="stat-card-1" class="canva-card glass-panel rounded-2xl p-5">
-        <p data-template-id="stat-label-1" class="canva-text text-sm text-[#a4a49d]">Pending Tasks</p>
-        <p id="stat-tasks" class="text-3xl font-bold mt-5">0</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
+       <article data-template-id="stat-card-1" class="canva-card glass-panel rounded-2xl p-4 md:p-5">
+        <p data-template-id="stat-label-1" class="canva-text text-xs md:text-sm text-[#a4a49d]">Pending Tasks</p>
+        <p id="stat-tasks" class="text-2xl md:text-3xl font-bold mt-3 md:mt-5">0</p>
        </article>
-       <article data-template-id="stat-card-2" class="canva-card glass-panel rounded-2xl p-5">
-        <p data-template-id="stat-label-2" class="canva-text text-sm text-[#a4a49d]">Completed</p>
-        <p id="stat-complete" class="text-3xl font-bold mt-5">0</p>
+       <article data-template-id="stat-card-2" class="canva-card glass-panel rounded-2xl p-4 md:p-5">
+        <p data-template-id="stat-label-2" class="canva-text text-xs md:text-sm text-[#a4a49d]">Completed</p>
+        <p id="stat-complete" class="text-2xl md:text-3xl font-bold mt-3 md:mt-5">0</p>
        </article>
-       <article data-template-id="stat-card-3" class="canva-card glass-panel rounded-2xl p-5">
-        <p data-template-id="stat-label-3" class="canva-text text-sm text-[#a4a49d]">Active Habits</p>
-        <p id="stat-budget" class="text-3xl font-bold mt-5">0</p>
+       <article data-template-id="stat-card-3" class="canva-card glass-panel rounded-2xl p-4 md:p-5">
+        <p data-template-id="stat-label-3" class="canva-text text-xs md:text-sm text-[#a4a49d]">Active Habits</p>
+        <p id="stat-budget" class="text-2xl md:text-3xl font-bold mt-3 md:mt-5">0</p>
        </article>
-       <article data-template-id="stat-card-4" class="canva-card glass-panel rounded-2xl p-5">
-        <p data-template-id="stat-label-4" class="canva-text text-sm text-[#a4a49d]">Active Courses</p>
-        <p id="stat-courses" class="text-3xl font-bold mt-5">0</p>
+       <article data-template-id="stat-card-4" class="canva-card glass-panel rounded-2xl p-4 md:p-5">
+        <p data-template-id="stat-label-4" class="canva-text text-xs md:text-sm text-[#a4a49d]">Active Courses</p>
+        <p id="stat-courses" class="text-2xl md:text-3xl font-bold mt-3 md:mt-5">0</p>
        </article>
       </div>
       
-      <div class="grid xl:grid-cols-[1.05fr_.95fr] gap-6">
+      <div class="grid lg:grid-cols-[1.05fr_.95fr] gap-6">
        <section data-template-id="today-card" class="canva-card glass-panel rounded-3xl p-5 md:p-6">
         <p data-template-id="section-kicker-1" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">To Do List</p>
         <h3 data-template-id="section-title-1" class="canva-text font-bold tracking-[-0.04em] mb-5 text-xl">Today's Focus</h3>
@@ -179,7 +189,7 @@
          <h3 data-template-id="courses-title" class="canva-text font-bold tracking-[-0.04em] text-2xl">My Courses</h3>
          <p data-template-id="courses-subtitle" class="canva-text text-sm text-[#9b9b95] mt-2">Manage your classes and specific syllabus goals.</p>
         </div>
-        <div class="rounded-2xl bg-white/[0.03] border border-white/10 px-4 py-3 min-w-[190px]">
+        <div class="rounded-2xl bg-white/[0.03] border border-white/10 px-4 py-3 w-full md:w-auto md:min-w-[190px]">
          <p data-template-id="overall-progress-label" class="canva-text text-[11px] uppercase tracking-[0.14em] text-[#9fb398] font-bold">Total Completion</p>
          <div class="flex items-end justify-between mt-2">
           <p id="overall-progress-value" class="text-2xl font-bold">0%</p>
@@ -187,7 +197,7 @@
          </div>
         </div>
        </div>
-       <div id="courses-list" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+       <div id="courses-list" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
        <div id="courses-empty" class="rounded-3xl border border-dashed border-white/10 p-10 text-center">
         <p data-template-id="courses-empty-title" class="canva-text font-semibold">Ready for a new semester?</p>
         <p data-template-id="courses-empty-copy" class="canva-text text-sm text-[#8f8f89] mt-1">Add your first course to get started.</p>
@@ -197,23 +207,23 @@
       <div id="course-detail" class="hidden">
        <button id="back-to-courses" type="button" class="focus-ring inline-flex items-center gap-2 text-sm text-[#bfcab9] mb-5 hover:text-white transition"> <i data-lucide="arrow-left" class="w-4 h-4"></i><span data-template-id="back-to-courses" class="canva-text">Back to courses</span> </button>
        <section data-template-id="course-detail-card" class="canva-card glass-panel rounded-3xl overflow-hidden mb-5">
-        <div id="detail-course-image-wrap" class="w-full h-56 md:h-64 overflow-hidden bg-[#0f0f0f] flex items-center justify-center">
-         <img src="" class="detail-img w-full h-full object-cover" loading="lazy">
+        <div id="detail-course-image-wrap" class="w-full aspect-video md:aspect-[21/9] overflow-hidden bg-[#0f0f0f] flex items-center justify-center">
+         <img src="" class="detail-img w-full h-full object-cover object-center" loading="lazy">
         </div>
         <div class="p-5 md:p-6">
          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-5">
           <div class="flex-1 min-w-0">
            <p data-template-id="course-detail-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Syllabus Overview</p>
-           <h3 id="detail-course-title" class="font-bold tracking-[-0.05em] text-3xl md:text-4xl"></h3>
+           <h3 id="detail-course-title" class="font-bold tracking-[-0.05em] text-3xl md:text-4xl break-words"></h3>
            <p id="detail-course-description" class="text-sm text-[#9b9b95] mt-3 leading-6"></p>
           </div>
           <div class="flex items-center gap-3 shrink-0">
-           <div id="detail-progress-ring" class="progress-ring" style="--progress:0%"><span id="detail-progress-percent">0%</span>
-           </div>
+           <div id="detail-progress-ring" class="progress-ring" style="--progress:0%"><span id="detail-progress-percent">0%</span></div>
            <div class="relative">
             <button id="course-menu-btn" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-[#d7e0d0] hover:bg-white/10"><i data-lucide="more-vertical" class="w-4 h-4"></i></button>
             <div id="course-menu" class="hidden absolute right-0 top-full mt-2 bg-[#0f0f0f] border border-white/15 rounded-xl shadow-lg overflow-hidden z-40 min-w-[180px]">
-             <button type="button" id="course-edit-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2"><i data-lucide="edit-2" class="w-4 h-4"></i><span>Edit course</span></button> <button type="button" id="course-delete-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2 text-[#d98b7f]"><i data-lucide="trash-2" class="w-4 h-4"></i><span data-template-id="course-delete-label" class="canva-text">Delete course</span></button>
+             <button type="button" id="course-edit-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2"><i data-lucide="edit-2" class="w-4 h-4"></i><span>Edit course</span></button> 
+             <button type="button" id="course-delete-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2 text-[#d98b7f]"><i data-lucide="trash-2" class="w-4 h-4"></i><span data-template-id="course-delete-label" class="canva-text">Delete course</span></button>
             </div>
            </div>
           </div>
@@ -221,7 +231,8 @@
          <div id="course-delete-confirm" class="rounded-2xl border border-[#d98b7f]/30 bg-[#2a1715] p-4 hidden">
           <p class="text-sm text-[#f0c0b8] mb-3">Delete this course and all of its actions?</p>
           <div class="flex gap-2">
-           <button id="confirm-course-delete" type="button" class="focus-ring rounded-full px-4 py-2 bg-[#d98b7f] text-[#111] text-sm font-bold">Delete</button> <button id="cancel-course-delete" type="button" class="focus-ring rounded-full px-4 py-2 bg-white/10 text-sm font-semibold">Cancel</button>
+           <button id="confirm-course-delete" type="button" class="focus-ring rounded-full px-4 py-2 bg-[#d98b7f] text-[#111] text-sm font-bold">Delete</button> 
+           <button id="cancel-course-delete" type="button" class="focus-ring rounded-full px-4 py-2 bg-white/10 text-sm font-semibold">Cancel</button>
           </div>
          </div>
         </div>
@@ -232,7 +243,8 @@
          <div>
           <p data-template-id="actions-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Milestones</p>
           <h4 data-template-id="actions-title" class="canva-text font-bold text-lg">Action Items</h4>
-         </div><button id="open-action-modal" type="button" data-template-id="add-action-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Action</button>
+         </div>
+         <button id="open-action-modal" type="button" data-template-id="add-action-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> <span class="hidden sm:inline">Add Action</span></button>
         </div>
         <div id="course-actions-list" class="space-y-3"></div>
         <div id="course-actions-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center">
@@ -244,21 +256,23 @@
      </section>
      
      <section id="view-tracker" class="view-panel fade-in">
-      <div class="flex gap-2 mb-6">
-       <button type="button" class="tracker-tab active focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#d7e0d0] hover:bg-white/10 transition" data-tracker="assignments-card"><i data-lucide="pen-line" class="w-4 h-4 inline mr-2"></i>Assignments</button> <button type="button" class="tracker-tab focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#8f8f89] hover:bg-white/10 transition" data-tracker="exams-card"><i data-lucide="file-text" class="w-4 h-4 inline mr-2"></i>Exams</button>
+      <div class="flex flex-wrap gap-2 mb-6">
+       <button type="button" class="tracker-tab active focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#d7e0d0] hover:bg-white/10 transition" data-tracker="assignments-card"><i data-lucide="pen-line" class="w-4 h-4 inline mr-2"></i>Assignments</button> 
+       <button type="button" class="tracker-tab focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#8f8f89] hover:bg-white/10 transition" data-tracker="exams-card"><i data-lucide="file-text" class="w-4 h-4 inline mr-2"></i>Exams</button>
       </div>
       <div class="space-y-8">
        <section data-template-id="assignments-card" class="canva-card glass-panel rounded-3xl overflow-hidden">
-        <img data-template-id="tracker-assignments-banner" src="https://i.ibb.co/Kpz7NDtW/a4.png" class="canva-image w-full h-40 object-cover rounded-t-2xl" style="object-position: center 72% !important;">
-        <div class="p-5 md:p-6">
+        <!-- Aspect ratio fix + object-position for Assignment Banner -->
+        <img data-template-id="tracker-assignments-banner" src="https://i.ibb.co/Kpz7NDtW/a4.png" class="canva-image w-full aspect-video md:aspect-[4/1] object-cover rounded-t-2xl" style="object-position: center 72% !important;">
+        <div class="p-4 md:p-6">
          <div class="flex items-center justify-between mb-5">
           <div>
-           <p data-template-id="assignments-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Projects & Homework</p>
-           <h3 data-template-id="assignments-title" class="canva-text font-bold tracking-[-0.04em] text-xl">Assignment Tracker</h3>
-          </div><button id="add-assignment-btn" type="button" data-template-id="add-assignment-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Entry</button>
+           <p data-template-id="assignments-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[10px] md:text-[11px] font-bold mb-1 md:mb-2">Projects & Homework</p>
+           <h3 data-template-id="assignments-title" class="canva-text font-bold tracking-[-0.04em] text-lg md:text-xl">Assignment Tracker</h3>
+          </div><button id="add-assignment-btn" type="button" data-template-id="add-assignment-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-3 md:px-4 py-2 md:py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-xs md:text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Entry</button>
          </div>
-         <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm border-collapse">
+         <div class="overflow-x-auto w-full max-w-[90vw] md:max-w-none pb-4">
+          <table class="w-full text-left text-sm border-collapse min-w-[700px]">
            <thead>
             <tr class="border-b border-white/10">
              <th class="px-4 py-3 font-semibold text-[#9fb398] text-xs uppercase tracking-wider">Name</th>
@@ -281,16 +295,17 @@
        </section>
        
        <section data-template-id="exams-card" class="canva-card glass-panel rounded-3xl overflow-hidden">
-        <img data-template-id="tracker-exams-banner" src="https://i.ibb.co/21YStsZ1/g4.png" class="canva-image w-full h-40 object-cover rounded-t-2xl">
-        <div class="p-5 md:p-6">
+        <!-- Aspect ratio fix for Exam Banner -->
+        <img data-template-id="tracker-exams-banner" src="https://i.ibb.co/21YStsZ1/g4.png" class="canva-image w-full aspect-video md:aspect-[4/1] object-cover rounded-t-2xl">
+        <div class="p-4 md:p-6">
          <div class="flex items-center justify-between mb-5">
           <div>
-           <p data-template-id="exams-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Tests & Quizzes</p>
-           <h3 data-template-id="exams-title" class="canva-text font-bold tracking-[-0.04em] text-xl">Exam Tracker</h3>
-          </div><button id="add-exam-btn" type="button" data-template-id="add-exam-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Exam</button>
+           <p data-template-id="exams-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[10px] md:text-[11px] font-bold mb-1 md:mb-2">Tests & Quizzes</p>
+           <h3 data-template-id="exams-title" class="canva-text font-bold tracking-[-0.04em] text-lg md:text-xl">Exam Tracker</h3>
+          </div><button id="add-exam-btn" type="button" data-template-id="add-exam-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-3 md:px-4 py-2 md:py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-xs md:text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Exam</button>
          </div>
-         <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm border-collapse">
+         <div class="overflow-x-auto w-full max-w-[90vw] md:max-w-none pb-4">
+          <table class="w-full text-left text-sm border-collapse min-w-[700px]">
            <thead>
             <tr class="border-b border-white/10">
              <th class="px-4 py-3 font-semibold text-[#9fb398] text-xs uppercase tracking-wider">Name</th>
@@ -316,21 +331,21 @@
      <section id="view-notes" class="view-panel fade-in">
       <div class="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto mt-4">
        <!-- Pomodoro Timer -->
-       <article id="pomodoro-container" class="rounded-[2.5rem] p-8 md:p-12 text-center border border-white/10 bg-gradient-to-br from-[#1a1c1a] to-[#111] shadow-2xl relative overflow-hidden">
-        <div class="flex justify-between items-center bg-white/5 rounded-full p-1.5 w-max mx-auto mb-10 border border-white/5">
-         <button class="pomo-tab active px-6 py-2.5 rounded-full text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm" data-time="25">Pomodoro</button> 
-         <button class="pomo-tab px-6 py-2.5 rounded-full text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0]" data-time="5">Short Break</button> 
-         <button class="pomo-tab px-6 py-2.5 rounded-full text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0]" data-time="15">Long Break</button>
+       <article id="pomodoro-container" class="rounded-[2.5rem] p-6 md:p-12 text-center border border-white/10 bg-gradient-to-br from-[#1a1c1a] to-[#111] shadow-2xl relative overflow-hidden">
+        <div class="flex flex-wrap justify-center gap-1 items-center bg-white/5 rounded-[2rem] p-1.5 w-full max-w-sm mx-auto mb-8 md:mb-10 border border-white/5">
+         <button class="pomo-tab active px-4 md:px-6 py-2.5 rounded-[1.5rem] text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm flex-1 whitespace-nowrap transition-colors" data-time="25">Pomodoro</button> 
+         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-[1.5rem] text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] flex-1 whitespace-nowrap transition-colors" data-time="5">Short Break</button> 
+         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-[1.5rem] text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] flex-1 whitespace-nowrap transition-colors" data-time="15">Long Break</button>
         </div>
-        <h2 id="timer-display" class="text-[6rem] md:text-[8rem] font-bold tracking-tighter text-white mb-10 tabular-nums">25:00</h2>
+        <h2 id="timer-display" class="text-[5rem] sm:text-[6rem] md:text-[8rem] font-bold tracking-tighter text-white mb-8 md:mb-10 tabular-nums leading-none">25:00</h2>
         <div class="flex justify-center items-center gap-4">
-         <button id="timer-toggle" class="px-10 py-4 rounded-full bg-[#d7e0d0] text-[#111] font-bold text-lg flex items-center gap-2 hover:bg-white transition-all"> <i data-lucide="play" id="timer-icon"></i> <span id="toggle-text">Start</span> </button> 
-         <button id="timer-reset" class="w-14 h-14 rounded-full border-2 border-white/10 flex items-center justify-center text-[#8f8f89] hover:border-white/30 transition-all"> <i data-lucide="rotate-ccw"></i> </button>
+         <button id="timer-toggle" class="px-8 md:px-10 py-3 md:py-4 rounded-full bg-[#d7e0d0] text-[#111] font-bold text-base md:text-lg flex items-center gap-2 hover:bg-white transition-all"> <i data-lucide="play" id="timer-icon"></i> <span id="toggle-text">Start</span> </button> 
+         <button id="timer-reset" class="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-white/10 flex items-center justify-center text-[#8f8f89] hover:border-white/30 transition-all"> <i data-lucide="rotate-ccw"></i> </button>
         </div>
        </article>
 
        <!-- Spotify Playlist -->
-       <div class="rounded-[2.5rem] p-4 border border-white/10 bg-[#111] shadow-2xl flex items-center justify-center overflow-hidden">
+       <div class="rounded-[2.5rem] p-4 border border-white/10 bg-[#111] shadow-2xl flex items-center justify-center overflow-hidden h-[380px] md:h-auto">
         <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX8Uebhn9wzrS?utm_source=generator&si=2a141b09a62c42d6" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
        </div>
       </div>
@@ -344,7 +359,7 @@
        </div>
        <button type="button" onclick="document.getElementById('entry-type').value='habit'; document.getElementById('entry-type').dispatchEvent(new Event('change')); document.getElementById('open-modal').click();" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Habit</button>
       </div>
-      <div id="habits-list" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+      <div id="habits-list" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
       <div id="habits-empty" class="rounded-3xl border border-dashed border-white/10 p-10 text-center">
        <p data-template-id="habits-empty-title" class="canva-text font-semibold">Build positive routines</p>
        <p data-template-id="habits-empty-copy" class="canva-text text-sm text-[#8f8f89] mt-1">Add a habit to track your daily progress.</p>
@@ -352,37 +367,49 @@
      </section>
     </div>
    </main>
+   
+   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#111]/95 backdrop-blur-xl border-t border-white/10 flex items-center justify-around px-2 py-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.3)]">
+       <button type="button" onclick="setView('today')" data-view="today" class="nav-item active focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+         <i data-lucide="layout-dashboard" class="w-[22px] h-[22px] pointer-events-none"></i>
+         <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Today</span>
+       </button>
+       <button type="button" onclick="setView('courses')" data-view="courses" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+         <i data-lucide="graduation-cap" class="w-[22px] h-[22px] pointer-events-none"></i>
+         <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Courses</span>
+       </button>
+       <button type="button" onclick="setView('tracker')" data-view="tracker" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+         <i data-lucide="table" class="w-[22px] h-[22px] pointer-events-none"></i>
+         <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Tracker</span>
+       </button>
+       <button type="button" onclick="setView('notes')" data-view="notes" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+         <i data-lucide="timer" class="w-[22px] h-[22px] pointer-events-none"></i>
+         <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Study</span>
+       </button>
+       <button type="button" onclick="setView('habits')" data-view="habits" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+         <i data-lucide="sprout" class="w-[22px] h-[22px] pointer-events-none"></i>
+         <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Habits</span>
+       </button>
+   </nav>
   </div>
-  
-  <!-- Modals -->
-  <div id="modal" class="hidden fixed inset-0 z-50 modal-backdrop items-center justify-center p-4">
-   <div data-template-id="modal-card" class="canva-card w-full max-w-xl rounded-[28px] bg-[#181818] border border-white/10 p-5 md:p-6 shadow-2xl">
-    <div class="flex justify-between mb-5">
+  <div id="modal" class="hidden fixed inset-0 z-[60] modal-backdrop items-center justify-center p-4">
+   <div data-template-id="modal-card" class="canva-card w-full max-w-xl rounded-[28px] bg-[#181818] border border-white/10 p-5 md:p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+    <div class="flex justify-between mb-5 sticky top-0 bg-[#181818] z-10 pt-2 pb-2">
      <div>
       <p data-template-id="modal-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Create</p>
       <h2 data-template-id="modal-title" class="canva-text font-bold text-xl">New Entry</h2>
      </div><button id="close-modal" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
     </div>
     <form id="entry-form" class="space-y-4">
-     <div><label for="entry-type" data-template-id="type-label" class="canva-text block text-sm font-semibold mb-2">Type</label><select id="entry-type" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"><option value="task">Assignment/Task</option><option value="course">Course</option><option value="habit">Habit</option><option value="exam">Exam</option></select>
-     </div>
-     <div><label for="entry-title" data-template-id="title-label" class="canva-text block text-sm font-semibold mb-2">Title</label><input id="entry-title" type="text" required class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-     </div>
-     <div id="description-field"><label for="entry-description" data-template-id="description-label" class="canva-text block text-sm font-semibold mb-2">Notes</label><textarea id="entry-description" rows="3" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white resize-none"></textarea>
-     </div>
-     <div id="due-field"><label for="entry-due" data-template-id="due-label" class="canva-text block text-sm font-semibold mb-2">Date</label><input id="entry-due" type="date" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-     </div>
-     <div id="parent-course-field" class="hidden"><label for="entry-parent-course" class="canva-text block text-sm font-semibold mb-2">Course</label><select id="entry-parent-course" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></select>
-     </div>
-     <div id="custom-type-field" class="hidden"><label for="entry-custom-type" class="canva-text block text-sm font-semibold mb-2">Assignment Type</label><input id="entry-custom-type" type="text" placeholder="e.g. Research Paper, Project" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-     </div>
-     <div id="course-fields" class="hidden"><label for="entry-instructor" data-template-id="instructor-label" class="canva-text block text-sm font-semibold mb-2">Instructor</label><input id="entry-instructor" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-     </div>
+     <div><label for="entry-type" data-template-id="type-label" class="canva-text block text-sm font-semibold mb-2">Type</label><select id="entry-type" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"><option value="task">Assignment/Task</option><option value="course">Course</option><option value="habit">Habit</option><option value="exam">Exam</option></select></div>
+     <div><label for="entry-title" data-template-id="title-label" class="canva-text block text-sm font-semibold mb-2">Title</label><input id="entry-title" type="text" required class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+     <div id="description-field"><label for="entry-description" data-template-id="description-label" class="canva-text block text-sm font-semibold mb-2">Notes</label><textarea id="entry-description" rows="3" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white resize-none"></textarea></div>
+     <div id="due-field"><label for="entry-due" data-template-id="due-label" class="canva-text block text-sm font-semibold mb-2">Date</label><input id="entry-due" type="date" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+     <div id="parent-course-field" class="hidden"><label for="entry-parent-course" class="canva-text block text-sm font-semibold mb-2">Course</label><select id="entry-parent-course" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></select></div>
+     <div id="custom-type-field" class="hidden"><label for="entry-custom-type" class="canva-text block text-sm font-semibold mb-2">Assignment Type</label><input id="entry-custom-type" type="text" placeholder="e.g. Research Paper, Project" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+     <div id="course-fields" class="hidden"><label for="entry-instructor" data-template-id="instructor-label" class="canva-text block text-sm font-semibold mb-2">Instructor</label><input id="entry-instructor" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
      <div id="budget-fields" class="hidden grid grid-cols-2 gap-3">
-      <div><label for="entry-amount" data-template-id="amount-label" class="canva-text block text-sm font-semibold mb-2">Amount</label><input id="entry-amount" type="number" min="0" step="0.01" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-      </div>
-      <div><label for="entry-category" data-template-id="category-label" class="canva-text block text-sm font-semibold mb-2">Category</label><input id="entry-category" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-      </div>
+      <div><label for="entry-amount" data-template-id="amount-label" class="canva-text block text-sm font-semibold mb-2">Amount</label><input id="entry-amount" type="number" min="0" step="0.01" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+      <div><label for="entry-category" data-template-id="category-label" class="canva-text block text-sm font-semibold mb-2">Category</label><input id="entry-category" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
      </div>
      <p id="form-message" class="text-sm text-[#d98b7f] hidden"></p>
      <div class="flex justify-end gap-3 pt-2">
@@ -392,8 +419,8 @@
    </div>
   </div>
   
-  <div id="action-modal" class="hidden fixed inset-0 z-50 modal-backdrop items-center justify-center p-4">
-   <div data-template-id="action-modal-card" class="canva-card w-full max-w-lg rounded-[28px] bg-[#181818] border border-white/10 p-5 md:p-6 shadow-2xl">
+  <div id="action-modal" class="hidden fixed inset-0 z-[60] modal-backdrop items-center justify-center p-4">
+   <div data-template-id="action-modal-card" class="canva-card w-full max-w-lg rounded-[28px] bg-[#181818] border border-white/10 p-5 md:p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
     <div class="flex justify-between mb-5">
      <div>
       <p data-template-id="action-modal-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Course Plan</p>
@@ -401,12 +428,9 @@
      </div><button id="close-action-modal" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
     </div>
     <form id="action-form" class="space-y-4">
-     <div><label for="action-title" data-template-id="action-title-label" class="canva-text block text-sm font-semibold mb-2">Task</label><input id="action-title" type="text" required class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-     </div>
-     <div><label for="action-description" data-template-id="action-description-label" class="canva-text block text-sm font-semibold mb-2">Details</label><textarea id="action-description" rows="3" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white resize-none"></textarea>
-     </div>
-     <div><label for="action-due" data-template-id="action-due-label" class="canva-text block text-sm font-semibold mb-2">Due Date</label><input id="action-due" type="date" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-     </div>
+     <div><label for="action-title" data-template-id="action-title-label" class="canva-text block text-sm font-semibold mb-2">Task</label><input id="action-title" type="text" required class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+     <div><label for="action-description" data-template-id="action-description-label" class="canva-text block text-sm font-semibold mb-2">Details</label><textarea id="action-description" rows="3" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white resize-none"></textarea></div>
+     <div><label for="action-due" data-template-id="action-due-label" class="canva-text block text-sm font-semibold mb-2">Due Date</label><input id="action-due" type="date" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
      <p id="action-form-message" class="text-sm text-[#d98b7f] hidden"></p>
      <div class="flex justify-end gap-3 pt-2">
       <button type="button" id="cancel-action-modal" data-template-id="action-cancel-button" class="canva-button focus-ring rounded-full px-5 py-3 bg-white/5 text-sm font-semibold">Cancel</button> <button type="submit" id="save-action" data-template-id="action-save-button" class="canva-button focus-ring rounded-full px-5 py-3 bg-[#d7e0d0] text-[#111] text-sm font-bold">Save</button>
@@ -415,28 +439,27 @@
    </div>
   </div>
   
-  <!-- Templates -->
   <template id="course-template">
-   <article data-template-id="course-card" class="canva-card course-card rounded-3xl bg-[#1a1a1a] border border-white/10 overflow-hidden cursor-pointer relative group h-80 flex flex-col">
-    <div class="course-image-slot w-full h-40 bg-[#0f0f0f] overflow-hidden flex-shrink-0">
-      <img src="" class="course-img w-full h-full object-cover" loading="lazy">
+   <article data-template-id="course-card" class="canva-card course-card rounded-3xl bg-[#1a1a1a] border border-white/10 overflow-hidden cursor-pointer relative group flex flex-col h-full min-h-[320px]">
+    <div class="course-image-slot w-full aspect-video bg-[#0f0f0f] overflow-hidden flex-shrink-0">
+     <img src="" class="course-img w-full h-full object-cover object-center" loading="lazy">
     </div>
     <div class="relative z-10 p-5 flex flex-col flex-1">
      <div class="flex justify-between gap-3">
       <div class="min-w-0 flex-1">
        <p data-template-id="course-card-kicker" class="canva-text text-[10px] uppercase tracking-[0.16em] font-bold text-[#9fb398]">Course</p>
-       <h4 data-template-id="course-card-title" class="canva-text mt-3 font-semibold text-lg"></h4>
-       <p data-template-id="course-card-description" class="canva-text mt-2 text-sm text-[#9b9b95] leading-5"></p>
+       <h4 data-template-id="course-card-title" class="canva-text mt-3 font-semibold text-lg line-clamp-2"></h4>
+       <p data-template-id="course-card-description" class="canva-text mt-2 text-sm text-[#9b9b95] leading-5 line-clamp-2"></p>
       </div>
-      <div class="progress-ring shrink-0" style="--progress:0%"><span class="course-percent">0%</span>
-      </div>
+      <div class="progress-ring shrink-0" style="--progress:0%"><span class="course-percent">0%</span></div>
      </div>
-     <div class="mt-auto pt-3 flex justify-between items-center">
+     <div class="mt-auto pt-4 flex justify-between items-center">
       <button type="button" class="open-course focus-ring text-sm text-[#d7e0d0] font-semibold inline-flex items-center gap-2"><i data-lucide="arrow-up-right" class="w-4 h-4"></i>Open course</button>
      </div>
     </div>
    </article>
   </template>
+  
   <template id="record-template">
    <article data-template-id="record-card" class="canva-card record-card rounded-2xl bg-[#1a1a1a] border border-white/10 p-4">
     <div class="flex justify-between gap-3">
@@ -458,6 +481,7 @@
     </div>
    </article>
   </template>
+  
   <template id="action-template">
    <article data-template-id="action-card" class="canva-card rounded-2xl bg-[#1a1a1a] border border-white/10 p-4">
     <div class="flex items-start justify-between gap-4">
@@ -479,14 +503,15 @@
     </div>
    </article>
   </template>
+  
   <template id="assignment-row-template">
    <tr class="border-b border-white/5 hover:bg-white/[0.02] transition">
     <td class="px-4 py-3"><span class="font-semibold text-white assignment-name">Untitled</span></td>
-    <td class="px-4 py-3 text-[#9b9b95]"><span class="assignment-course">—</span></td>
-    <td class="px-4 py-3 text-[#9b9b95]"><span class="assignment-due">—</span></td>
-    <td class="px-4 py-3 text-[#9b9b95]"><span class="assignment-time">—</span></td>
+    <td class="px-4 py-3 text-[#9b9b95] whitespace-nowrap"><span class="assignment-course">—</span></td>
+    <td class="px-4 py-3 text-[#9b9b95] whitespace-nowrap"><span class="assignment-due">—</span></td>
+    <td class="px-4 py-3 text-[#9b9b95] whitespace-nowrap"><span class="assignment-time">—</span></td>
     <td class="px-4 py-3"><span class="inline-flex rounded-full bg-[#223024] text-[#cfe0ca] px-2 py-1 text-[10px] uppercase tracking-[0.14em] font-bold assignment-type">Assignment</span></td>
-    <td class="px-4 py-3"><button type="button" class="toggle-assignment-status inline-flex rounded-full bg-white/5 text-white px-2.5 py-1 text-xs font-medium hover:bg-white/10 transition focus-ring assignment-status">Not Started</button></td>
+    <td class="px-4 py-3"><button type="button" class="toggle-assignment-status inline-flex rounded-full bg-white/5 text-white px-2.5 py-1 text-xs font-medium hover:bg-white/10 transition focus-ring assignment-status whitespace-nowrap">Not Started</button></td>
     <td class="px-4 py-3 relative">
      <div class="flex justify-center">
       <button type="button" class="assignment-menu-btn focus-ring w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
@@ -496,13 +521,14 @@
      </div></td>
    </tr>
   </template>
+  
   <template id="exam-row-template">
    <tr class="border-b border-white/5 hover:bg-white/[0.02] transition">
     <td class="px-4 py-3"><span class="font-semibold text-white exam-name">Untitled</span></td>
-    <td class="px-4 py-3 text-[#9b9b95]"><span class="exam-course">—</span></td>
-    <td class="px-4 py-3 text-[#9b9b95]"><span class="exam-date">—</span></td>
-    <td class="px-4 py-3 text-[#9b9b95]"><span class="exam-time">—</span></td>
-    <td class="px-4 py-3 text-right"><button type="button" class="toggle-exam-status text-xs font-semibold text-[#8f8f89] hover:text-[#d7e0d0] transition focus-ring exam-status">Mark Complete</button></td>
+    <td class="px-4 py-3 text-[#9b9b95] whitespace-nowrap"><span class="exam-course">—</span></td>
+    <td class="px-4 py-3 text-[#9b9b95] whitespace-nowrap"><span class="exam-date">—</span></td>
+    <td class="px-4 py-3 text-[#9b9b95] whitespace-nowrap"><span class="exam-time">—</span></td>
+    <td class="px-4 py-3 text-right"><button type="button" class="toggle-exam-status text-xs font-semibold text-[#8f8f89] hover:text-[#d7e0d0] transition focus-ring exam-status whitespace-nowrap">Mark Complete</button></td>
     <td class="px-4 py-3 relative">
      <div class="flex justify-center">
       <button type="button" class="exam-menu-btn focus-ring w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
@@ -529,13 +555,13 @@
     const supabaseUrl = 'https://iblcxziwvcfstznlcliv.supabase.co';
     // ⚠️ IMPORTANT: Paste your 'anon' public key below
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlibGN4eml3dmNmc3R6bmxjbGl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyODY2MTksImV4cCI6MjA5Nzg2MjYxOX0.-e44e500H4fiw4Mwt2_-c3IxCruASD3e8pGSARnz3yI'; 
-    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    const supabaseClient = window.supabase ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 
     async function fetchRecords() {
+        if (!supabaseClient) return;
         try {
             const { data, error } = await supabaseClient.from('records').select('*').order('created_at', { ascending: false });
             if (error) throw error;
-            // Map Supabase 'id' to our app's '__backendId'
             state.records = data.map(item => ({ ...item, __backendId: item.id }));
             if (typeof render === 'function') render();
         } catch (error) {
@@ -545,6 +571,7 @@
 
     const mySdk = {
         async create(data) {
+            if (!supabaseClient) return {isOk:true};
             try {
                 const { error } = await supabaseClient.from('records').insert([data]);
                 if (error) throw error;
@@ -553,6 +580,7 @@
             } catch(e) { console.error(e); return {isError:true}; }
         },
         async update(item) {
+            if (!supabaseClient) return {isOk:true};
             try {
                 const { __backendId, id, ...updateData } = item;
                 const { error } = await supabaseClient.from('records').update(updateData).eq('id', item.__backendId);
@@ -562,6 +590,7 @@
             } catch(e) { console.error(e); return {isError:true}; }
         },
         async delete(item) {
+            if (!supabaseClient) return {isOk:true};
             try {
                 const { error } = await supabaseClient.from('records').delete().eq('id', item.__backendId);
                 if (error) throw error;
@@ -571,26 +600,26 @@
         }
     };
 
-    // UI Logic
     function byType(type){return state.records.filter(r=>r.type===type)}
     function formatDate(v){if(!v)return ''; const d=new Date(v); return Number.isNaN(d.getTime())?'':d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}
     function setEmpty(id,show){document.getElementById(id).classList.toggle('hidden',!show)}
     function getCourseActions(id){return state.records.filter(r=>r.type==='course_action'&&r.parent_course===id)}
     function getProgress(id){const a=getCourseActions(id),done=a.filter(x=>x.completed).length;return{total:a.length,done,percent:a.length?Math.round(done/a.length*100):0}}
 
-    function setView(view){
+    window.setView = function(view){
       state.currentView=view;
       document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
       document.querySelectorAll('.view-panel').forEach(p=>p.classList.remove('active'));
       document.getElementById('view-'+view).classList.add('active');
       if(view!=='courses') closeCourseDetail();
+      window.scrollTo(0, 0);
     }
 
     function updateStats(){
       const tasks=byType('task'), habits=byType('habit'), courses=byType('course');
       document.getElementById('stat-tasks').textContent=tasks.length;
       document.getElementById('stat-complete').textContent=tasks.filter(t=>t.completed).length+habits.filter(h=>h.completed).length;
-      document.getElementById('stat-budget').textContent=habits.length; // Adjusted stat label to match habits
+      document.getElementById('stat-budget').textContent=habits.length;
       document.getElementById('stat-courses').textContent=courses.length;
     }
 
@@ -823,7 +852,7 @@
         };
         const applyStatusColor=(btn,status)=>{
           btn.textContent=status;
-          btn.className=`toggle-assignment-status inline-flex rounded-full bg-white/5 px-2.5 py-1 text-[10px] font-bold border hover:bg-white/10 transition focus-ring assignment-status ${statusColors[status]||statusColors['Not Started']}`;
+          btn.className=`toggle-assignment-status inline-flex rounded-full bg-white/5 px-2.5 py-1 text-[10px] font-bold border hover:bg-white/10 transition focus-ring assignment-status whitespace-nowrap ${statusColors[status]||statusColors['Not Started']}`;
         };
         applyStatusColor(row.querySelector('.assignment-status'),currentStatus);
         row.querySelector('.assignment-menu-btn').onclick=()=>row.querySelector('.assignment-menu').classList.toggle('hidden');
@@ -856,7 +885,7 @@
         if(isOverdue)timeCell.classList.add('text-[#d98b7f]','font-bold');
         const examBtn=row.querySelector('.exam-status');
         examBtn.textContent=item.completed?'Completed':'Mark Complete';
-        examBtn.className=item.completed?'toggle-exam-status text-xs font-bold text-[#d7e0d0] hover:text-white transition exam-status':'toggle-exam-status text-xs font-semibold text-[#8f8f89] hover:text-[#d7e0d0] transition exam-status';
+        examBtn.className=item.completed?'toggle-exam-status text-xs font-bold text-[#d7e0d0] hover:text-white transition exam-status whitespace-nowrap':'toggle-exam-status text-xs font-semibold text-[#8f8f89] hover:text-[#d7e0d0] transition exam-status whitespace-nowrap';
         row.querySelector('.exam-menu-btn').onclick=()=>row.querySelector('.exam-menu').classList.toggle('hidden');
         row.querySelector('.edit-exam').onclick=()=>openEditModal(item);
         row.querySelector('.delete-exam').onclick=async()=>{
@@ -874,7 +903,7 @@
           state.busyIds.delete(item.__backendId);
           if(r.isError)item.completed=!item.completed;
           examBtn.textContent=item.completed?'Completed':'Mark Complete';
-          examBtn.className=item.completed?'toggle-exam-status text-xs font-bold text-[#d7e0d0] hover:text-white transition exam-status':'toggle-exam-status text-xs font-semibold text-[#8f8f89] hover:text-[#d7e0d0] transition exam-status';
+          examBtn.className=item.completed?'toggle-exam-status text-xs font-bold text-[#d7e0d0] hover:text-white transition exam-status whitespace-nowrap':'toggle-exam-status text-xs font-semibold text-[#8f8f89] hover:text-[#d7e0d0] transition exam-status whitespace-nowrap';
         };
       }
       return row;
@@ -898,6 +927,7 @@
       document.getElementById('course-delete-confirm').classList.add('hidden');
       renderSelectedCourse();
       lucide.createIcons();
+      window.scrollTo({top:0, behavior:'smooth'});
     }
 
     function closeCourseDetail(){
@@ -1059,7 +1089,6 @@
       });
 
       // Events bindings
-      document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click', ()=>setView(b.dataset.view)));
       document.querySelectorAll('.tracker-tab').forEach(btn=>{
         btn.addEventListener('click',()=>{
           document.querySelectorAll('.tracker-tab').forEach(b=>{
@@ -1205,7 +1234,7 @@
         if(result.isOk)closeActionModal(); else {msg.textContent='Could not save. Try again.';msg.classList.remove('hidden')}
       };
 
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
       await fetchRecords(); // Load data from Supabase on startup
     });
   </script>
