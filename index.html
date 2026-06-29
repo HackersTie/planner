@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Student Planner</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
@@ -18,8 +18,8 @@
       --danger:#d98b7f;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg)}
-    .app-shell{width:100%;min-height:calc(100 * min(var(--vh, 1vh), 1vh));background:#111}
+    body{margin:0;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
+    .app-shell{width:100%;min-height:calc(100 * min(var(--vh, 1vh), 1vh));background:#111;overflow-x:hidden;}
     .soft-grid{
       background-image:
         linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
@@ -49,6 +49,27 @@
     .course-card{transition:.2s ease;position:relative}
     .course-card:hover{transform:translateY(-2px);border-color:rgba(215,224,208,.28)}
     
+    /* Kairo Goal Card Styles */
+    .goal-card { border-bottom-width: 4px; }
+    .goal-theme-green { background-color: #dcfce7; border-color: #bbf7d0; border-bottom-color: #4ade80; color: #166534; }
+    .goal-theme-green .goal-title { color: #14532d; }
+    .goal-theme-green .goal-btn-plus { background-color: #22c55e; color: #fff; border: 2px solid #22c55e; }
+    .goal-theme-green .goal-btn-minus { background-color: transparent; border: 2px solid #22c55e; color: #22c55e; }
+    
+    .goal-theme-blue { background-color: #dbeafe; border-color: #bfdbfe; border-bottom-color: #60a5fa; color: #1e3a8a; }
+    .goal-theme-blue .goal-title { color: #1e3a8a; }
+    .goal-theme-blue .goal-btn-plus { background-color: #3b82f6; color: #fff; border: 2px solid #3b82f6; }
+    .goal-theme-blue .goal-btn-minus { background-color: transparent; border: 2px solid #3b82f6; color: #3b82f6; }
+    
+    .goal-theme-orange { background-color: #ffedd5; border-color: #fed7aa; border-bottom-color: #fb923c; color: #7c2d12; }
+    .goal-theme-orange .goal-title { color: #7c2d12; }
+    .goal-theme-orange .goal-btn-plus { background-color: #f97316; color: #fff; border: 2px solid #f97316; }
+    .goal-theme-orange .goal-btn-minus { background-color: transparent; border: 2px solid #f97316; color: #f97316; }
+
+    .goal-progress { -webkit-text-stroke: 1.5px rgba(0,0,0,0.6); text-shadow: 1px 2px 0 rgba(0,0,0,0.2); }
+    .goal-float-text { position: absolute; font-weight: 900; font-size: 24px; opacity: 0; pointer-events: none; animation: floatUp 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards; z-index: 10; }
+    @keyframes floatUp { 0% { opacity: 0.8; transform: translateY(0) scale(0.8); } 100% { opacity: 0; transform: translateY(-40px) scale(1.5); } }
+
     .progress-ring{
       width:62px;height:62px;border-radius:999px;
       background:conic-gradient(#d7e0d0 var(--progress), #2a2a2a 0);
@@ -121,11 +142,6 @@
         background-color: white;
         clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
     }
-
-    @media (max-width:900px){
-      .sidebar-desktop{display:none}
-      .main-area{padding-left:0!important}
-    }
   </style>
   <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -133,7 +149,7 @@
  <body data-template-id="__page-root">
   <div class="app-shell soft-grid pb-24 lg:pb-0">
    
-   <aside class="sidebar-desktop fixed left-0 top-0 bottom-0 w-[248px] border-r border-white/10 bg-[#141414] px-4 py-5 flex flex-col z-40">
+   <aside class="hidden lg:flex fixed left-0 top-0 bottom-0 w-[248px] border-r border-white/10 bg-[#141414] px-4 py-5 flex-col z-40">
     <div class="flex items-center gap-3 px-2 mb-8">
      <div class="w-9 h-9 rounded-full bg-[#d7e0d0] flex items-center justify-center text-[#111]"><i data-lucide="book-open" class="w-4 h-4"></i></div>
      <div>
@@ -204,17 +220,17 @@
       </div>
       
       <!-- MAIN LAYOUT: Deadlines & Focus -->
-      <div class="grid xl:grid-cols-[1.1fr_.9fr] gap-6 mb-8">
+      <div class="grid xl:grid-cols-[1.1fr_.9fr] gap-6 mb-8 w-full max-w-full">
        
        <!-- LEFT: TODAY'S DEADLINES TABBED SECTION -->
-       <section class="canva-card glass-panel rounded-3xl p-5 md:p-6 bg-[#1a201c] border border-white/5">
+       <section class="canva-card glass-panel rounded-3xl p-5 md:p-6 bg-[#1a201c] border border-white/5 w-full overflow-hidden">
         <h3 class="text-[#9fb398] font-bold text-lg mb-4">Today's Deadlines</h3>
         
         <!-- Tabs -->
         <div class="flex gap-2 p-1 bg-black/40 w-max rounded-[14px] mb-5 overflow-x-auto max-w-full">
-            <button class="today-tab active px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-white transition flex items-center gap-2" data-target="tt-tasks"><i data-lucide="check-circle-2" class="w-4 h-4"></i> Tasks</button>
-            <button class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2" data-target="tt-assignments"><i data-lucide="pen-line" class="w-4 h-4"></i> Assignments</button>
-            <button class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2" data-target="tt-exams"><i data-lucide="file-text" class="w-4 h-4"></i> Exams</button>
+            <button class="today-tab active px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-white transition flex items-center gap-2 cursor-pointer touch-manipulation" data-target="tt-tasks"><i data-lucide="check-circle-2" class="w-4 h-4 pointer-events-none"></i> Tasks</button>
+            <button class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2 cursor-pointer touch-manipulation" data-target="tt-assignments"><i data-lucide="pen-line" class="w-4 h-4 pointer-events-none"></i> Assignments</button>
+            <button class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2 cursor-pointer touch-manipulation" data-target="tt-exams"><i data-lucide="file-text" class="w-4 h-4 pointer-events-none"></i> Exams</button>
         </div>
 
         <!-- Tab Contents -->
@@ -292,7 +308,7 @@
       <div id="course-detail" class="hidden">
        <button id="back-to-courses" type="button" class="focus-ring inline-flex items-center gap-2 text-sm text-[#bfcab9] mb-5 hover:text-white transition"> <i data-lucide="arrow-left" class="w-4 h-4"></i><span data-template-id="back-to-courses" class="canva-text">Back to courses</span> </button>
        <section data-template-id="course-detail-card" class="canva-card glass-panel rounded-3xl overflow-hidden mb-5">
-        <div id="detail-course-image-wrap" class="w-full aspect-video md:aspect-[21/9] overflow-hidden bg-[#0f0f0f] flex items-center justify-center">
+        <div id="detail-course-image-wrap" class="w-full aspect-video md:aspect-[4/1] overflow-hidden bg-[#0f0f0f] flex items-center justify-center">
          <img src="" class="detail-img w-full h-full object-cover" loading="lazy">
         </div>
         <div class="p-5 md:p-6">
@@ -338,9 +354,10 @@
 
      <!-- ---------------- TRACKER VIEW ---------------- -->
      <section id="view-tracker" class="view-panel fade-in">
-      <div class="flex gap-2 mb-6 overflow-x-auto w-full">
-       <button type="button" class="tracker-tab active focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#d7e0d0] hover:bg-white/10 transition whitespace-nowrap" data-tracker="assignments-card"><i data-lucide="pen-line" class="w-4 h-4 inline mr-2"></i>Assignments</button> 
-       <button type="button" class="tracker-tab focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#8f8f89] hover:bg-white/10 transition whitespace-nowrap" data-tracker="exams-card"><i data-lucide="file-text" class="w-4 h-4 inline mr-2"></i>Exams</button>
+      <div class="flex gap-2 mb-6 overflow-x-auto w-full pb-2">
+       <button type="button" class="tracker-tab active focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#d7e0d0] hover:bg-white/10 transition whitespace-nowrap" data-tracker="assignments-card"><i data-lucide="pen-line" class="w-4 h-4 inline mr-2 pointer-events-none"></i>Assignments</button> 
+       <button type="button" class="tracker-tab focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#8f8f89] hover:bg-white/10 transition whitespace-nowrap" data-tracker="exams-card"><i data-lucide="file-text" class="w-4 h-4 inline mr-2 pointer-events-none"></i>Exams</button>
+       <button type="button" class="tracker-tab focus-ring px-4 py-2 rounded-lg text-sm font-semibold text-[#8f8f89] hover:bg-white/10 transition whitespace-nowrap" data-tracker="goals-card"><i data-lucide="target" class="w-4 h-4 inline mr-2 pointer-events-none"></i>Counters</button>
       </div>
       <div class="space-y-8">
        <!-- Assignments -->
@@ -409,6 +426,21 @@
          </div>
         </div>
        </section>
+
+       <!-- Counters / Goals -->
+       <section data-template-id="goals-card" id="goals-card" class="canva-card glass-panel rounded-3xl p-5 md:p-6 hidden">
+        <div class="flex items-center justify-between mb-5">
+         <div>
+          <p class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Daily Habits</p>
+          <h3 class="canva-text font-bold tracking-[-0.04em] text-xl">Interactive Counters</h3>
+         </div><button id="add-goal-btn" type="button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Counter</button>
+        </div>
+        <div id="goals-list" class="space-y-4 max-w-2xl mx-auto"></div>
+        <div id="goals-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center hidden">
+         <p class="canva-text font-semibold">No counters yet</p>
+         <p class="canva-text text-sm text-[#8f8f89] mt-1">Create a counter to track your daily goals.</p>
+        </div>
+       </section>
       </div>
      </section>
 
@@ -418,11 +450,11 @@
        <!-- Pomodoro Timer -->
        <article id="pomodoro-container" class="rounded-[2.5rem] p-6 md:p-12 text-center border border-white/10 bg-gradient-to-br from-[#1a1c1a] to-[#111] shadow-2xl relative overflow-hidden">
         <div class="flex justify-between items-center bg-white/5 rounded-full p-1.5 w-max mx-auto mb-10 border border-white/5">
-         <button class="pomo-tab active px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm" data-time="25">Pomodoro</button> 
-         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0]" data-time="5">Short Break</button> 
-         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0]" data-time="15">Long Break</button>
+         <button class="pomo-tab active px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm cursor-pointer" data-time="25">Pomodoro</button> 
+         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] cursor-pointer" data-time="5">Short Break</button> 
+         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] cursor-pointer" data-time="15">Long Break</button>
         </div>
-        <h2 id="timer-display" class="text-[5rem] md:text-[8rem] font-bold tracking-tighter text-white mb-10 tabular-nums leading-none">25:00</h2>
+        <h2 id="timer-display" class="text-7xl md:text-[8rem] font-bold tracking-tighter text-white mb-10 tabular-nums leading-none">25:00</h2>
         <div class="flex justify-center items-center gap-4">
          <button id="timer-toggle" class="px-8 md:px-10 py-3 md:py-4 rounded-full bg-[#d7e0d0] text-[#111] font-bold text-base md:text-lg flex items-center gap-2 hover:bg-white transition-all"> <i data-lucide="play" id="timer-icon"></i> <span id="toggle-text">Start</span> </button> 
          <button id="timer-reset" class="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-white/10 flex items-center justify-center text-[#8f8f89] hover:border-white/30 transition-all"> <i data-lucide="rotate-ccw"></i> </button>
@@ -456,24 +488,24 @@
    </main>
    
    <!-- Mobile Bottom Nav -->
-   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#111]/95 backdrop-blur-xl border-t border-white/10 flex items-center justify-around px-2 py-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.3)]">
-       <button type="button" data-view="today" class="nav-item active focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#111]/95 backdrop-blur-xl border-t border-white/10 flex items-center justify-around px-2 py-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.3)] pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
+       <button type="button" data-view="today" class="nav-item active focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1 cursor-pointer touch-manipulation">
          <i data-lucide="layout-dashboard" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Today</span>
        </button>
-       <button type="button" data-view="courses" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+       <button type="button" data-view="courses" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1 cursor-pointer touch-manipulation">
          <i data-lucide="graduation-cap" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Courses</span>
        </button>
-       <button type="button" data-view="tracker" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+       <button type="button" data-view="tracker" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1 cursor-pointer touch-manipulation">
          <i data-lucide="table" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Tracker</span>
        </button>
-       <button type="button" data-view="notes" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+       <button type="button" data-view="notes" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1 cursor-pointer touch-manipulation">
          <i data-lucide="timer" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Study</span>
        </button>
-       <button type="button" data-view="habits" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1">
+       <button type="button" data-view="habits" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1 cursor-pointer touch-manipulation">
          <i data-lucide="sprout" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Habits</span>
        </button>
@@ -498,6 +530,7 @@
         <option value="course">Course</option>
         <option value="habit">Habit</option>
         <option value="exam">Exam</option>
+        <option value="goal">Goal Counter</option>
       </select>
      </div>
      <div><label for="entry-title" class="canva-text block text-sm font-semibold mb-2">Title</label><input id="entry-title" type="text" required class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
@@ -506,6 +539,21 @@
      <div id="parent-course-field" class="hidden"><label for="entry-parent-course" class="canva-text block text-sm font-semibold mb-2">Course</label><select id="entry-parent-course" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></select></div>
      <div id="custom-type-field" class="hidden"><label for="entry-custom-type" class="canva-text block text-sm font-semibold mb-2">Assignment Type</label><input id="entry-custom-type" type="text" placeholder="e.g. Essay, Project" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
      <div id="course-fields" class="hidden"><label for="entry-instructor" class="canva-text block text-sm font-semibold mb-2">Instructor</label><input id="entry-instructor" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+     
+     <div id="goal-fields" class="hidden space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+       <div><label class="canva-text block text-sm font-semibold mb-2">Target Number</label><input id="goal-target" type="number" min="1" value="10" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+       <div><label class="canva-text block text-sm font-semibold mb-2">Emoji</label><input id="goal-emoji" type="text" value="🎯" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+      </div>
+      <div><label class="canva-text block text-sm font-semibold mb-2">Color Theme</label><select id="goal-color" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"><option value="green">Green</option><option value="blue">Blue</option><option value="orange">Orange</option></select></div>
+     </div>
+
+     <div id="budget-fields" class="hidden grid grid-cols-2 gap-3">
+      <div><label for="entry-amount" data-template-id="amount-label" class="canva-text block text-sm font-semibold mb-2">Amount</label><input id="entry-amount" type="number" min="0" step="0.01" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
+      </div>
+      <div><label for="entry-category" data-template-id="category-label" class="canva-text block text-sm font-semibold mb-2">Category</label><input id="entry-category" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
+      </div>
+     </div>
      <p id="form-message" class="text-sm text-[#d98b7f] hidden"></p>
      <div class="flex justify-end gap-3 pt-2">
       <button type="button" id="cancel-modal" class="canva-button focus-ring rounded-full px-5 py-3 bg-white/5 text-sm font-semibold">Cancel</button> 
@@ -558,6 +606,28 @@
    </article>
   </template>
   
+  <template id="goal-template">
+   <div class="goal-card relative w-full rounded-[20px] p-4 flex items-center gap-4 transition-transform active:scale-[0.98] select-none">
+    <div class="w-14 h-14 rounded-2xl bg-white/90 shadow-sm flex items-center justify-center text-3xl shrink-0 goal-icon">📖</div>
+    <div class="flex-1 flex flex-col items-start justify-center">
+     <div class="goal-progress text-3xl font-black text-white tracking-wide leading-none">4/10</div>
+     <div class="goal-title font-extrabold text-sm mt-1.5">Read 10 Pages</div>
+     <div class="goal-time text-[10px] font-bold opacity-60 mt-0.5">Track your progress</div>
+    </div>
+    <div class="flex flex-col items-end justify-between h-[60px] shrink-0 relative w-16">
+     <div class="absolute -top-1 -right-2 flex gap-3">
+      <button type="button" class="goal-edit text-black/20 hover:text-black/60 transition-colors focus-ring"><i data-lucide="edit-2" class="w-[14px] h-[14px] pointer-events-none"></i></button>
+      <button type="button" class="goal-reset text-black/20 hover:text-black/60 transition-colors focus-ring"><i data-lucide="rotate-ccw" class="w-[14px] h-[14px] pointer-events-none"></i></button>
+      <button type="button" class="goal-delete text-black/20 hover:text-red-500/80 transition-colors focus-ring"><i data-lucide="trash-2" class="w-[14px] h-[14px] pointer-events-none"></i></button>
+     </div>
+     <div class="flex items-center gap-1.5 mt-auto w-full justify-end">
+      <button type="button" class="goal-btn-minus w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xl transition-colors pb-0.5 pointer-events-auto touch-manipulation focus-ring">-</button>
+      <button type="button" class="goal-btn-plus w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xl transition-colors pb-0.5 pointer-events-auto touch-manipulation focus-ring">+</button>
+     </div>
+    </div>
+   </div>
+  </template>
+
   <template id="record-template">
    <article data-template-id="record-card" class="canva-card record-card rounded-2xl bg-[#1a1a1a] border border-white/10 p-4">
     <div class="flex justify-between gap-3">
@@ -733,13 +803,13 @@
         c.innerHTML = '';
         items.slice(0, 6).forEach(item => {
             const div = document.createElement('div');
-            div.className = 'flex flex-row items-center justify-between py-2.5 border-b border-white/5 last:border-0 group';
+            div.className = 'flex flex-row items-center justify-between py-2.5 border-b border-white/5 last:border-0 group w-full';
             
             const left = document.createElement('div');
-            left.className = 'flex items-center gap-3 min-w-0';
+            left.className = 'flex items-center gap-3 min-w-0 flex-1 mr-2';
             
             let icon = type === 'assignment' ? 'pen-line' : type === 'exam' ? 'file-text' : 'list';
-            left.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 text-[#8f8f89] shrink-0"></i> <span class="text-sm font-medium truncate ${item.completed ? 'line-through text-[#8f8f89]' : 'text-[#f5f5f0]'}">${item.title || 'Untitled'}</span>`;
+            left.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 text-[#8f8f89] shrink-0 pointer-events-none"></i> <span class="text-sm font-medium truncate ${item.completed ? 'line-through text-[#8f8f89]' : 'text-[#f5f5f0]'}">${item.title || 'Untitled'}</span>`;
             
             const right = document.createElement('div');
             right.className = 'flex items-center gap-2 shrink-0 ml-2';
@@ -917,6 +987,74 @@
       return node;
     }
 
+    function createGoalElement(item) {
+      const template = document.getElementById('goal-template');
+      const node = template.content.firstElementChild.cloneNode(true);
+      
+      const theme = item.instructor || 'green'; 
+      node.classList.add(`goal-theme-${theme}`);
+      
+      node.querySelector('.goal-icon').textContent = item.time_slot || '🎯'; 
+      node.querySelector('.goal-title').textContent = item.title;
+      
+      const current = item.amount || 0;
+      const target = item.category || 10;
+      node.querySelector('.goal-progress').textContent = `${current}/${target}`;
+
+      const btnPlus = node.querySelector('.goal-btn-plus');
+      const btnMinus = node.querySelector('.goal-btn-minus');
+      const btnReset = node.querySelector('.goal-reset');
+
+      const updateCounter = async (delta, e) => {
+          if (state.busyIds.has(item.__backendId)) return;
+          state.busyIds.add(item.__backendId);
+          
+          let newAmount = (item.amount || 0) + delta;
+          if (newAmount < 0) newAmount = 0;
+          
+          item.amount = newAmount;
+          node.querySelector('.goal-progress').textContent = `${newAmount}/${target}`;
+          
+          if (delta > 0) {
+              const floatEl = document.createElement('div');
+              floatEl.className = `goal-float-text text-current`;
+              floatEl.textContent = '+1';
+              const rect = btnPlus.getBoundingClientRect();
+              const cardRect = node.getBoundingClientRect();
+              floatEl.style.left = (rect.left - cardRect.left) + 'px';
+              floatEl.style.top = (rect.top - cardRect.top - 20) + 'px';
+              node.appendChild(floatEl);
+              setTimeout(() => floatEl.remove(), 800);
+          }
+
+          await mySdk.update(item);
+          state.busyIds.delete(item.__backendId);
+      };
+
+      btnPlus.onclick = (e) => updateCounter(1, e);
+      btnMinus.onclick = (e) => updateCounter(-1, e);
+      btnReset.onclick = async (e) => {
+          if (state.busyIds.has(item.__backendId)) return;
+          if (!confirm('Reset counter to zero?')) return;
+          state.busyIds.add(item.__backendId);
+          item.amount = 0;
+          node.querySelector('.goal-progress').textContent = `0/${target}`;
+          await mySdk.update(item);
+          state.busyIds.delete(item.__backendId);
+      };
+
+      node.querySelector('.goal-edit').onclick = () => openEditModal(item);
+      node.querySelector('.goal-delete').onclick = async () => {
+          if (state.busyIds.has(item.__backendId)) return;
+          if (!confirm('Delete this counter?')) return;
+          state.busyIds.add(item.__backendId);
+          await mySdk.delete(item);
+          state.busyIds.delete(item.__backendId);
+      };
+
+      return node;
+    }
+
     function createActionElement(item){
       const node=document.getElementById('action-template').content.firstElementChild.cloneNode(true);
       node.querySelector('[data-template-id="action-title"]').textContent=item.title||'Untitled action';
@@ -957,13 +1095,13 @@
       const habits = byType('habit');
       const focusToday = byType('focus').filter(r => r.category === 'today');
       const focusWeek = byType('focus').filter(r => r.category === 'week');
+      const goals = byType('goal');
 
       // Main Today Deadlines
       renderTodayDeadline('tt-tasks', tasks.filter(t => !t.completed), 'task');
       renderTodayDeadline('tt-assignments', assignments.filter(t => !t.completed), 'assignment');
       renderTodayDeadline('tt-exams', exams.filter(t => !t.completed), 'exam');
       
-      // Checking for empty in the active tab (Requires JS check on tab switch, but we'll set defaults)
       const activeTabId = document.querySelector('.today-tab.active')?.dataset.target || 'tt-tasks';
       const targetItems = activeTabId === 'tt-tasks' ? tasks : activeTabId === 'tt-assignments' ? assignments : exams;
       setEmpty('tt-empty', targetItems.filter(t => !t.completed).length === 0);
@@ -985,6 +1123,10 @@
       setEmpty('courses-empty', courses.length === 0);
       setEmpty('habits-empty', habits.length === 0);
       
+      // Goals (Interactive Counters)
+      syncList('goals-list', goals, createGoalElement);
+      setEmpty('goals-empty', goals.length===0);
+
       const allActions=state.records.filter(r=>r.type==='course_action'),done=allActions.filter(a=>a.completed).length;
       document.getElementById('overall-progress-value').textContent=(allActions.length?Math.round(done/allActions.length*100):0)+'%';
       document.getElementById('overall-progress-meta').textContent=done+'/'+allActions.length+' actions';
@@ -1158,7 +1300,8 @@
       document.getElementById('custom-type-field').classList.toggle('hidden', type !== 'assignment');
       document.getElementById('budget-fields').classList.toggle('hidden',type!=='budget');
       document.getElementById('course-fields').classList.toggle('hidden',type!=='course');
-      document.getElementById('description-field').classList.toggle('hidden',type==='budget');
+      document.getElementById('goal-fields').classList.toggle('hidden',type!=='goal');
+      document.getElementById('description-field').classList.toggle('hidden',type==='budget' || type==='goal');
     }
 
     function populateCourseSelect(selectElementId, prefillVal) {
@@ -1185,7 +1328,6 @@
 
     function openEditModal(item){
       state.editingRecord=item;
-      // Map old 'exam' categories visually back to exam type
       let visualType = item.type;
       if (visualType === 'task' && item.category === 'exam') visualType = 'exam';
       if (visualType === 'task' && item.time_slot === 'Assignment') visualType = 'assignment';
@@ -1202,6 +1344,12 @@
       document.getElementById('entry-instructor').value=item.instructor||'';
       document.getElementById('entry-amount').value=item.amount||'';
       document.getElementById('entry-category').value=item.category||'';
+      
+      if(item.type === 'goal') {
+         document.getElementById('goal-target').value = item.category || 10;
+         document.getElementById('goal-emoji').value = item.time_slot || '🎯';
+         document.getElementById('goal-color').value = item.instructor || 'green';
+      }
       
       document.getElementById('modal').classList.remove('hidden');
       document.getElementById('modal').classList.add('flex');
@@ -1338,6 +1486,7 @@
           const target=btn.dataset.tracker;
           document.querySelector('[data-template-id="assignments-card"]').style.display=target==='assignments-card'?'block':'none';
           document.querySelector('[data-template-id="exams-card"]').style.display=target==='exams-card'?'block':'none';
+          document.getElementById('goals-card').style.display=target==='goals-card'?'block':'none';
         });
       });
       document.querySelector('[data-template-id="exams-card"]').style.display='none';
@@ -1393,6 +1542,12 @@
         document.getElementById('entry-type').disabled=true;
         updateFormFields();
       };
+      document.getElementById('add-goal-btn').onclick=()=>{
+        openCreateModal();
+        document.getElementById('entry-type').value='goal';
+        document.getElementById('entry-type').disabled=true;
+        updateFormFields();
+      };
 
       document.getElementById('confirm-course-delete').onclick=async()=>{
         const course=byType('course').find(x=>x.__backendId===state.selectedCourseId);
@@ -1417,32 +1572,33 @@
         btn.textContent='Saving...';
 
         let dbType=type;
-        let dbCategory=type==='budget'?document.getElementById('entry-category').value.trim():'';
+        let dbCategory=type==='budget'?document.getElementById('entry-category').value.trim():(type==='goal'?document.getElementById('goal-target').value:'');
 
         let result;
         if(state.editingRecord){
           const record=state.editingRecord;
           record.type=dbType;
           record.title=title;
-          record.description=type==='budget'?'':document.getElementById('entry-description').value.trim();
+          record.description=(type==='budget'||type==='goal')?'':document.getElementById('entry-description').value.trim();
           record.due_date=(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-due').value:'';
-          record.amount=type==='budget'?(parseFloat(document.getElementById('entry-amount').value)||0):0;
-          record.instructor=type==='course'?document.getElementById('entry-instructor').value.trim():'';
+          if(type==='budget') record.amount=parseFloat(document.getElementById('entry-amount').value)||0;
+          record.instructor=type==='course'?document.getElementById('entry-instructor').value.trim():(type==='goal'?document.getElementById('goal-color').value:'');
           record.parent_course=(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-parent-course').value.trim():'';
-          record.time_slot=(type==='assignment')?document.getElementById('entry-custom-type').value.trim():'';
+          record.time_slot=(type==='assignment')?document.getElementById('entry-custom-type').value.trim():(type==='goal'?document.getElementById('goal-emoji').value:'');
+          record.category=dbCategory;
           result=await mySdk.update(record);
         }else{
           result=await mySdk.create({
             type:dbType,
             title,
-            description:type==='budget'?'':document.getElementById('entry-description').value.trim(),
+            description:(type==='budget'||type==='goal')?'':document.getElementById('entry-description').value.trim(),
             due_date:(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-due').value:'',
             completed:false,
-            amount:type==='budget'?(parseFloat(document.getElementById('entry-amount').value)||0):0,
+            amount:type==='budget'?(parseFloat(document.getElementById('entry-amount').value)||0):(type==='goal'?0:0),
             category:dbCategory,
             day:(type==='task'||type==='assignment')?'Not started':'',
-            time_slot:(type==='assignment')?document.getElementById('entry-custom-type').value.trim():'',
-            instructor:type==='course'?document.getElementById('entry-instructor').value.trim():'',
+            time_slot:(type==='assignment')?document.getElementById('entry-custom-type').value.trim():(type==='goal'?document.getElementById('goal-emoji').value:''),
+            instructor:type==='course'?document.getElementById('entry-instructor').value.trim():(type==='goal'?document.getElementById('goal-color').value:''),
             created_at:new Date().toISOString(),
             parent_course:(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-parent-course').value.trim():'',
             cover_image_id: type==='course' ? COURSE_IMAGE_URLS[Math.floor(Math.random() * COURSE_IMAGE_URLS.length)] : ''
