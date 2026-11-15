@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Student Planner</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
@@ -19,7 +19,7 @@
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
-    .app-shell{width:100%;min-height:calc(100 * min(var(--vh, 1vh), 1vh));background:#111;overflow-x:hidden;}
+    .app-shell{width:100%;min-height:100dvh;background:#111;overflow-x:hidden;}
     .soft-grid{
       background-image:
         linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
@@ -49,27 +49,57 @@
     .course-card{transition:.2s ease;position:relative}
     .course-card:hover{transform:translateY(-2px);border-color:rgba(215,224,208,.28)}
     
-    /* Kairo Goal Card Styles */
+    /* Kairo Goal Card Styles (Pastel) */
     .goal-card { border-bottom-width: 4px; }
-    .goal-theme-green { background-color: #dcfce7; border-color: #bbf7d0; border-bottom-color: #4ade80; color: #166534; }
-    .goal-theme-green .goal-title { color: #14532d; }
-    .goal-theme-green .goal-btn-plus { background-color: #22c55e; color: #fff; border: 2px solid #22c55e; }
-    .goal-theme-green .goal-btn-minus { background-color: transparent; border: 2px solid #22c55e; color: #22c55e; }
-    
-    .goal-theme-blue { background-color: #dbeafe; border-color: #bfdbfe; border-bottom-color: #60a5fa; color: #1e3a8a; }
-    .goal-theme-blue .goal-title { color: #1e3a8a; }
-    .goal-theme-blue .goal-btn-plus { background-color: #3b82f6; color: #fff; border: 2px solid #3b82f6; }
-    .goal-theme-blue .goal-btn-minus { background-color: transparent; border: 2px solid #3b82f6; color: #3b82f6; }
-    
-    .goal-theme-orange { background-color: #ffedd5; border-color: #fed7aa; border-bottom-color: #fb923c; color: #7c2d12; }
-    .goal-theme-orange .goal-title { color: #7c2d12; }
-    .goal-theme-orange .goal-btn-plus { background-color: #f97316; color: #fff; border: 2px solid #f97316; }
-    .goal-theme-orange .goal-btn-minus { background-color: transparent; border: 2px solid #f97316; color: #f97316; }
+    .goal-btn-plus, .goal-btn-minus {
+      transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease, opacity 0.15s ease;
+    }
+    .goal-btn-plus:hover, .goal-btn-minus:hover { transform: translateY(-1px) scale(1.07); }
+    .goal-btn-plus:active, .goal-btn-minus:active { transform: scale(0.86); }
 
-    .goal-progress { -webkit-text-stroke: 1.5px rgba(0,0,0,0.6); text-shadow: 1px 2px 0 rgba(0,0,0,0.2); }
-    .goal-float-text { position: absolute; font-weight: 900; font-size: 24px; opacity: 0; pointer-events: none; animation: floatUp 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards; z-index: 10; }
-    @keyframes floatUp { 0% { opacity: 0.8; transform: translateY(0) scale(0.8); } 100% { opacity: 0; transform: translateY(-40px) scale(1.5); } }
+    .goal-theme-green { background-color: #e3f6ea; border-color: #c5ebd3; border-bottom-color: #7ed6a3; color: #1c4d32; }
+    .goal-theme-green .goal-title { color: #1c4d32; }
+    .goal-theme-green .goal-btn-plus { background-color: #4db87a; color: #fff; border: 2px solid #4db87a; }
+    .goal-theme-green .goal-btn-minus { background-color: transparent; border: 2px solid #4db87a; color: #369960; }
+    
+    .goal-theme-blue { background-color: #e3f0fd; border-color: #c6e0fa; border-bottom-color: #7db9f5; color: #1d3c6e; }
+    .goal-theme-blue .goal-title { color: #1d3c6e; }
+    .goal-theme-blue .goal-btn-plus { background-color: #5a9cf0; color: #fff; border: 2px solid #5a9cf0; }
+    .goal-theme-blue .goal-btn-minus { background-color: transparent; border: 2px solid #5a9cf0; color: #3b7dd4; }
+    
+    .goal-theme-orange { background-color: #fff0e0; border-color: #ffd9b8; border-bottom-color: #f7ab6d; color: #7a3b14; }
+    .goal-theme-orange .goal-title { color: #7a3b14; }
+    .goal-theme-orange .goal-btn-plus { background-color: #f08b43; color: #fff; border: 2px solid #f08b43; }
+    .goal-theme-orange .goal-btn-minus { background-color: transparent; border: 2px solid #f08b43; color: #d46d26; }
 
+    .goal-theme-red { background-color: #fde6e8; border-color: #fac8cd; border-bottom-color: #f28b96; color: #751f29; }
+    .goal-theme-red .goal-title { color: #751f29; }
+    .goal-theme-red .goal-btn-plus { background-color: #e86472; color: #fff; border: 2px solid #e86472; }
+    .goal-theme-red .goal-btn-minus { background-color: transparent; border: 2px solid #e86472; color: #c94755; }
+
+    .goal-theme-lavender { background-color: #efe8fc; border-color: #dfd1fa; border-bottom-color: #b695f2; color: #432475; }
+    .goal-theme-lavender .goal-title { color: #432475; }
+    .goal-theme-lavender .goal-btn-plus { background-color: #966ee8; color: #fff; border: 2px solid #966ee8; }
+    .goal-theme-lavender .goal-btn-minus { background-color: transparent; border: 2px solid #966ee8; color: #774ec9; }
+
+    .goal-progress {
+      -webkit-text-stroke: 1.5px rgba(0,0,0,0.45);
+      text-shadow: 1px 2px 0 rgba(0,0,0,0.16);
+      transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: left center;
+    }
+    .goal-progress.pop { transform: scale(1.14); }
+    .goal-float-text { position: absolute; font-weight: 900; font-size: 20px; opacity: 0; pointer-events: none; animation: floatUp 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards; z-index: 20; }
+    @keyframes floatUp { 0% { opacity: 0.9; transform: translateY(0) scale(0.85); } 100% { opacity: 0; transform: translateY(-34px) scale(1.35); } }
+
+    .toggle-action {
+      transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.18s ease, border-color 0.18s ease;
+    }
+    .toggle-action:hover { transform: scale(1.08); }
+    .toggle-action:active { transform: scale(0.86); }
+    [data-template-id="action-card"] {
+      transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
     .progress-ring{
       width:62px;height:62px;border-radius:999px;
       background:conic-gradient(#d7e0d0 var(--progress), #2a2a2a 0);
@@ -143,10 +173,14 @@
         clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
     }
   </style>
-  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  </head>
  <body data-template-id="__page-root">
+  <!-- Toast Banner -->
+  <div id="toast-banner" class="hidden fixed bottom-24 lg:bottom-6 right-5 z-[80] max-w-sm rounded-2xl px-4 py-3 text-xs font-semibold shadow-2xl border transition-all"></div>
+  <div id="notes-tooltip" class="hidden fixed z-[95] max-w-xs rounded-2xl bg-[#181818]/95 backdrop-blur-xl border border-white/15 px-3.5 py-2.5 text-xs text-[#e5e5df] shadow-2xl pointer-events-none leading-relaxed"><p class="text-[10px] uppercase tracking-[0.14em] font-bold text-[#9fb398] mb-1">Notes</p><p id="notes-tooltip-body" class="whitespace-pre-wrap break-words"></p></div>
+  <div id="focus-report-popover" class="hidden fixed z-[95] w-72 rounded-2xl bg-[#181818]/95 backdrop-blur-xl border border-white/15 p-4 text-xs text-[#e5e5df] shadow-2xl pointer-events-none"></div>
+
   <div class="app-shell soft-grid pb-24 lg:pb-0">
    
    <aside class="hidden lg:flex fixed left-0 top-0 bottom-0 w-[248px] border-r border-white/10 bg-[#141414] px-4 py-5 flex-col z-40">
@@ -163,6 +197,7 @@
      <button type="button" data-view="tracker" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="table" class="w-4 h-4"></i><span data-template-id="nav-tracker" class="canva-text">Tracker</span></button> 
      <button type="button" data-view="notes" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="timer" class="w-4 h-4"></i><span data-template-id="nav-notes" class="canva-text">Study</span></button> 
      <button type="button" data-view="habits" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="sprout" class="w-4 h-4"></i><span data-template-id="nav-habits" class="canva-text">Habits</span></button>
+     <button type="button" data-view="calendar" class="nav-item focus-ring w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold text-left text-[#c9c9c2] hover:bg-white/5 transition"><i data-lucide="calendar-days" class="w-4 h-4"></i><span class="canva-text">Calendar</span></button>
     </nav>
     <div data-template-id="quote-card" class="canva-card mt-auto rounded-2xl bg-[#1d241e] p-4 border border-white/10">
      <div class="w-8 h-8 rounded-full bg-[#d7e0d0] flex items-center justify-center text-[#111] mb-4"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
@@ -179,10 +214,14 @@
        <h2 data-template-id="page-title" class="canva-text font-extrabold tracking-[-0.05em] leading-none text-2xl md:text-3xl"></h2>
        <p id="today-date" class="text-xs text-[#9b9b95] mt-1.5"></p>
       </div>
-      <button id="open-modal" type="button" data-template-id="add-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full w-12 h-12 md:w-auto md:h-auto md:px-5 md:py-3 bg-[#d7e0d0] text-[#111] font-bold text-sm hover:bg-white transition flex-shrink-0"> 
-       <i data-lucide="plus" class="w-5 h-5 md:w-4 md:h-4"></i>
-       <span class="hidden md:inline">New Item</span>
-      </button>
+      <div class="flex items-center gap-3">
+       <span id="sync-status" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold bg-white/5 text-[#9b9b95] border border-white/10">Connecting...</span>
+       <button id="open-settings" type="button" title="AI & Settings" class="focus-ring w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#d7e0d0] transition"><i data-lucide="settings" class="w-4 h-4"></i></button>
+       <button id="open-modal" type="button" data-template-id="add-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full w-12 h-12 md:w-auto md:h-auto md:px-5 md:py-3 bg-[#d7e0d0] text-[#111] font-bold text-sm hover:bg-white transition flex-shrink-0"> 
+        <i data-lucide="plus" class="w-5 h-5 md:w-4 md:h-4"></i>
+        <span class="hidden md:inline">New Item</span>
+       </button>
+      </div>
      </div>
     </header>
     
@@ -198,6 +237,31 @@
        <div class="text-white font-bold text-3xl pb-2">:</div>
        <div class="flip-card" id="flip-s">00</div>
       </div>
+
+      <!-- NATURAL LANGUAGE QUICK ADD -->
+      <form id="quick-add-form" class="max-w-2xl mx-auto mb-6">
+       <div class="flex items-center gap-2 rounded-2xl bg-[#181a18] border border-white/10 px-4 py-2.5 focus-within:border-[#d7e0d0]/50 transition shadow-lg">
+        <i data-lucide="sparkles" class="w-4 h-4 text-[#9fb398] shrink-0"></i>
+        <input id="quick-add-input" type="text" placeholder='Quick Add: e.g. "Physics quiz next Tuesday" or "Read ch 4 tomorrow"' class="w-full bg-transparent border-none text-sm text-white placeholder-[#7f7f79] outline-none">
+        <button id="quick-add-btn" type="submit" class="px-3.5 py-1.5 rounded-xl bg-[#d7e0d0] text-[#111] text-xs font-bold hover:bg-white transition shrink-0">Add</button>
+       </div>
+      </form>
+
+      <!-- AI DAILY BRIEFING -->
+      <section id="ai-briefing-card" class="glass-panel rounded-3xl p-5 mb-6 bg-gradient-to-r from-[#1a221c] to-[#161817] border border-white/10">
+       <div class="flex items-center justify-between gap-3 mb-2">
+        <div class="flex items-center gap-2">
+         <span class="w-7 h-7 rounded-full bg-[#d7e0d0]/15 text-[#d7e0d0] flex items-center justify-center"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i></span>
+         <h3 class="text-sm font-bold text-[#d7e0d0]">Daily Briefing</h3>
+         <span id="ai-briefing-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-[#9fb398] font-semibold">Smart</span>
+        </div>
+        <div class="flex items-center gap-2">
+         <button id="open-breakdown-today" type="button" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-[#d7e0d0] transition inline-flex items-center gap-1.5"><i data-lucide="list-tree" class="w-3.5 h-3.5"></i> Break Down Task</button>
+         <button id="ai-briefing-refresh" type="button" title="Refresh briefing" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-[#9fb398] transition"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i></button>
+        </div>
+       </div>
+       <div id="ai-briefing-body" class="text-xs md:text-sm text-[#c9c9c2] leading-relaxed">Loading your priorities...</div>
+      </section>
 
       <!-- STATS GRID -->
       <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
@@ -224,13 +288,13 @@
        
        <!-- LEFT: TODAY'S DEADLINES TABBED SECTION -->
        <section class="canva-card glass-panel rounded-3xl p-5 md:p-6 bg-[#1a201c] border border-white/5 w-full overflow-hidden">
-        <h3 class="text-[#9fb398] font-bold text-lg mb-4">Today's Deadlines</h3>
+        <h3 class="text-[#9fb398] font-bold text-lg mb-4">Upcoming Deadlines</h3>
         
         <!-- Tabs -->
         <div class="flex gap-2 p-1 bg-black/40 w-max rounded-[14px] mb-5 overflow-x-auto max-w-full">
-            <button class="today-tab active px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-white transition flex items-center gap-2 cursor-pointer touch-manipulation" data-target="tt-tasks"><i data-lucide="check-circle-2" class="w-4 h-4 pointer-events-none"></i> Tasks</button>
-            <button class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2 cursor-pointer touch-manipulation" data-target="tt-assignments"><i data-lucide="pen-line" class="w-4 h-4 pointer-events-none"></i> Assignments</button>
-            <button class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2 cursor-pointer touch-manipulation" data-target="tt-exams"><i data-lucide="file-text" class="w-4 h-4 pointer-events-none"></i> Exams</button>
+            <button type="button" class="today-tab active px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-white transition flex items-center gap-2 cursor-pointer touch-manipulation" data-target="tt-tasks"><i data-lucide="check-circle-2" class="w-4 h-4 pointer-events-none"></i> Tasks</button>
+            <button type="button" class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2 cursor-pointer touch-manipulation" data-target="tt-assignments"><i data-lucide="pen-line" class="w-4 h-4 pointer-events-none"></i> Assignments</button>
+            <button type="button" class="today-tab px-4 py-2 rounded-xl text-sm font-semibold text-[#8f8f89] hover:text-white transition flex items-center gap-2 cursor-pointer touch-manipulation" data-target="tt-exams"><i data-lucide="file-text" class="w-4 h-4 pointer-events-none"></i> Exams</button>
         </div>
 
         <!-- Tab Contents -->
@@ -248,7 +312,10 @@
        <div class="space-y-4">
         <!-- Today's Focus -->
         <div class="bg-[#eef2ec] rounded-3xl p-6 text-[#2d3b31] shadow-lg">
-            <h4 class="font-bold flex items-center gap-2 mb-4 text-lg">Today's Focus 🌱</h4>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <h4 class="font-bold flex items-center gap-2 text-lg">Today's Focus 🌱</h4>
+              <button id="focus-today-report-btn" type="button" aria-label="Yesterday's Focus Report" class="w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-[#2d3b31] transition focus-ring"><i data-lucide="file-text" class="w-4 h-4 pointer-events-none"></i></button>
+            </div>
             <div id="focus-today-list" class="space-y-3 mb-4"></div>
             <form onsubmit="addFocus(event, 'today')" class="mt-2 border-t border-[#c6d1c4] pt-3">
                 <input type="text" placeholder="+ Add focus item..." class="w-full bg-transparent border-none text-sm font-medium outline-none placeholder-[#8f9b93] text-[#2d3b31]">
@@ -257,7 +324,10 @@
 
         <!-- This Week's Focus -->
         <div class="bg-[#1c281e] rounded-3xl p-6 text-[#eef2ec] shadow-lg border border-[#2a3c2f]">
-            <h4 class="font-bold flex items-center gap-2 mb-4 text-lg">This Weeks Focus ✨</h4>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <h4 class="font-bold flex items-center gap-2 text-lg">This Week's Focus ✨</h4>
+              <button id="focus-week-report-btn" type="button" aria-label="Last Week's Focus Report" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-[#eef2ec] transition focus-ring"><i data-lucide="file-text" class="w-4 h-4 pointer-events-none"></i></button>
+            </div>
             <div id="focus-week-list" class="space-y-3 mb-4"></div>
             <form onsubmit="addFocus(event, 'week')" class="mt-2 border-t border-[#314234] pt-3">
                 <input type="text" placeholder="+ Add focus item..." class="w-full bg-transparent border-none text-sm font-medium outline-none placeholder-[#6b7b70] text-[#eef2ec]">
@@ -271,7 +341,7 @@
       <div class="grid md:grid-cols-2 gap-6">
         <section data-template-id="course-preview-card" class="canva-card glass-panel rounded-3xl p-5">
          <h3 data-template-id="course-preview-title" class="canva-text font-bold mb-4 text-[#9fb398]">Course Progress</h3>
-         <div id="course-preview-list" class="space-y-3"></div>
+         <div id="course-preview-list" class="space-y-3 max-h-[260px] overflow-y-auto pr-1"></div>
          <p id="course-preview-empty" class="canva-text text-sm text-[#8f8f89] hidden">No courses added yet.</p>
         </section>
         <section data-template-id="habit-card" class="canva-card glass-panel rounded-3xl p-5">
@@ -309,7 +379,7 @@
        <button id="back-to-courses" type="button" class="focus-ring inline-flex items-center gap-2 text-sm text-[#bfcab9] mb-5 hover:text-white transition"> <i data-lucide="arrow-left" class="w-4 h-4"></i><span data-template-id="back-to-courses" class="canva-text">Back to courses</span> </button>
        <section data-template-id="course-detail-card" class="canva-card glass-panel rounded-3xl overflow-hidden mb-5">
         <div id="detail-course-image-wrap" class="w-full aspect-video md:aspect-[4/1] overflow-hidden bg-[#0f0f0f] flex items-center justify-center">
-         <img src="" class="detail-img w-full h-full object-cover" loading="lazy">
+         <img src="" alt="Course cover" class="detail-img w-full h-full object-cover">
         </div>
         <div class="p-5 md:p-6">
          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-5">
@@ -321,8 +391,8 @@
           <div class="flex items-center gap-3 shrink-0">
            <div id="detail-progress-ring" class="progress-ring" style="--progress:0%"><span id="detail-progress-percent">0%</span></div>
            <div class="relative">
-            <button id="course-menu-btn" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-[#d7e0d0] hover:bg-white/10"><i data-lucide="more-vertical" class="w-4 h-4"></i></button>
-            <div id="course-menu" class="hidden absolute right-0 top-full mt-2 bg-[#0f0f0f] border border-white/15 rounded-xl shadow-lg overflow-hidden z-40 min-w-[180px]">
+            <button id="course-menu-btn" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-[#d7e0d0] hover:bg-white/10"><i data-lucide="more-vertical" class="w-4 h-4 pointer-events-none"></i></button>
+            <div id="course-menu" class="dropdown-menu hidden absolute right-0 top-full mt-2 bg-[#0f0f0f] border border-white/15 rounded-xl shadow-lg overflow-hidden z-40 min-w-[180px]">
              <button type="button" id="course-edit-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2"><i data-lucide="edit-2" class="w-4 h-4"></i><span>Edit course</span></button> <button type="button" id="course-delete-btn" class="w-full px-4 py-3 text-left text-sm hover:bg-white/10 flex items-center gap-2 text-[#d98b7f]"><i data-lucide="trash-2" class="w-4 h-4"></i><span data-template-id="course-delete-label" class="canva-text">Delete course</span></button>
             </div>
            </div>
@@ -341,7 +411,11 @@
          <div>
           <p data-template-id="actions-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Milestones</p>
           <h4 data-template-id="actions-title" class="canva-text font-bold text-lg">Action Items</h4>
-         </div><button id="open-action-modal" type="button" data-template-id="add-action-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Action</button>
+         </div>
+         <div class="flex items-center gap-2">
+          <button id="open-breakdown-course" type="button" class="focus-ring inline-flex items-center justify-center gap-1.5 rounded-full px-3.5 py-2.5 bg-white/10 hover:bg-white/15 text-[#d7e0d0] font-semibold text-xs transition"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> AI Breakdown</button>
+          <button id="open-action-modal" type="button" data-template-id="add-action-button" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Action</button>
+         </div>
         </div>
         <div id="course-actions-list" class="space-y-3"></div>
         <div id="course-actions-empty" class="rounded-2xl border border-dashed border-white/10 p-7 text-center hidden">
@@ -362,7 +436,7 @@
       <div class="space-y-8">
        <!-- Assignments -->
        <section data-template-id="assignments-card" class="canva-card glass-panel rounded-3xl overflow-hidden">
-        <img src="https://i.ibb.co/Kpz7NDtW/a4.png" class="canva-image w-full aspect-[4/1] object-cover rounded-t-2xl" style="object-position: center 72% !important;">
+        <img src="https://i.ibb.co/Kpz7NDtW/a4.png" alt="Assignments banner" class="canva-image w-full aspect-[4/1] object-cover rounded-t-2xl" style="object-position: center 72% !important;">
         <div class="p-5 md:p-6">
          <div class="flex items-center justify-between mb-5">
           <div>
@@ -396,7 +470,7 @@
 
        <!-- Exams -->
        <section data-template-id="exams-card" class="canva-card glass-panel rounded-3xl overflow-hidden">
-        <img src="https://i.ibb.co/21YStsZ1/g4.png" class="canva-image w-full aspect-[4/1] object-cover object-center rounded-t-2xl">
+        <img src="https://i.ibb.co/21YStsZ1/g4.png" alt="Exams banner" class="canva-image w-full aspect-[4/1] object-cover object-center rounded-t-2xl">
         <div class="p-5 md:p-6">
          <div class="flex items-center justify-between mb-5">
           <div>
@@ -450,20 +524,58 @@
        <!-- Pomodoro Timer -->
        <article id="pomodoro-container" class="rounded-[2.5rem] p-6 md:p-12 text-center border border-white/10 bg-gradient-to-br from-[#1a1c1a] to-[#111] shadow-2xl relative overflow-hidden">
         <div class="flex justify-between items-center bg-white/5 rounded-full p-1.5 w-max mx-auto mb-10 border border-white/5">
-         <button class="pomo-tab active px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm cursor-pointer" data-time="25">Pomodoro</button> 
-         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] cursor-pointer" data-time="5">Short Break</button> 
-         <button class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] cursor-pointer" data-time="15">Long Break</button>
+         <button type="button" class="pomo-tab active px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm cursor-pointer" data-time="25">Pomodoro</button> 
+         <button type="button" class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] cursor-pointer" data-time="5">Short Break</button> 
+         <button type="button" class="pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] cursor-pointer" data-time="15">Long Break</button>
         </div>
         <h2 id="timer-display" class="text-7xl md:text-[8rem] font-bold tracking-tighter text-white mb-10 tabular-nums leading-none">25:00</h2>
         <div class="flex justify-center items-center gap-4">
-         <button id="timer-toggle" class="px-8 md:px-10 py-3 md:py-4 rounded-full bg-[#d7e0d0] text-[#111] font-bold text-base md:text-lg flex items-center gap-2 hover:bg-white transition-all"> <i data-lucide="play" id="timer-icon"></i> <span id="toggle-text">Start</span> </button> 
-         <button id="timer-reset" class="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-white/10 flex items-center justify-center text-[#8f8f89] hover:border-white/30 transition-all"> <i data-lucide="rotate-ccw"></i> </button>
+         <button id="timer-toggle" type="button" class="px-8 md:px-10 py-3 md:py-4 rounded-full bg-[#d7e0d0] text-[#111] font-bold text-base md:text-lg flex items-center gap-2 hover:bg-white transition-all"> <i data-lucide="play" id="timer-icon"></i> <span id="toggle-text">Start</span> </button> 
+         <button id="timer-reset" type="button" class="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-white/10 flex items-center justify-center text-[#8f8f89] hover:border-white/30 transition-all"> <i data-lucide="rotate-ccw"></i> </button>
         </div>
        </article>
 
-       <!-- Spotify Playlist -->
-       <div class="rounded-[2.5rem] p-4 border border-white/10 bg-[#111] shadow-2xl flex items-center justify-center overflow-hidden h-[380px] md:h-auto">
-        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX8Uebhn9wzrS?utm_source=generator&si=2a141b09a62c42d6" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+       <!-- Spotify Playlist Slider -->
+       <div id="playlist-slider-card" class="rounded-[2.5rem] p-5 border border-white/10 bg-gradient-to-br from-[#1a1c1a] to-[#111] shadow-2xl flex flex-col justify-between overflow-hidden">
+        <div class="flex items-center justify-between gap-3 mb-3 px-1">
+         <div class="flex items-center gap-2">
+          <span class="w-7 h-7 rounded-full bg-[#d7e0d0]/15 text-[#d7e0d0] flex items-center justify-center"><i data-lucide="music" class="w-3.5 h-3.5"></i></span>
+          <span class="text-xs font-bold tracking-wide text-[#d7e0d0]">Study Playlists</span>
+          <span id="playlist-counter" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/5 text-[#9fb398]">1 / 5</span>
+         </div>
+         <div class="flex items-center gap-1.5">
+          <button id="playlist-prev" type="button" aria-label="Previous playlist" class="focus-ring w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-[#d7e0d0] transition active:scale-90"><i data-lucide="chevron-left" class="w-4 h-4 pointer-events-none"></i></button>
+          <button id="playlist-next" type="button" aria-label="Next playlist" class="focus-ring w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-[#d7e0d0] transition active:scale-90"><i data-lucide="chevron-right" class="w-4 h-4 pointer-events-none"></i></button>
+         </div>
+        </div>
+
+        <div class="overflow-hidden w-full rounded-xl">
+         <div id="playlist-track" class="flex transition-transform duration-300 ease-out">
+          <div class="w-full shrink-0">
+           <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX8Uebhn9wzrS?utm_source=generator&si=2a141b09a62c42d6" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          </div>
+          <div class="w-full shrink-0">
+           <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWVceT0UosQME?utm_source=generator&si=8548a74d8f344612" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+          <div class="w-full shrink-0">
+           <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZeKCadgRdKQ?utm_source=generator&si=566ac5aae79f4dab" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+          <div class="w-full shrink-0">
+           <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZwtERXCS82H?utm_source=generator&si=bf73df584f9843bf" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+          <div class="w-full shrink-0">
+           <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX2Ca9Q0E4D7d?utm_source=generator&si=6c2086d5ce8c47b0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+         </div>
+        </div>
+
+        <div id="playlist-dots" class="flex items-center justify-center gap-2 mt-3">
+         <button type="button" data-slide="0" aria-label="Playlist 1" class="playlist-dot h-2 w-6 rounded-full bg-[#d7e0d0] transition-all"></button>
+         <button type="button" data-slide="1" aria-label="Playlist 2" class="playlist-dot h-2 w-2 rounded-full bg-white/20 hover:bg-white/40 transition-all"></button>
+         <button type="button" data-slide="2" aria-label="Playlist 3" class="playlist-dot h-2 w-2 rounded-full bg-white/20 hover:bg-white/40 transition-all"></button>
+         <button type="button" data-slide="3" aria-label="Playlist 4" class="playlist-dot h-2 w-2 rounded-full bg-white/20 hover:bg-white/40 transition-all"></button>
+         <button type="button" data-slide="4" aria-label="Playlist 5" class="playlist-dot h-2 w-2 rounded-full bg-white/20 hover:bg-white/40 transition-all"></button>
+        </div>
        </div>
       </div>
      </section>
@@ -475,13 +587,30 @@
         <p data-template-id="habits-kicker" class="canva-text uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Routines</p>
         <h3 data-template-id="habits-title" class="canva-text font-bold text-2xl">Habits & Tracking</h3>
        </div>
-       <button type="button" onclick="document.getElementById('entry-type').value='habit'; document.getElementById('entry-type').dispatchEvent(new Event('change')); document.getElementById('open-modal').click();" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Habit</button>
+       <button type="button" onclick="openCreateModal('habit')" class="canva-button focus-ring inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 bg-[#d7e0d0] text-[#111] font-bold text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Add Habit</button>
       </div>
       <div id="habits-list" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
       <div id="habits-empty" class="rounded-3xl border border-dashed border-white/10 p-10 text-center hidden">
        <p data-template-id="habits-empty-title" class="canva-text font-semibold">Build positive routines</p>
        <p data-template-id="habits-empty-copy" class="canva-text text-sm text-[#8f8f89] mt-1">Add a habit to track your daily progress.</p>
       </div>
+     </section>
+
+     <!-- ---------------- CALENDAR VIEW ---------------- -->
+     <section id="view-calendar" class="view-panel fade-in">
+      <div class="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+       <div>
+        <p class="uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-2">Schedule</p>
+        <h3 class="font-bold text-2xl">Weekly Timeline</h3>
+        <p id="calendar-range-label" class="text-xs text-[#9b9b95] mt-1"></p>
+       </div>
+       <div class="flex items-center gap-2">
+        <button id="cal-prev-week" type="button" class="focus-ring px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold transition">← Prev</button>
+        <button id="cal-this-week" type="button" class="focus-ring px-3.5 py-2 rounded-xl bg-[#d7e0d0] text-[#111] text-xs font-bold transition">This Week</button>
+        <button id="cal-next-week" type="button" class="focus-ring px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold transition">Next →</button>
+       </div>
+      </div>
+      <div id="calendar-grid" class="grid grid-cols-1 md:grid-cols-7 gap-3"></div>
      </section>
 
     </div>
@@ -509,6 +638,10 @@
          <i data-lucide="sprout" class="w-[22px] h-[22px] pointer-events-none"></i>
          <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Habits</span>
        </button>
+       <button type="button" data-view="calendar" class="nav-item focus-ring flex flex-col items-center justify-center flex-1 max-w-[70px] h-14 rounded-2xl text-[#c9c9c2] transition gap-1 cursor-pointer touch-manipulation">
+         <i data-lucide="calendar-days" class="w-[22px] h-[22px] pointer-events-none"></i>
+         <span class="text-[10px] font-semibold tracking-wide pointer-events-none">Calendar</span>
+       </button>
    </nav>
   </div>
 
@@ -524,7 +657,6 @@
     <form id="entry-form" class="space-y-4">
      <div><label for="entry-type" class="canva-text block text-sm font-semibold mb-2">Type</label>
       <select id="entry-type" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-        <!-- Separate Task and Assignment! -->
         <option value="task">Task</option>
         <option value="assignment">Assignment</option>
         <option value="course">Course</option>
@@ -542,18 +674,12 @@
      
      <div id="goal-fields" class="hidden space-y-4">
       <div class="grid grid-cols-2 gap-3">
-       <div><label class="canva-text block text-sm font-semibold mb-2">Target Number</label><input id="goal-target" type="number" min="1" value="10" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
-       <div><label class="canva-text block text-sm font-semibold mb-2">Emoji</label><input id="goal-emoji" type="text" value="🎯" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+       <div><label for="goal-target" class="canva-text block text-sm font-semibold mb-2">Target Number</label><input id="goal-target" type="number" min="1" value="10" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
+       <div><label for="goal-emoji" class="canva-text block text-sm font-semibold mb-2">Emoji</label><input id="goal-emoji" type="text" value="🎯" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"></div>
       </div>
-      <div><label class="canva-text block text-sm font-semibold mb-2">Color Theme</label><select id="goal-color" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"><option value="green">Green</option><option value="blue">Blue</option><option value="orange">Orange</option></select></div>
+      <div><label for="goal-color" class="canva-text block text-sm font-semibold mb-2">Color Theme</label><select id="goal-color" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white"><option value="green">Pastel Green</option><option value="blue">Pastel Blue</option><option value="orange">Pastel Orange</option><option value="red">Pastel Red</option><option value="lavender">Pastel Lavender</option></select></div>
      </div>
 
-     <div id="budget-fields" class="hidden grid grid-cols-2 gap-3">
-      <div><label for="entry-amount" data-template-id="amount-label" class="canva-text block text-sm font-semibold mb-2">Amount</label><input id="entry-amount" type="number" min="0" step="0.01" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-      </div>
-      <div><label for="entry-category" data-template-id="category-label" class="canva-text block text-sm font-semibold mb-2">Category</label><input id="entry-category" type="text" class="canva-input focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white">
-      </div>
-     </div>
      <p id="form-message" class="text-sm text-[#d98b7f] hidden"></p>
      <div class="flex justify-end gap-3 pt-2">
       <button type="button" id="cancel-modal" class="canva-button focus-ring rounded-full px-5 py-3 bg-white/5 text-sm font-semibold">Cancel</button> 
@@ -584,11 +710,59 @@
    </div>
   </div>
   
+  <!-- SETTINGS / GEMINI MODAL -->
+  <div id="settings-modal" class="hidden fixed inset-0 z-[70] modal-backdrop items-center justify-center p-4">
+   <div class="w-full max-w-md rounded-[28px] bg-[#181818] border border-white/10 p-6 shadow-2xl">
+    <div class="flex justify-between items-start mb-4">
+     <div>
+      <p class="uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-1">AI & Preferences</p>
+      <h2 class="font-bold text-xl">Gemini API Settings</h2>
+     </div>
+     <button id="close-settings" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>
+    <p class="text-xs text-[#9b9b95] leading-relaxed mb-4">Your key is saved in your Supabase database so it syncs automatically across your laptop and tablet—without exposing it in GitHub code. Without a key, smart local fallbacks still work.</p>
+    <div class="space-y-3">
+     <div>
+      <label for="gemini-key-input" class="block text-xs font-semibold mb-1.5">Gemini API Key</label>
+      <input id="gemini-key-input" type="text" spellcheck="false" autocomplete="off" placeholder="AQ.Ab8... or AIza..." class="focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white font-mono">
+     </div>
+     <p id="settings-status" class="text-xs hidden"></p>
+     <div class="flex justify-between items-center pt-2">
+      <button id="clear-gemini-key" type="button" class="text-xs text-[#d98b7f] font-semibold hover:underline">Remove Key</button>
+      <div class="flex gap-2">
+       <button id="test-save-gemini" type="button" class="focus-ring rounded-full px-5 py-2.5 bg-[#d7e0d0] text-[#111] text-xs font-bold hover:bg-white transition">Test & Save</button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- AI TASK BREAKDOWN MODAL -->
+  <div id="breakdown-modal" class="hidden fixed inset-0 z-[70] modal-backdrop items-center justify-center p-4">
+   <div class="w-full max-w-lg rounded-[28px] bg-[#181818] border border-white/10 p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-start mb-4">
+     <div>
+      <p class="uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-1">Study Coach</p>
+      <h2 class="font-bold text-xl">AI Task Breakdown</h2>
+     </div>
+     <button id="close-breakdown" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>
+    <div class="space-y-3">
+     <textarea id="breakdown-prompt" rows="3" placeholder='Paste an assignment or topic, e.g. "Prepare 10-slide Science presentation on Renewable Energy due Friday"' class="focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white resize-none"></textarea>
+     <button id="generate-breakdown-btn" type="button" class="w-full rounded-xl py-2.5 bg-[#d7e0d0] text-[#111] text-sm font-bold hover:bg-white transition flex items-center justify-center gap-2"><i data-lucide="sparkles" class="w-4 h-4"></i> Generate Steps</button>
+     <div id="breakdown-results" class="hidden space-y-2 pt-2"></div>
+     <div id="breakdown-actions" class="hidden flex justify-end gap-2 pt-2">
+      <button id="save-breakdown-btn" type="button" class="rounded-full px-5 py-2.5 bg-[#d7e0d0] text-[#111] text-xs font-bold hover:bg-white transition">Add Selected Steps</button>
+     </div>
+    </div>
+   </div>
+  </div>
+
   <!-- TEMPLATES -->
   <template id="course-template">
    <article data-template-id="course-card" class="canva-card course-card rounded-3xl bg-[#1a1a1a] border border-white/10 overflow-hidden cursor-pointer relative group flex flex-col h-full min-h-[320px]">
     <div class="course-image-slot w-full aspect-video bg-[#0f0f0f] overflow-hidden flex-shrink-0">
-     <img src="" class="course-img w-full h-full object-cover object-center" loading="lazy">
+     <img src="" alt="Course cover" class="course-img w-full h-full object-cover object-center">
     </div>
     <div class="relative z-10 p-5 flex flex-col flex-1">
      <div class="flex justify-between gap-3">
@@ -607,22 +781,22 @@
   </template>
   
   <template id="goal-template">
-   <div class="goal-card relative w-full rounded-[20px] p-4 flex items-center gap-4 transition-transform active:scale-[0.98] select-none">
+   <div class="goal-card relative w-full rounded-[20px] p-4 flex items-center gap-4 select-none">
     <div class="w-14 h-14 rounded-2xl bg-white/90 shadow-sm flex items-center justify-center text-3xl shrink-0 goal-icon">📖</div>
-    <div class="flex-1 flex flex-col items-start justify-center">
+    <div class="flex-1 flex flex-col items-start justify-center min-w-0">
      <div class="goal-progress text-3xl font-black text-white tracking-wide leading-none">4/10</div>
-     <div class="goal-title font-extrabold text-sm mt-1.5">Read 10 Pages</div>
+     <div class="goal-title font-extrabold text-sm mt-1.5 truncate w-full">Read 10 Pages</div>
      <div class="goal-time text-[10px] font-bold opacity-60 mt-0.5">Track your progress</div>
     </div>
-    <div class="flex flex-col items-end justify-between h-[60px] shrink-0 relative w-16">
-     <div class="absolute -top-1 -right-2 flex gap-3">
-      <button type="button" class="goal-edit text-black/20 hover:text-black/60 transition-colors focus-ring"><i data-lucide="edit-2" class="w-[14px] h-[14px] pointer-events-none"></i></button>
-      <button type="button" class="goal-reset text-black/20 hover:text-black/60 transition-colors focus-ring"><i data-lucide="rotate-ccw" class="w-[14px] h-[14px] pointer-events-none"></i></button>
-      <button type="button" class="goal-delete text-black/20 hover:text-red-500/80 transition-colors focus-ring"><i data-lucide="trash-2" class="w-[14px] h-[14px] pointer-events-none"></i></button>
+    <div class="flex flex-col items-end justify-between h-[64px] shrink-0 relative min-w-[76px] z-10">
+     <div class="flex items-center gap-2.5">
+      <button type="button" title="Edit counter" class="goal-edit text-black/35 hover:text-black/80 transition-colors p-1 rounded focus-ring"><i data-lucide="edit-2" class="w-[14px] h-[14px] pointer-events-none"></i></button>
+      <button type="button" title="Reset to 0" class="goal-reset text-black/35 hover:text-black/80 transition-colors p-1 rounded focus-ring"><i data-lucide="rotate-ccw" class="w-[14px] h-[14px] pointer-events-none"></i></button>
+      <button type="button" title="Delete counter" class="goal-delete text-black/35 hover:text-red-600 transition-colors p-1 rounded focus-ring"><i data-lucide="trash-2" class="w-[14px] h-[14px] pointer-events-none"></i></button>
      </div>
      <div class="flex items-center gap-1.5 mt-auto w-full justify-end">
-      <button type="button" class="goal-btn-minus w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xl transition-colors pb-0.5 pointer-events-auto touch-manipulation focus-ring">-</button>
-      <button type="button" class="goal-btn-plus w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xl transition-colors pb-0.5 pointer-events-auto touch-manipulation focus-ring">+</button>
+      <button type="button" class="goal-btn-minus w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xl pb-0.5 pointer-events-auto touch-manipulation focus-ring">-</button>
+      <button type="button" class="goal-btn-plus w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xl pb-0.5 pointer-events-auto touch-manipulation focus-ring">+</button>
      </div>
     </div>
    </div>
@@ -682,9 +856,10 @@
     <td class="px-4 py-3"><button type="button" class="toggle-assignment-status inline-flex rounded-full bg-white/5 text-white px-2.5 py-1 text-[10px] font-bold border hover:bg-white/10 transition focus-ring assignment-status whitespace-nowrap">Not Started</button></td>
     <td class="px-4 py-3 relative">
      <div class="flex justify-center">
-      <button type="button" class="assignment-menu-btn focus-ring w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
-      <div class="assignment-menu hidden absolute right-0 top-full mt-2 bg-[#0f0f0f] border border-white/15 rounded-xl shadow-lg overflow-hidden z-40 min-w-[140px]">
-       <button type="button" class="edit-assignment w-full px-4 py-2 text-left text-xs hover:bg-white/10 flex items-center gap-2"><i data-lucide="edit-2" class="w-3 h-3"></i>Edit</button> <button type="button" class="delete-assignment w-full px-4 py-2 text-left text-xs hover:bg-white/10 flex items-center gap-2 text-[#d98b7f]"><i data-lucide="trash-2" class="w-3 h-3"></i>Delete</button>
+      <button type="button" class="assignment-menu-btn focus-ring w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center"><i data-lucide="more-horizontal" class="w-4 h-4 pointer-events-none"></i></button>
+      <div class="assignment-menu dropdown-menu hidden fixed bg-[#161616]/95 backdrop-blur-xl border border-white/15 rounded-xl shadow-2xl p-1 z-[90] min-w-[136px]">
+       <button type="button" class="edit-assignment w-full px-3 py-2 rounded-lg text-left text-xs font-medium hover:bg-white/10 flex items-center gap-2 transition"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i>Edit</button>
+       <button type="button" class="delete-assignment w-full px-3 py-2 rounded-lg text-left text-xs font-medium hover:bg-white/10 flex items-center gap-2 text-[#d98b7f] transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i>Delete</button>
       </div>
      </div></td>
    </tr>
@@ -699,9 +874,10 @@
     <td class="px-4 py-3 text-right"><button type="button" class="toggle-exam-status text-xs font-semibold text-[#8f8f89] hover:text-[#d7e0d0] transition focus-ring exam-status whitespace-nowrap">Mark Complete</button></td>
     <td class="px-4 py-3 relative">
      <div class="flex justify-center">
-      <button type="button" class="exam-menu-btn focus-ring w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
-      <div class="exam-menu hidden absolute right-0 top-full mt-2 bg-[#0f0f0f] border border-white/15 rounded-xl shadow-lg overflow-hidden z-40 min-w-[140px]">
-       <button type="button" class="edit-exam w-full px-4 py-2 text-left text-xs hover:bg-white/10 flex items-center gap-2"><i data-lucide="edit-2" class="w-3 h-3"></i>Edit</button> <button type="button" class="delete-exam w-full px-4 py-2 text-left text-xs hover:bg-white/10 flex items-center gap-2 text-[#d98b7f]"><i data-lucide="trash-2" class="w-3 h-3"></i>Delete</button>
+      <button type="button" class="exam-menu-btn focus-ring w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center"><i data-lucide="more-horizontal" class="w-4 h-4 pointer-events-none"></i></button>
+      <div class="exam-menu dropdown-menu hidden fixed bg-[#161616]/95 backdrop-blur-xl border border-white/15 rounded-xl shadow-2xl p-1 z-[90] min-w-[136px]">
+       <button type="button" class="edit-exam w-full px-3 py-2 rounded-lg text-left text-xs font-medium hover:bg-white/10 flex items-center gap-2 transition"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i>Edit</button>
+       <button type="button" class="delete-exam w-full px-3 py-2 rounded-lg text-left text-xs font-medium hover:bg-white/10 flex items-center gap-2 text-[#d98b7f] transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i>Delete</button>
       </div>
      </div></td>
    </tr>
@@ -715,7 +891,9 @@
         "https://i.ibb.co/zVd70NCr/a3.png",
         "https://i.ibb.co/Ld1Vtb30/g3.png"
     ];
+    COURSE_IMAGE_URLS.forEach(url => { const img = new Image(); img.src = url; });
 
+    const LOCAL_CACHE_KEY = 'student_os_records_v1';
     const state = { records: [], currentView: 'today', selectedCourseId: null, editingRecord: null, editingAction: null, busyIds: new Set() };
     
     // --- SUPABASE CLOUD DATABASE INTEGRATION ---
@@ -723,60 +901,312 @@
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlibGN4eml3dmNmc3R6bmxjbGl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyODY2MTksImV4cCI6MjA5Nzg2MjYxOX0.-e44e500H4fiw4Mwt2_-c3IxCruASD3e8pGSARnz3yI'; 
     const supabaseClient = window.supabase ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 
+    function setSyncStatus(text, isError = false) {
+        const el = document.getElementById('sync-status');
+        if (!el) return;
+        el.textContent = text;
+        el.className = isError
+            ? 'hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold bg-[#2a1715] text-[#f0c0b8] border border-[#d98b7f]/30'
+            : 'hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold bg-[#1d241e] text-[#9fb398] border border-white/10';
+    }
+
+    function showToast(message, isError = false) {
+        const el = document.getElementById('toast-banner');
+        if (!el) return;
+        el.textContent = message;
+        el.className = isError
+            ? 'fixed bottom-24 lg:bottom-6 right-5 z-[80] max-w-sm rounded-2xl px-4 py-3 text-xs font-semibold shadow-2xl border bg-[#2a1715] text-[#f0c0b8] border-[#d98b7f]/40'
+            : 'fixed bottom-24 lg:bottom-6 right-5 z-[80] max-w-sm rounded-2xl px-4 py-3 text-xs font-semibold shadow-2xl border bg-[#1d241e] text-[#d7e0d0] border-white/15';
+        el.classList.remove('hidden');
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => el.classList.add('hidden'), 4000);
+    }
+
+    function saveLocalCache() {
+        try { localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(state.records)); } catch (_) {}
+    }
+
+    function loadLocalCache() {
+        try {
+            const raw = localStorage.getItem(LOCAL_CACHE_KEY);
+            if (!raw) return [];
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (_) { return []; }
+    }
+
+    function sanitizePayload(data) {
+        const clean = { ...data };
+        delete clean.__backendId;
+        delete clean.id;
+        if (!clean.due_date) clean.due_date = null;
+        return clean;
+    }
+
     async function fetchRecords() {
-        if (!supabaseClient) return;
+        if (!supabaseClient) {
+            state.records = loadLocalCache();
+            setSyncStatus('Offline (Local)', true);
+            render();
+            return;
+        }
         try {
             const { data, error } = await supabaseClient.from('records').select('*').order('created_at', { ascending: false });
             if (error) throw error;
-            state.records = data.map(item => ({ ...item, __backendId: item.id }));
-            if (typeof render === 'function') render();
+            state.records = (data || []).map(item => ({ ...item, __backendId: item.id }));
+            const syncedKeyRow = state.records.find(r => r.type === 'config' && r.title === 'gemini_api_key');
+            try {
+                if (syncedKeyRow && syncedKeyRow.description) {
+                    localStorage.setItem(GEMINI_KEY_STORAGE, syncedKeyRow.description.trim());
+                } else {
+                    localStorage.removeItem(GEMINI_KEY_STORAGE);
+                }
+            } catch (_) {}
+            saveLocalCache();
+            setSyncStatus('Synced');
+            render();
         } catch (error) {
             console.error('Error fetching data:', error);
+            state.records = loadLocalCache();
+            setSyncStatus('Offline (Local)', true);
+            showToast('Cloud sync failed: ' + (error.message || 'Using local backup'), true);
+            render();
         }
     }
 
     const mySdk = {
         async create(data) {
-            if (!supabaseClient) return {isOk:true};
+            const payload = sanitizePayload(data);
+            if (!supabaseClient) {
+                const localId = (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'local_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+                const localItem = { ...payload, id: localId, __backendId: localId };
+                state.records.unshift(localItem);
+                saveLocalCache();
+                render();
+                return { isOk: true };
+            }
             try {
-                const { error } = await supabaseClient.from('records').insert([data]);
+                const { error } = await supabaseClient.from('records').insert([payload]);
                 if (error) throw error;
                 await fetchRecords();
-                return {isOk:true};
-            } catch(e) { console.error(e); return {isError:true}; }
+                return { isOk: true };
+            } catch (e) {
+                console.error(e);
+                return { isError: true, errorMessage: e.message || 'Could not save to Supabase.' };
+            }
         },
         async update(item) {
-            if (!supabaseClient) return {isOk:true};
+            const payload = sanitizePayload(item);
+            if (!supabaseClient) {
+                const idx = state.records.findIndex(r => r.__backendId === item.__backendId);
+                if (idx !== -1) state.records[idx] = { ...item, ...payload };
+                saveLocalCache();
+                render();
+                return { isOk: true };
+            }
             try {
-                const { __backendId, id, ...updateData } = item;
-                const { error } = await supabaseClient.from('records').update(updateData).eq('id', item.__backendId);
+                const { error } = await supabaseClient.from('records').update(payload).eq('id', item.__backendId);
                 if (error) throw error;
                 await fetchRecords();
-                return {isOk:true};
-            } catch(e) { console.error(e); return {isError:true}; }
+                return { isOk: true };
+            } catch (e) {
+                console.error(e);
+                return { isError: true, errorMessage: e.message || 'Could not update in Supabase.' };
+            }
         },
         async delete(item) {
-            if (!supabaseClient) return {isOk:true};
+            if (!supabaseClient) {
+                state.records = state.records.filter(r => r.__backendId !== item.__backendId);
+                saveLocalCache();
+                render();
+                return { isOk: true };
+            }
             try {
                 const { error } = await supabaseClient.from('records').delete().eq('id', item.__backendId);
                 if (error) throw error;
                 await fetchRecords();
-                return {isOk:true};
-            } catch(e) { console.error(e); return {isError:true}; }
+                return { isOk: true };
+            } catch (e) {
+                console.error(e);
+                return { isError: true, errorMessage: e.message || 'Could not delete from Supabase.' };
+            }
         }
     };
 
     function byType(type){return state.records.filter(r => r.type === type);}
     
-    // Safely mapping legacy records if needed
     function getAssignments() { return state.records.filter(r => r.type === 'assignment' || (r.type === 'task' && r.time_slot === 'Assignment')); }
     function getTasks() { return state.records.filter(r => r.type === 'task' && r.time_slot !== 'Assignment' && r.category !== 'exam'); }
     function getExams() { return state.records.filter(r => r.type === 'exam' || (r.type === 'task' && r.category === 'exam')); }
+
+    function getCourseTitle(courseRef) {
+        if (!courseRef) return '';
+        const byId = byType('course').find(c => c.__backendId === courseRef);
+        if (byId) return byId.title || 'Untitled Course';
+        return courseRef;
+    }
+
+    function getTodayDateKey() {
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getLocalDateKey(isoStr) {
+        if (!isoStr) return '';
+        const d = new Date(isoStr);
+        if (Number.isNaN(d.getTime())) return '';
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getWeekStartKey() {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+        d.setDate(d.getDate() - d.getDay()); // Sunday of current week
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getYesterdayDateKey() {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+        d.setDate(d.getDate() - 1);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getPreviousWeekRange() {
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+        start.setDate(start.getDate() - start.getDay() - 7); // Previous Sunday
+        const end = new Date(start);
+        end.setDate(start.getDate() + 6); // Previous Saturday
+        const fmt = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        return { startKey: fmt(start), endKey: fmt(end), startDate: start, endDate: end };
+    }
+
+    function buildFocusReportHTML(scope) {
+        const all = byType('focus').filter(r => r.category === scope);
+        let items = [];
+        let title = '';
+        let periodLabel = '';
+
+        if (scope === 'today') {
+            const yKey = getYesterdayDateKey();
+            const yDate = new Date();
+            yDate.setDate(yDate.getDate() - 1);
+            items = all.filter(r => getLocalDateKey(r.created_at) === yKey);
+            title = "Yesterday's Focus Report";
+            periodLabel = yDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+        } else {
+            const prev = getPreviousWeekRange();
+            items = all.filter(r => {
+                const k = getLocalDateKey(r.created_at);
+                return k >= prev.startKey && k <= prev.endKey;
+            });
+            title = "Last Week's Focus Report";
+            periodLabel = prev.startDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ' – ' + prev.endDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+        }
+
+        const done = items.filter(r => r.completed).length;
+        const total = items.length;
+        const pct = total ? Math.round((done / total) * 100) : 0;
+        const esc = (s) => String(s || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
+        const listHtml = items.length
+            ? items.slice(0, 8).map(i => `<div class="flex items-center gap-2 py-0.5"><span class="w-1.5 h-1.5 rounded-full ${i.completed ? 'bg-[#86efac]' : 'bg-[#d98b7f]'} shrink-0"></span><span class="truncate ${i.completed ? 'line-through text-[#8f8f89]' : ''}">${esc(i.title)}</span></div>`).join('')
+            : `<p class="text-[#8f8f89]">No focus items recorded for ${periodLabel}.</p>`;
+
+        return `
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] uppercase tracking-[0.14em] font-bold text-[#9fb398]">${title}</span>
+            <span class="text-[11px] font-bold text-[#d7e0d0]">${pct}%</span>
+          </div>
+          <p class="text-[10px] text-[#8f8f89] mb-2">${periodLabel} • ${done}/${total} completed</p>
+          <div class="h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+            <div class="h-full bg-[#d7e0d0] rounded-full" style="width:${pct}%"></div>
+          </div>
+          <div class="space-y-0.5 text-[11px] max-h-36 overflow-y-auto">${listHtml}</div>
+        `;
+    }
+
+    function bindFocusReportHover(btnId, scope) {
+        const btn = document.getElementById(btnId);
+        const pop = document.getElementById('focus-report-popover');
+        if (!btn || !pop) return;
+        const show = () => {
+            pop.innerHTML = buildFocusReportHTML(scope);
+            pop.classList.remove('hidden');
+            const rect = btn.getBoundingClientRect();
+            const popRect = pop.getBoundingClientRect();
+            const left = Math.max(12, Math.min(window.innerWidth - popRect.width - 12, rect.right - popRect.width));
+            const openBelow = (rect.top - popRect.height - 10) < 12;
+            const top = openBelow ? (rect.bottom + 8) : (rect.top - popRect.height - 8);
+            pop.style.left = left + 'px';
+            pop.style.top = top + 'px';
+        };
+        const hide = () => pop.classList.add('hidden');
+        btn.addEventListener('mouseenter', show);
+        btn.addEventListener('mouseleave', hide);
+        btn.addEventListener('focus', show);
+        btn.addEventListener('blur', hide);
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (pop.classList.contains('hidden')) show(); else hide();
+        });
+    }
+
+    function getHabitDates(item) {
+        if (item.category && typeof item.category === 'string') {
+            return item.category.split(',').map(s => s.trim()).filter(Boolean);
+        }
+        return item.completed ? [getTodayDateKey()] : [];
+    }
+
+    function isHabitDoneToday(item) {
+        return getHabitDates(item).includes(getTodayDateKey());
+    }
+
+    function getHabitStreak(item) {
+        const dates = new Set(getHabitDates(item));
+        if (dates.size === 0) return 0;
+        let streak = 0;
+        const cursor = new Date();
+        cursor.setHours(0, 0, 0, 0);
+        const todayKey = getTodayDateKey();
+        if (!dates.has(todayKey)) {
+            cursor.setDate(cursor.getDate() - 1);
+        }
+        while (true) {
+            const key = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, '0')}-${String(cursor.getDate()).padStart(2, '0')}`;
+            if (dates.has(key)) {
+                streak++;
+                cursor.setDate(cursor.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+        return streak;
+    }
 
     function formatDate(v){if(!v)return ''; const d=new Date(v); return Number.isNaN(d.getTime())?'':d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}
     function setEmpty(id,show){const e = document.getElementById(id); if(e) e.classList.toggle('hidden',!show);}
     function getCourseActions(id){return state.records.filter(r=>r.type==='course_action'&&r.parent_course===id)}
     function getProgress(id){const a=getCourseActions(id),done=a.filter(x=>x.completed).length;return{total:a.length,done,percent:a.length?Math.round(done/a.length*100):0}}
+
+    function playChime() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+            osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.6);
+        } catch (_) {}
+    }
 
     window.setView = function(view){
       state.currentView=view;
@@ -791,13 +1221,21 @@
       const tasks = getTasks();
       const habits = byType('habit');
       const courses = byType('course');
-      document.getElementById('stat-tasks').textContent=tasks.length;
+      document.getElementById('stat-tasks').textContent=tasks.filter(t=>!t.completed).length;
       document.getElementById('stat-complete').textContent=tasks.filter(t=>t.completed).length + getAssignments().filter(a=>a.completed).length + getExams().filter(e=>e.completed).length;
       document.getElementById('stat-habits').textContent=habits.length;
       document.getElementById('stat-courses').textContent=courses.length;
     }
 
-    // New Today's Deadlines Rendering (Horizontal List items)
+    function updateTodayEmptyState() {
+      const tasks = getTasks();
+      const assignments = getAssignments();
+      const exams = getExams();
+      const activeTabId = document.querySelector('.today-tab.active')?.dataset.target || 'tt-tasks';
+      const targetItems = activeTabId === 'tt-tasks' ? tasks : activeTabId === 'tt-assignments' ? assignments : exams;
+      setEmpty('tt-empty', targetItems.filter(t => !t.completed).length === 0);
+    }
+
     function renderTodayDeadline(containerId, items, type) {
         const c = document.getElementById(containerId);
         c.innerHTML = '';
@@ -805,22 +1243,48 @@
             const div = document.createElement('div');
             div.className = 'flex flex-row items-center justify-between py-2.5 border-b border-white/5 last:border-0 group w-full';
             
-            const left = document.createElement('div');
-            left.className = 'flex items-center gap-3 min-w-0 flex-1 mr-2';
+            const left = document.createElement('button');
+            left.type = 'button';
+            left.className = 'flex items-center gap-3 min-w-0 flex-1 mr-2 text-left hover:text-[#d7e0d0] transition cursor-pointer focus-ring rounded-lg py-0.5';
+            left.onclick = () => {
+                if (type === 'assignment') {
+                    setView('tracker');
+                    const tab = document.querySelector('.tracker-tab[data-tracker="assignments-card"]');
+                    if (tab) tab.click();
+                } else if (type === 'exam') {
+                    setView('tracker');
+                    const tab = document.querySelector('.tracker-tab[data-tracker="exams-card"]');
+                    if (tab) tab.click();
+                } else {
+                    const linkedCourse = item.parent_course ? byType('course').find(c => c.__backendId === item.parent_course || c.title === item.parent_course) : null;
+                    if (linkedCourse) {
+                        setView('courses');
+                        openCourseDetail(linkedCourse.__backendId);
+                    } else {
+                        openEditModal(item);
+                    }
+                }
+            };
             
             let icon = type === 'assignment' ? 'pen-line' : type === 'exam' ? 'file-text' : 'list';
-            left.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 text-[#8f8f89] shrink-0 pointer-events-none"></i> <span class="text-sm font-medium truncate ${item.completed ? 'line-through text-[#8f8f89]' : 'text-[#f5f5f0]'}">${item.title || 'Untitled'}</span>`;
+            const iconEl = document.createElement('i');
+            iconEl.setAttribute('data-lucide', icon);
+            iconEl.className = 'w-4 h-4 text-[#8f8f89] shrink-0 pointer-events-none';
+            const titleEl = document.createElement('span');
+            titleEl.className = `text-sm font-medium truncate ${item.completed ? 'line-through text-[#8f8f89]' : 'text-[#f5f5f0]'}`;
+            titleEl.textContent = item.title || 'Untitled';
+            left.appendChild(iconEl);
+            left.appendChild(titleEl);
             
             const right = document.createElement('div');
             right.className = 'flex items-center gap-2 shrink-0 ml-2';
             
-            // Render Prio/Course pill based on type
             const meta = document.createElement('span');
             meta.className = 'hidden sm:inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-white/5 text-[#8f8f89]';
-            meta.textContent = type === 'task' ? 'Priority' : (item.parent_course || 'No Course');
+            meta.textContent = type === 'task' ? (item.due_date ? formatDate(item.due_date) : 'Task') : (getCourseTitle(item.parent_course) || 'No Course');
             
-            // Status Pill
             const status = document.createElement('button');
+            status.type = 'button';
             let currentStatus = item.day || 'Not started';
             if (item.completed) currentStatus = 'Completed';
             
@@ -832,7 +1296,10 @@
             };
             
             status.className = `px-2 py-0.5 rounded-full text-[10px] font-bold border flex items-center gap-1.5 hover:brightness-110 transition focus-ring ${statusColors[currentStatus] || statusColors['Not started']}`;
-            status.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-current"></span> ${currentStatus}`;
+            const dot = document.createElement('span');
+            dot.className = 'w-1.5 h-1.5 rounded-full bg-current';
+            status.appendChild(dot);
+            status.appendChild(document.createTextNode(' ' + currentStatus));
             
             status.onclick = async () => {
                  if (state.busyIds.has(item.__backendId)) return;
@@ -841,11 +1308,11 @@
                  const statuses = type === 'task' ? ['Not started', 'In Progress', 'Completed'] : ['Not started', 'In Progress', 'Completed', 'Submitted'];
                  let next = statuses[(statuses.indexOf(currentStatus) + 1) % statuses.length];
                  
-                 item.day = next;
-                 item.completed = (next === 'Completed' || next === 'Submitted');
+                 const updated = { ...item, day: next, completed: (next === 'Completed' || next === 'Submitted') };
                  status.textContent = '...';
-                 await mySdk.update(item);
+                 const r = await mySdk.update(updated);
                  state.busyIds.delete(item.__backendId);
+                 if (r.isError) { showToast(r.errorMessage, true); render(); }
             };
 
             right.appendChild(meta);
@@ -856,14 +1323,16 @@
         });
     }
 
-    // New Focus Items Rendering
     function renderFocusList(containerId, items) {
         const c = document.getElementById(containerId);
         c.innerHTML = '';
         items.forEach(item => {
             const div = document.createElement('div');
-            div.className = 'flex items-start gap-2.5';
+            div.className = 'flex items-start justify-between gap-2.5 group';
             
+            const left = document.createElement('div');
+            left.className = 'flex items-start gap-2.5 min-w-0 flex-1';
+
             const cb = document.createElement('input');
             cb.type = 'checkbox';
             cb.className = 'focus-cb shrink-0 mt-0.5';
@@ -873,17 +1342,32 @@
                 if (state.busyIds.has(item.__backendId)) return;
                 state.busyIds.add(item.__backendId);
                 cb.disabled = true;
-                item.completed = !item.completed;
-                await mySdk.update(item);
+                const r = await mySdk.update({ ...item, completed: !item.completed });
                 state.busyIds.delete(item.__backendId);
+                if (r.isError) { showToast(r.errorMessage, true); render(); }
             };
 
             const span = document.createElement('span');
-            span.className = `text-sm font-medium ${item.completed ? 'line-through opacity-50' : 'opacity-90'}`;
+            span.className = `text-sm font-medium break-words ${item.completed ? 'line-through opacity-50' : 'opacity-90'}`;
             span.textContent = item.title;
 
-            div.appendChild(cb);
-            div.appendChild(span);
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'opacity-40 hover:opacity-100 text-xs px-1.5 py-0.5 rounded transition shrink-0';
+            delBtn.textContent = '×';
+            delBtn.title = 'Delete focus item';
+            delBtn.onclick = async () => {
+                if (state.busyIds.has(item.__backendId)) return;
+                state.busyIds.add(item.__backendId);
+                const r = await mySdk.delete(item);
+                state.busyIds.delete(item.__backendId);
+                if (r.isError) showToast(r.errorMessage, true);
+            };
+
+            left.appendChild(cb);
+            left.appendChild(span);
+            div.appendChild(left);
+            div.appendChild(delBtn);
             c.appendChild(div);
         });
     }
@@ -895,7 +1379,7 @@
         if (!title) return;
         input.disabled = true;
         
-        await mySdk.create({
+        const r = await mySdk.create({
             type: 'focus',
             title: title,
             category: category,
@@ -903,20 +1387,44 @@
             created_at: new Date().toISOString()
         });
         
-        input.value = '';
         input.disabled = false;
+        if (r.isOk) {
+            input.value = '';
+        } else {
+            showToast(r.errorMessage || 'Could not save focus item.', true);
+        }
         input.focus();
     };
 
     function renderCoursePreview(courses){
       const c=document.getElementById('course-preview-list');
       c.innerHTML='';
-      courses.slice(0,4).forEach(course=>{
+      courses.forEach(course=>{
         const p=getProgress(course.__backendId);
         const btn=document.createElement('button');
         btn.type='button';
         btn.className='w-full text-left rounded-xl bg-white/[0.03] border border-white/5 px-3 py-3 hover:bg-white/[0.05] transition focus-ring';
-        btn.innerHTML=`<div class="flex justify-between gap-3"><p class="text-sm font-semibold truncate">${course.title||'Untitled course'}</p><p class="text-xs text-[#d7e0d0] font-bold">${p.percent}%</p></div><div class="h-1.5 bg-[#2a2a2a] rounded-full overflow-hidden mt-3"><div class="h-full rounded-full bg-[#d7e0d0]" style="width:${p.percent}%"></div></div>`;
+
+        const top=document.createElement('div');
+        top.className='flex justify-between gap-3';
+        const titleP=document.createElement('p');
+        titleP.className='text-sm font-semibold truncate';
+        titleP.textContent=course.title||'Untitled course';
+        const pctP=document.createElement('p');
+        pctP.className='text-xs text-[#d7e0d0] font-bold';
+        pctP.textContent=p.percent+'%';
+        top.appendChild(titleP);
+        top.appendChild(pctP);
+
+        const barWrap=document.createElement('div');
+        barWrap.className='h-1.5 bg-[#2a2a2a] rounded-full overflow-hidden mt-3';
+        const barFill=document.createElement('div');
+        barFill.className='h-full rounded-full bg-[#d7e0d0]';
+        barFill.style.width=p.percent+'%';
+        barWrap.appendChild(barFill);
+
+        btn.appendChild(top);
+        btn.appendChild(barWrap);
         btn.onclick=()=>{setView('courses');openCourseDetail(course.__backendId)};
         c.appendChild(btn);
       });
@@ -955,21 +1463,39 @@
       node.querySelector('[data-template-id="record-description"]').textContent=item.description||'';
       let meta='';
       if(item.type==='task') meta=item.due_date?'Due '+formatDate(item.due_date):'No due date';
-      if(item.type==='habit') meta=item.completed?'Completed today':'Build the streak';
+      if(item.type==='habit') {
+          const doneToday = isHabitDoneToday(item);
+          const streak = getHabitStreak(item);
+          meta = (doneToday ? 'Completed today' : 'Not done today') + (streak > 0 ? ` • 🔥 ${streak} day streak` : '');
+      }
       node.querySelector('[data-template-id="record-meta"]').textContent=meta;
 
       const toggle=node.querySelector('.toggle-record');
       if(item.type!=='task'&&item.type!=='habit') toggle.classList.add('hidden');
       else{
-        toggle.classList.toggle('bg-[#d7e0d0]',!!item.completed);
+        const isDone = item.type === 'habit' ? isHabitDoneToday(item) : !!item.completed;
+        toggle.classList.toggle('bg-[#d7e0d0]', isDone);
+        toggle.classList.toggle('border-[#d7e0d0]', isDone);
+        toggle.classList.toggle('text-[#111]', isDone);
+        toggle.classList.toggle('text-[#d7e0d0]', !isDone);
         toggle.onclick=async()=>{
           if(state.busyIds.has(item.__backendId))return;
           state.busyIds.add(item.__backendId);
           toggle.classList.add('opacity-50');
-          item.completed=!item.completed;
-          await mySdk.update(item);
+          let updated;
+          if (item.type === 'habit') {
+              const todayKey = getTodayDateKey();
+              let dates = getHabitDates(item);
+              const done = dates.includes(todayKey);
+              dates = done ? dates.filter(d => d !== todayKey) : [...dates, todayKey];
+              updated = { ...item, completed: !done, category: dates.slice(-60).join(',') };
+          } else {
+              updated = { ...item, completed: !item.completed };
+          }
+          const r = await mySdk.update(updated);
           state.busyIds.delete(item.__backendId);
           toggle.classList.remove('opacity-50');
+          if (r.isError) showToast(r.errorMessage, true);
         };
       }
 
@@ -981,10 +1507,30 @@
         if(state.busyIds.has(item.__backendId))return;
         state.busyIds.add(item.__backendId);
         confirm.textContent='Deleting...';
-        await mySdk.delete(item);
+        const r = await mySdk.delete(item);
         state.busyIds.delete(item.__backendId);
+        if (r.isError) { confirm.textContent='Confirm'; showToast(r.errorMessage, true); }
       };
       return node;
+    }
+
+    const goalSyncTimers = new Map();
+
+    function syncGoalAmountDebounced(item) {
+      const id = item.__backendId;
+      if (goalSyncTimers.has(id)) clearTimeout(goalSyncTimers.get(id));
+      goalSyncTimers.set(id, setTimeout(async () => {
+        goalSyncTimers.delete(id);
+        if (!supabaseClient) return;
+        try {
+          const { error } = await supabaseClient.from('records').update({ amount: item.amount }).eq('id', id);
+          if (error) throw error;
+          setSyncStatus('Synced');
+        } catch (e) {
+          console.error(e);
+          showToast(e.message || 'Could not sync counter.', true);
+        }
+      }, 450));
     }
 
     function createGoalElement(item) {
@@ -997,59 +1543,91 @@
       node.querySelector('.goal-icon').textContent = item.time_slot || '🎯'; 
       node.querySelector('.goal-title').textContent = item.title;
       
-      const current = item.amount || 0;
-      const target = item.category || 10;
-      node.querySelector('.goal-progress').textContent = `${current}/${target}`;
-
+      const target = Math.max(1, parseInt(item.category, 10) || 10);
+      let current = Math.min(target, Math.max(0, Number(item.amount) || 0));
+      const progressEl = node.querySelector('.goal-progress');
       const btnPlus = node.querySelector('.goal-btn-plus');
       const btnMinus = node.querySelector('.goal-btn-minus');
       const btnReset = node.querySelector('.goal-reset');
+      const btnDelete = node.querySelector('.goal-delete');
 
-      const updateCounter = async (delta, e) => {
-          if (state.busyIds.has(item.__backendId)) return;
-          state.busyIds.add(item.__backendId);
-          
-          let newAmount = (item.amount || 0) + delta;
-          if (newAmount < 0) newAmount = 0;
-          
-          item.amount = newAmount;
-          node.querySelector('.goal-progress').textContent = `${newAmount}/${target}`;
-          
-          if (delta > 0) {
-              const floatEl = document.createElement('div');
-              floatEl.className = `goal-float-text text-current`;
-              floatEl.textContent = '+1';
-              const rect = btnPlus.getBoundingClientRect();
-              const cardRect = node.getBoundingClientRect();
-              floatEl.style.left = (rect.left - cardRect.left) + 'px';
-              floatEl.style.top = (rect.top - cardRect.top - 20) + 'px';
-              node.appendChild(floatEl);
-              setTimeout(() => floatEl.remove(), 800);
-          }
+      const refreshGoalUI = () => {
+          progressEl.textContent = `${current}/${target}`;
+          btnMinus.style.opacity = current <= 0 ? '0.35' : '1';
+          btnPlus.style.opacity = current >= target ? '0.35' : '1';
+      };
+      refreshGoalUI();
 
-          await mySdk.update(item);
-          state.busyIds.delete(item.__backendId);
+      const updateCounter = (delta) => {
+          const nextAmount = Math.min(target, Math.max(0, current + delta));
+          if (nextAmount === current) return;
+
+          current = nextAmount;
+          item.amount = nextAmount;
+          saveLocalCache();
+          refreshGoalUI();
+
+          progressEl.classList.remove('pop');
+          void progressEl.offsetWidth;
+          progressEl.classList.add('pop');
+          clearTimeout(progressEl._popTimer);
+          progressEl._popTimer = setTimeout(() => progressEl.classList.remove('pop'), 160);
+
+          const anchorBtn = delta > 0 ? btnPlus : btnMinus;
+          const floatEl = document.createElement('div');
+          floatEl.className = 'goal-float-text text-current';
+          floatEl.textContent = delta > 0 ? '+1' : '-1';
+          const rect = anchorBtn.getBoundingClientRect();
+          const cardRect = node.getBoundingClientRect();
+          floatEl.style.left = (rect.left - cardRect.left + 4) + 'px';
+          floatEl.style.top = (rect.top - cardRect.top - 16) + 'px';
+          node.appendChild(floatEl);
+          setTimeout(() => floatEl.remove(), 600);
+
+          syncGoalAmountDebounced(item);
       };
 
-      btnPlus.onclick = (e) => updateCounter(1, e);
-      btnMinus.onclick = (e) => updateCounter(-1, e);
-      btnReset.onclick = async (e) => {
-          if (state.busyIds.has(item.__backendId)) return;
-          if (!confirm('Reset counter to zero?')) return;
-          state.busyIds.add(item.__backendId);
+      btnPlus.onclick = () => updateCounter(1);
+      btnMinus.onclick = () => updateCounter(-1);
+
+      btnReset.onclick = () => {
+          if (current === 0) return;
+          current = 0;
           item.amount = 0;
-          node.querySelector('.goal-progress').textContent = `0/${target}`;
-          await mySdk.update(item);
-          state.busyIds.delete(item.__backendId);
+          saveLocalCache();
+          refreshGoalUI();
+          syncGoalAmountDebounced(item);
+          showToast('Counter reset to 0');
       };
 
       node.querySelector('.goal-edit').onclick = () => openEditModal(item);
-      node.querySelector('.goal-delete').onclick = async () => {
+
+      let deleteArmed = false;
+      let deleteArmTimer = null;
+      btnDelete.onclick = async () => {
+          if (!deleteArmed) {
+              deleteArmed = true;
+              btnDelete.classList.add('text-red-600', 'bg-red-500/15');
+              btnDelete.title = 'Click again to confirm delete';
+              showToast('Click trash again to delete counter');
+              clearTimeout(deleteArmTimer);
+              deleteArmTimer = setTimeout(() => {
+                  deleteArmed = false;
+                  btnDelete.classList.remove('text-red-600', 'bg-red-500/15');
+                  btnDelete.title = 'Delete counter';
+              }, 3000);
+              return;
+          }
+          clearTimeout(deleteArmTimer);
+          if (goalSyncTimers.has(item.__backendId)) {
+              clearTimeout(goalSyncTimers.get(item.__backendId));
+              goalSyncTimers.delete(item.__backendId);
+          }
           if (state.busyIds.has(item.__backendId)) return;
-          if (!confirm('Delete this counter?')) return;
           state.busyIds.add(item.__backendId);
-          await mySdk.delete(item);
+          const r = await mySdk.delete(item);
           state.busyIds.delete(item.__backendId);
+          if (r.isError) showToast(r.errorMessage, true);
       };
 
       return node;
@@ -1061,15 +1639,43 @@
       node.querySelector('[data-template-id="action-description"]').textContent=item.description||'';
       node.querySelector('[data-template-id="action-meta"]').textContent=item.due_date?'Due '+formatDate(item.due_date):'No due date';
       const toggle=node.querySelector('.toggle-action');
-      if(item.completed){toggle.classList.add('bg-[#d7e0d0]');node.classList.add('opacity-70')}
-      toggle.onclick=async()=>{
-        if(state.busyIds.has(item.__backendId))return;
-        state.busyIds.add(item.__backendId);
-        toggle.classList.add('opacity-50');
-        item.completed=!item.completed;
-        await mySdk.update(item);
-        state.busyIds.delete(item.__backendId);
-        toggle.classList.remove('opacity-50');
+      const applyActionVisual = (done) => {
+        toggle.classList.toggle('bg-[#d7e0d0]', !!done);
+        toggle.classList.toggle('border-[#d7e0d0]', !!done);
+        node.classList.toggle('opacity-70', !!done);
+      };
+      applyActionVisual(item.completed);
+
+      toggle.onclick = async () => {
+        item.completed = !item.completed;
+        applyActionVisual(item.completed);
+        saveLocalCache();
+
+        if (state.selectedCourseId) {
+          const p = getProgress(state.selectedCourseId);
+          document.getElementById('detail-progress-percent').textContent = p.percent + '%';
+          document.getElementById('detail-progress-ring').style.setProperty('--progress', p.percent + '%');
+        }
+        const allActions = state.records.filter(r => r.type === 'course_action');
+        const doneCount = allActions.filter(a => a.completed).length;
+        document.getElementById('overall-progress-value').textContent = (allActions.length ? Math.round(doneCount / allActions.length * 100) : 0) + '%';
+        document.getElementById('overall-progress-meta').textContent = doneCount + '/' + allActions.length + ' actions';
+        renderCoursePreview(byType('course'));
+        syncList('courses-list', byType('course'), createCourseElement);
+        if (window.lucide) lucide.createIcons();
+
+        if (!supabaseClient) return;
+        try {
+          const { error } = await supabaseClient.from('records').update({ completed: item.completed }).eq('id', item.__backendId);
+          if (error) throw error;
+          setSyncStatus('Synced');
+        } catch (e) {
+          item.completed = !item.completed;
+          applyActionVisual(item.completed);
+          saveLocalCache();
+          render();
+          showToast(e.message || 'Could not update action.', true);
+        }
       };
 
       node.querySelector('.edit-action').onclick=()=>openEditActionModal(item);
@@ -1080,8 +1686,9 @@
         if(state.busyIds.has(item.__backendId))return;
         state.busyIds.add(item.__backendId);
         confirm.textContent='Deleting...';
-        await mySdk.delete(item);
+        const r = await mySdk.delete(item);
         state.busyIds.delete(item.__backendId);
+        if (r.isError) { confirm.textContent='Confirm'; showToast(r.errorMessage, true); }
       };
       return node;
     }
@@ -1093,37 +1700,31 @@
       const exams = getExams();
       const courses = byType('course');
       const habits = byType('habit');
-      const focusToday = byType('focus').filter(r => r.category === 'today');
-      const focusWeek = byType('focus').filter(r => r.category === 'week');
+      const todayKey = getTodayDateKey();
+      const weekStartKey = getWeekStartKey();
+      const focusToday = byType('focus').filter(r => r.category === 'today' && getLocalDateKey(r.created_at) === todayKey);
+      const focusWeek = byType('focus').filter(r => r.category === 'week' && getLocalDateKey(r.created_at) >= weekStartKey);
       const goals = byType('goal');
 
-      // Main Today Deadlines
       renderTodayDeadline('tt-tasks', tasks.filter(t => !t.completed), 'task');
       renderTodayDeadline('tt-assignments', assignments.filter(t => !t.completed), 'assignment');
       renderTodayDeadline('tt-exams', exams.filter(t => !t.completed), 'exam');
-      
-      const activeTabId = document.querySelector('.today-tab.active')?.dataset.target || 'tt-tasks';
-      const targetItems = activeTabId === 'tt-tasks' ? tasks : activeTabId === 'tt-assignments' ? assignments : exams;
-      setEmpty('tt-empty', targetItems.filter(t => !t.completed).length === 0);
+      updateTodayEmptyState();
 
-      // Focus Lists
       renderFocusList('focus-today-list', focusToday);
       renderFocusList('focus-week-list', focusWeek);
 
-      // Previews
       renderCoursePreview(courses);
       syncList('habit-preview-list', habits.slice(0,4), createRecordElement);
       
       setEmpty('course-preview-empty', courses.length === 0);
       setEmpty('habit-empty', habits.length === 0);
       
-      // Courses & Habits Tabs
       syncList('courses-list', courses, createCourseElement);
       syncList('habits-list', habits, createRecordElement);
       setEmpty('courses-empty', courses.length === 0);
       setEmpty('habits-empty', habits.length === 0);
       
-      // Goals (Interactive Counters)
       syncList('goals-list', goals, createGoalElement);
       setEmpty('goals-empty', goals.length===0);
 
@@ -1133,8 +1734,10 @@
       
       if(state.selectedCourseId) renderSelectedCourse();
       renderTrackerTables(assignments, exams);
+      renderCalendar();
+      refreshDailyBriefing(false);
       
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     function renderTrackerTables(assignments, exams){
@@ -1150,13 +1753,53 @@
       items.forEach(item=>container.appendChild(createTrackerRow(item,type)));
     }
 
+    function positionFloatingMenu(btn, menu) {
+      const wasHidden = menu.classList.contains('hidden');
+      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+      if (!wasHidden) return;
+      menu.classList.remove('hidden');
+      const rect = btn.getBoundingClientRect();
+      const menuRect = menu.getBoundingClientRect();
+      const left = Math.max(12, Math.min(window.innerWidth - menuRect.width - 12, rect.right - menuRect.width));
+      const openUp = (rect.bottom + menuRect.height + 12) > window.innerHeight;
+      const top = openUp ? Math.max(12, rect.top - menuRect.height - 6) : (rect.bottom + 6);
+      menu.style.left = left + 'px';
+      menu.style.top = top + 'px';
+    }
+
+    function attachNotesHover(targetEl, notes) {
+      const text = (notes || '').trim();
+      if (!text) return;
+      targetEl.classList.add('border-b', 'border-dotted', 'border-white/35', 'cursor-help');
+      const tip = document.getElementById('notes-tooltip');
+      const body = document.getElementById('notes-tooltip-body');
+      const show = () => {
+        if (!tip || !body) return;
+        body.textContent = text;
+        tip.classList.remove('hidden');
+        const rect = targetEl.getBoundingClientRect();
+        const tipRect = tip.getBoundingClientRect();
+        const left = Math.max(12, Math.min(window.innerWidth - tipRect.width - 12, rect.left));
+        const openBelow = (rect.top - tipRect.height - 10) < 12;
+        const top = openBelow ? (rect.bottom + 8) : (rect.top - tipRect.height - 8);
+        tip.style.left = left + 'px';
+        tip.style.top = top + 'px';
+      };
+      const hide = () => { if (tip) tip.classList.add('hidden'); };
+      targetEl.addEventListener('mouseenter', show);
+      targetEl.addEventListener('mouseleave', hide);
+      targetEl.addEventListener('focus', show);
+      targetEl.addEventListener('blur', hide);
+      targetEl.tabIndex = 0;
+    }
+
     function createTrackerRow(item,type){
       const template=document.getElementById(type+'-row-template');
       const row=template.content.firstElementChild.cloneNode(true);
       const dueDate=item.due_date?new Date(item.due_date):null;
       let isOverdue=false;
       let timeLeft='—';
-      if(dueDate){
+      if(dueDate && !Number.isNaN(dueDate.getTime())){
         const now=new Date();
         const diffMs=dueDate-now;
         const dueCal=new Date(dueDate); dueCal.setHours(0,0,0,0);
@@ -1182,9 +1825,11 @@
       }
 
       if(type==='assignment'){
-        row.querySelector('.assignment-name').textContent=item.title||'Untitled';
-        row.querySelector('.assignment-course').textContent=item.parent_course||'—';
-        row.querySelector('.assignment-due').textContent=formatDate(item.due_date);
+        const assignNameEl = row.querySelector('.assignment-name');
+        assignNameEl.textContent = item.title || 'Untitled';
+        attachNotesHover(assignNameEl, item.description);
+        row.querySelector('.assignment-course').textContent=getCourseTitle(item.parent_course)||'—';
+        row.querySelector('.assignment-due').textContent=formatDate(item.due_date)||'—';
         const timeCell=row.querySelector('.assignment-time');
         timeCell.textContent=timeLeft;
         if(isOverdue)timeCell.classList.add('text-[#d98b7f]','font-bold');
@@ -1202,55 +1847,62 @@
           btn.className=`toggle-assignment-status inline-flex rounded-full bg-white/5 text-white px-2.5 py-1 text-[10px] font-bold border hover:bg-white/10 transition focus-ring assignment-status whitespace-nowrap ${statusColors[status]||statusColors['Not Started']}`;
         };
         applyStatusColor(row.querySelector('.assignment-status'),currentStatus);
-        row.querySelector('.assignment-menu-btn').onclick=()=>row.querySelector('.assignment-menu').classList.toggle('hidden');
+        row.querySelector('.assignment-menu-btn').onclick=(e)=>{
+          e.stopPropagation();
+          positionFloatingMenu(e.currentTarget, row.querySelector('.assignment-menu'));
+        };
         row.querySelector('.edit-assignment').onclick=()=>openEditModal(item);
         row.querySelector('.delete-assignment').onclick=async()=>{
           if(state.busyIds.has(item.__backendId))return;
           state.busyIds.add(item.__backendId);
-          await mySdk.delete(item);
+          const r = await mySdk.delete(item);
           state.busyIds.delete(item.__backendId);
+          if (r.isError) showToast(r.errorMessage, true);
         };
         row.querySelector('.toggle-assignment-status').onclick=async()=>{
           if(state.busyIds.has(item.__backendId))return;
           state.busyIds.add(item.__backendId);
           const statuses=['Not started','In Progress','Completed','Submitted'];
           let nextStatus=statuses[(statuses.indexOf(currentStatus)+1)%4];
-          item.day=nextStatus;
-          item.completed=(nextStatus==='Completed'||nextStatus==='Submitted');
           applyStatusColor(row.querySelector('.assignment-status'),'Saving...');
-          const r=await mySdk.update(item);
+          const r=await mySdk.update({ ...item, day: nextStatus, completed: (nextStatus==='Completed'||nextStatus==='Submitted') });
           state.busyIds.delete(item.__backendId);
-          if(!r.isError)currentStatus=nextStatus;
+          if(r.isError) showToast(r.errorMessage, true);
+          else currentStatus=nextStatus;
           applyStatusColor(row.querySelector('.assignment-status'),currentStatus);
         };
       }else if(type==='exam'){
-        row.querySelector('.exam-name').textContent=item.title||'Untitled';
-        row.querySelector('.exam-course').textContent=item.parent_course||'—';
-        row.querySelector('.exam-date').textContent=formatDate(item.due_date);
+        const examNameEl = row.querySelector('.exam-name');
+        examNameEl.textContent = item.title || 'Untitled';
+        attachNotesHover(examNameEl, item.description);
+        row.querySelector('.exam-course').textContent=getCourseTitle(item.parent_course)||'—';
+        row.querySelector('.exam-date').textContent=formatDate(item.due_date)||'—';
         const timeCell=row.querySelector('.exam-time');
         timeCell.textContent=timeLeft;
         if(isOverdue)timeCell.classList.add('text-[#d98b7f]','font-bold');
         const examBtn=row.querySelector('.exam-status');
         examBtn.textContent=item.completed?'Completed':'Mark Complete';
         examBtn.className=item.completed?'toggle-exam-status text-xs font-bold text-[#d7e0d0] hover:text-white transition exam-status whitespace-nowrap':'toggle-exam-status text-xs font-semibold text-[#8f8f89] hover:text-[#d7e0d0] transition exam-status whitespace-nowrap';
-        row.querySelector('.exam-menu-btn').onclick=()=>row.querySelector('.exam-menu').classList.toggle('hidden');
+        row.querySelector('.exam-menu-btn').onclick=(e)=>{
+          e.stopPropagation();
+          positionFloatingMenu(e.currentTarget, row.querySelector('.exam-menu'));
+        };
         row.querySelector('.edit-exam').onclick=()=>openEditModal(item);
         row.querySelector('.delete-exam').onclick=async()=>{
           if(state.busyIds.has(item.__backendId))return;
           state.busyIds.add(item.__backendId);
-          await mySdk.delete(item);
+          const r = await mySdk.delete(item);
           state.busyIds.delete(item.__backendId);
+          if (r.isError) showToast(r.errorMessage, true);
         };
         row.querySelector('.toggle-exam-status').onclick=async()=>{
           if(state.busyIds.has(item.__backendId))return;
           state.busyIds.add(item.__backendId);
-          item.completed=!item.completed;
           examBtn.textContent='Saving...';
-          const r=await mySdk.update(item);
+          const r=await mySdk.update({ ...item, completed: !item.completed });
           state.busyIds.delete(item.__backendId);
-          if(r.isError)item.completed=!item.completed;
+          if(r.isError) showToast(r.errorMessage, true);
           examBtn.textContent=item.completed?'Completed':'Mark Complete';
-          examBtn.className=item.completed?'toggle-exam-status text-xs font-bold text-[#d7e0d0] hover:text-white transition exam-status whitespace-nowrap':'toggle-exam-status text-xs font-semibold text-[#8f8f89] hover:text-[#d7e0d0] transition exam-status whitespace-nowrap';
         };
       }
       return row;
@@ -1273,7 +1925,7 @@
       document.getElementById('course-menu').classList.add('hidden');
       document.getElementById('course-delete-confirm').classList.add('hidden');
       renderSelectedCourse();
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     function closeCourseDetail(){
@@ -1298,10 +1950,9 @@
       document.getElementById('due-field').classList.toggle('hidden', !isDeadlineType);
       document.getElementById('parent-course-field').classList.toggle('hidden', !isDeadlineType);
       document.getElementById('custom-type-field').classList.toggle('hidden', type !== 'assignment');
-      document.getElementById('budget-fields').classList.toggle('hidden',type!=='budget');
       document.getElementById('course-fields').classList.toggle('hidden',type!=='course');
       document.getElementById('goal-fields').classList.toggle('hidden',type!=='goal');
-      document.getElementById('description-field').classList.toggle('hidden',type==='budget' || type==='goal');
+      document.getElementById('description-field').classList.toggle('hidden',type==='goal');
     }
 
     function populateCourseSelect(selectElementId, prefillVal) {
@@ -1309,17 +1960,27 @@
       courseSelect.innerHTML='<option value="">Select a Course...</option>';
       byType('course').forEach(c=>{
         const opt=document.createElement('option');
-        opt.value=c.title;
+        opt.value=c.__backendId;
         opt.textContent=c.title||'Untitled Course';
         courseSelect.appendChild(opt);
       });
-      if(prefillVal) courseSelect.value = prefillVal;
+      if(prefillVal) {
+        const matchById = byType('course').find(c => c.__backendId === prefillVal);
+        const matchByTitle = byType('course').find(c => c.title === prefillVal);
+        courseSelect.value = matchById ? matchById.__backendId : (matchByTitle ? matchByTitle.__backendId : '');
+      }
     }
 
-    function openCreateModal(){
+    window.openCreateModal = function(presetType){
       state.editingRecord=null;
       document.getElementById('entry-form').reset();
-      document.getElementById('entry-type').disabled=false;
+      const typeSelect = document.getElementById('entry-type');
+      if (typeof presetType === 'string') {
+          typeSelect.value = presetType;
+          typeSelect.disabled = true;
+      } else {
+          typeSelect.disabled = false;
+      }
       populateCourseSelect('entry-parent-course');
       document.getElementById('modal').classList.remove('hidden');
       document.getElementById('modal').classList.add('flex');
@@ -1342,8 +2003,6 @@
       
       document.getElementById('entry-custom-type').value=item.time_slot||'';
       document.getElementById('entry-instructor').value=item.instructor||'';
-      document.getElementById('entry-amount').value=item.amount||'';
-      document.getElementById('entry-category').value=item.category||'';
       
       if(item.type === 'goal') {
          document.getElementById('goal-target').value = item.category || 10;
@@ -1398,8 +2057,331 @@
         if(flipS) flipS.textContent = s;
     }
 
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+        const pop = document.getElementById('focus-report-popover');
+        if (pop) pop.classList.add('hidden');
+    });
+    window.addEventListener('scroll', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+        const tip = document.getElementById('notes-tooltip');
+        if (tip) tip.classList.add('hidden');
+        const pop = document.getElementById('focus-report-popover');
+        if (pop) pop.classList.add('hidden');
+    }, true);
+
+    // --- CALENDAR WEEKLY TIMELINE ---
+    let calendarWeekOffset = 0;
+    function renderCalendar() {
+        const grid = document.getElementById('calendar-grid');
+        const label = document.getElementById('calendar-range-label');
+        if (!grid) return;
+
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+        start.setDate(start.getDate() - start.getDay() + (calendarWeekOffset * 7));
+        const end = new Date(start);
+        end.setDate(start.getDate() + 6);
+
+        if (label) {
+            label.textContent = start.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ' – ' + end.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        const todayKey = getTodayDateKey();
+        const datedItems = state.records.filter(r => r.due_date && ['task', 'assignment', 'exam', 'course_action'].includes(r.type));
+
+        grid.innerHTML = '';
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+            const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            const isToday = key === todayKey;
+
+            const col = document.createElement('div');
+            col.className = `rounded-2xl p-3 border min-h-[180px] flex flex-col gap-2 ${isToday ? 'bg-[#1d251f] border-[#d7e0d0]/40' : 'bg-[#161616] border-white/10'}`;
+
+            const head = document.createElement('div');
+            head.className = 'flex items-center justify-between border-b border-white/10 pb-2';
+            head.innerHTML = `<span class="text-[11px] uppercase tracking-wider font-bold ${isToday ? 'text-[#d7e0d0]' : 'text-[#9b9b95]'}">${d.toLocaleDateString('en-IN', { weekday: 'short' })}</span><span class="text-xs font-bold ${isToday ? 'bg-[#d7e0d0] text-[#111] px-2 py-0.5 rounded-full' : 'text-white'}">${d.getDate()}</span>`;
+            col.appendChild(head);
+
+            const dayItems = datedItems.filter(r => r.due_date === key);
+            if (!dayItems.length) {
+                const empty = document.createElement('p');
+                empty.className = 'text-[11px] text-[#666] mt-2';
+                empty.textContent = 'No deadlines';
+                col.appendChild(empty);
+            } else {
+                dayItems.forEach(item => {
+                    const chip = document.createElement('button');
+                    chip.type = 'button';
+                    const badgeColor = item.type === 'exam' ? 'bg-[#d98b7f]/20 text-[#f0c0b8] border-[#d98b7f]/30'
+                        : item.type === 'assignment' ? 'bg-[#3b82f6]/20 text-[#93c5fd] border-[#3b82f6]/30'
+                        : 'bg-white/5 text-[#d7e0d0] border-white/10';
+                    chip.className = `w-full text-left px-2.5 py-1.5 rounded-xl border text-[11px] font-medium transition hover:brightness-125 ${badgeColor} ${item.completed ? 'opacity-50 line-through' : ''}`;
+                    chip.textContent = item.title || 'Untitled';
+                    chip.onclick = () => {
+                        if (item.type === 'course_action') {
+                            setView('courses');
+                            openCourseDetail(item.parent_course);
+                        } else {
+                            openEditModal(item);
+                        }
+                    };
+                    col.appendChild(chip);
+                });
+            }
+            grid.appendChild(col);
+        }
+    }
+
+    // --- GEMINI AI HELPERS (WITH RELIABLE FALLBACK) ---
+    const GEMINI_KEY_STORAGE = 'student_os_gemini_key';
+    const GEMINI_MODELS = ['gemini-3.8-flash', 'gemini-2.5-flash'];
+
+    function getGeminiKey() {
+        const local = (localStorage.getItem(GEMINI_KEY_STORAGE) || '').trim();
+        if (local) return local;
+        const synced = state.records.find(r => r.type === 'config' && r.title === 'gemini_api_key');
+        if (synced && synced.description) {
+            const key = synced.description.trim();
+            try { localStorage.setItem(GEMINI_KEY_STORAGE, key); } catch (_) {}
+            return key;
+        }
+        return '';
+    }
+
+    function withTimeout(promise, ms = 8000, label = 'Request timed out') {
+        return Promise.race([
+            promise,
+            new Promise((_, reject) => setTimeout(() => reject(new Error(label)), ms))
+        ]);
+    }
+
+    async function fetchWithTimeout(url, options = {}, ms = 10000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), ms);
+        try {
+            return await fetch(url, { ...options, signal: controller.signal });
+        } catch (err) {
+            if (err && err.name === 'AbortError') throw new Error('Gemini request timed out (10s)');
+            throw err;
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
+    async function saveGeminiKeyToCloud(val) {
+        try { localStorage.setItem(GEMINI_KEY_STORAGE, val); } catch (_) {}
+        try {
+            const existing = state.records.find(r => r.type === 'config' && r.title === 'gemini_api_key');
+            if (existing) {
+                await withTimeout(mySdk.update({ ...existing, description: val }), 7000, 'Cloud sync timed out');
+            } else {
+                await withTimeout(mySdk.create({
+                    type: 'config',
+                    title: 'gemini_api_key',
+                    description: val,
+                    due_date: null,
+                    completed: false,
+                    amount: 0,
+                    category: 'system',
+                    day: '',
+                    time_slot: '',
+                    instructor: '',
+                    created_at: new Date().toISOString(),
+                    parent_course: ''
+                }), 7000, 'Cloud sync timed out');
+            }
+            return true;
+        } catch (e) {
+            console.warn('Cloud key sync warning:', e);
+            return false;
+        }
+    }
+
+    async function removeGeminiKeyFromCloud() {
+        try { localStorage.removeItem(GEMINI_KEY_STORAGE); } catch (_) {}
+        try {
+            const existing = state.records.find(r => r.type === 'config' && r.title === 'gemini_api_key');
+            if (existing) {
+                await withTimeout(mySdk.delete(existing), 7000, 'Cloud delete timed out');
+            }
+        } catch (e) {
+            console.warn('Cloud key delete warning:', e);
+        }
+    }
+
+    async function callGemini(prompt, expectJson = false) {
+        const key = getGeminiKey();
+        if (!key) throw new Error('NO_KEY');
+
+        const tryModel = async (modelName) => {
+            const cleanName = modelName.replace(/^models\//, '');
+            const body = {
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: expectJson ? { responseMimeType: 'application/json', temperature: 0.2 } : { temperature: 0.5 }
+            };
+            const res = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${cleanName}:generateContent`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': key
+                },
+                body: JSON.stringify(body)
+            }, 10000);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
+            const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            if (!text) throw new Error('Empty AI response');
+            if (!expectJson) return text.trim();
+            const cleaned = text.replace(/^```json\s*/i, '').replace(/```$/i, '').trim();
+            return JSON.parse(cleaned);
+        };
+
+        let lastErr = null;
+        for (const model of GEMINI_MODELS) {
+            try {
+                return await tryModel(model);
+            } catch (err) {
+                lastErr = err;
+            }
+        }
+
+        // Auto-discover top 2 available Flash models if hardcoded names are ever retired
+        try {
+            const listRes = await fetchWithTimeout('https://generativelanguage.googleapis.com/v1beta/models', {
+                headers: { 'x-goog-api-key': key }
+            }, 8000);
+            const listData = await listRes.json();
+            const available = (listData?.models || [])
+                .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && /flash/i.test(m.name))
+                .map(m => m.name.replace(/^models\//, ''))
+                .filter(name => !GEMINI_MODELS.includes(name))
+                .reverse()
+                .slice(0, 2);
+            for (const discovered of available) {
+                try {
+                    const out = await tryModel(discovered);
+                    GEMINI_MODELS.unshift(discovered);
+                    return out;
+                } catch (err) {
+                    lastErr = err;
+                }
+            }
+        } catch (_) {}
+
+        throw lastErr || new Error('Gemini request failed');
+    }
+
+    function parseQuickAddLocal(input) {
+        const lower = input.toLowerCase();
+        let type = 'task';
+        if (/\b(exam|quiz|test|midterm|final)\b/.test(lower)) type = 'exam';
+        else if (/\b(assignment|homework|hw|essay|project|report|lab)\b/.test(lower)) type = 'assignment';
+        else if (/\b(habit|daily|streak)\b/.test(lower)) type = 'habit';
+
+        let dueDate = null;
+        const base = new Date();
+        base.setHours(0, 0, 0, 0);
+        const fmt = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+        if (/\btoday\b/.test(lower)) dueDate = fmt(base);
+        else if (/\btomorrow\b/.test(lower)) { base.setDate(base.getDate() + 1); dueDate = fmt(base); }
+        else {
+            const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+            const m = lower.match(/\b(?:next\s+|this\s+|on\s+)?(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
+            if (m) {
+                const targetDay = days.indexOf(m[1]);
+                let diff = (targetDay - base.getDay() + 7) % 7;
+                if (diff === 0 || lower.includes('next ')) diff = diff === 0 ? 7 : diff;
+                base.setDate(base.getDate() + diff);
+                dueDate = fmt(base);
+            }
+        }
+
+        const matchedCourse = byType('course').find(c => c.title && lower.includes(c.title.toLowerCase()));
+        const cleanTitle = input
+            .replace(/\b(due\s+)?(today|tomorrow|(?:next|this|on)\s+(?:sunday|monday|tuesday|wednesday|thursday|friday|saturday))\b/gi, '')
+            .replace(/\s{2,}/g, ' ')
+            .trim() || input.trim();
+
+        return { type, title: cleanTitle, due_date: dueDate, parent_course: matchedCourse ? matchedCourse.__backendId : '' };
+    }
+
+    let briefingLoadedOnce = false;
+    async function refreshDailyBriefing(forceAi = false) {
+        const bodyEl = document.getElementById('ai-briefing-body');
+        const badgeEl = document.getElementById('ai-briefing-badge');
+        if (!bodyEl) return;
+
+        const pendingExams = getExams().filter(e => !e.completed);
+        const pendingAssign = getAssignments().filter(a => !a.completed);
+        const pendingTasks = getTasks().filter(t => !t.completed);
+        const habitsLeft = byType('habit').filter(h => !isHabitDoneToday(h));
+
+        const localSummary = () => {
+            const parts = [];
+            const sorted = [...pendingExams, ...pendingAssign, ...pendingTasks]
+                .sort((a, b) => (a.due_date || '9999-12-31').localeCompare(b.due_date || '9999-12-31'))
+                .slice(0, 3);
+            if (sorted.length) {
+                parts.push('Top priorities: ' + sorted.map(i => `${i.title}${i.due_date ? ' (' + formatDate(i.due_date) + ')' : ''}`).join(' • '));
+            } else {
+                parts.push('All caught up on deadlines!');
+            }
+            if (habitsLeft.length) parts.push(`${habitsLeft.length} daily habit${habitsLeft.length > 1 ? 's' : ''} left today.`);
+            return parts.join(' ');
+        };
+
+        if (!forceAi && briefingLoadedOnce) return;
+        briefingLoadedOnce = true;
+
+        if (!getGeminiKey()) {
+            if (badgeEl) badgeEl.textContent = 'Smart';
+            bodyEl.textContent = localSummary();
+            return;
+        }
+
+        if (forceAi) bodyEl.textContent = 'Thinking...';
+        try {
+            const context = {
+                today: getTodayDateKey(),
+                exams: pendingExams.slice(0, 5).map(e => ({ title: e.title, due: e.due_date })),
+                assignments: pendingAssign.slice(0, 5).map(a => ({ title: a.title, due: a.due_date })),
+                tasks: pendingTasks.slice(0, 5).map(t => ({ title: t.title, due: t.due_date })),
+                habitsLeft: habitsLeft.map(h => h.title)
+            };
+            const reply = await callGemini(`You are a concise student study coach. Given this JSON of pending items (${JSON.stringify(context)}), write a friendly 2-sentence daily briefing naming the top 2-3 priorities. No markdown bullets.`);
+            if (badgeEl) badgeEl.textContent = 'Gemini AI';
+            bodyEl.textContent = reply;
+        } catch (err) {
+            if (badgeEl) badgeEl.textContent = 'Smart';
+            bodyEl.textContent = localSummary();
+        }
+    }
+
+    let breakdownTargetCourseId = null;
+    function openBreakdownModal(courseId = null) {
+        breakdownTargetCourseId = courseId;
+        document.getElementById('breakdown-prompt').value = '';
+        document.getElementById('breakdown-results').innerHTML = '';
+        document.getElementById('breakdown-results').classList.add('hidden');
+        document.getElementById('breakdown-actions').classList.add('hidden');
+        document.getElementById('breakdown-modal').classList.remove('hidden');
+        document.getElementById('breakdown-modal').classList.add('flex');
+    }
+
+    function localBreakdownSteps(prompt) {
+        const clean = prompt.trim();
+        return [
+            `Outline & gather notes for: ${clean}`,
+            `Complete first draft / core practice for: ${clean}`,
+            `Review, polish & finalize: ${clean}`
+        ];
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
-      // Dynamic Greeting & Clock
       const hour=new Date().getHours();
       let greeting='Good evening.';
       if(hour<12)greeting='Good morning.';
@@ -1434,13 +2416,21 @@
             } else {
               timerInterval = setInterval(() => {
                 if (timeLeft > 0) { timeLeft--; updateDisplay(); }
-                else { clearInterval(timerInterval); timerRunning = false; toggleText.textContent = 'Start'; lucide.createIcons(); }
+                else {
+                  clearInterval(timerInterval);
+                  timerRunning = false;
+                  toggleText.textContent = 'Start';
+                  timerIcon.setAttribute('data-lucide', 'play');
+                  if (window.lucide) lucide.createIcons();
+                  playChime();
+                  showToast('Timer complete!');
+                }
               }, 1000);
               toggleText.textContent = 'Pause';
               timerIcon.setAttribute('data-lucide', 'pause');
             }
             timerRunning = !timerRunning;
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
           });
       }
       
@@ -1449,25 +2439,24 @@
             clearInterval(timerInterval);
             timerRunning = false;
             const active = document.querySelector('.pomo-tab.active');
-            timeLeft = active ? parseInt(active.dataset.time) * 60 : 25 * 60;
+            timeLeft = active ? parseInt(active.dataset.time, 10) * 60 : 25 * 60;
             updateDisplay();
             toggleText.textContent = 'Start';
             timerIcon.setAttribute('data-lucide', 'play');
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
           });
       }
       
       document.querySelectorAll('.pomo-tab').forEach(tab => {
-        tab.addEventListener('click', (e) => {
+        tab.addEventListener('click', () => {
           if (timerRunning) return;
-          document.querySelectorAll('.pomo-tab').forEach(t => t.className = 'pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0]');
-          e.target.className = 'pomo-tab active px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm';
-          timeLeft = parseInt(e.target.dataset.time) * 60;
+          document.querySelectorAll('.pomo-tab').forEach(t => t.className = 'pomo-tab px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold text-[#8f8f89] hover:text-[#d7e0d0] cursor-pointer');
+          tab.className = 'pomo-tab active px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold bg-[#d7e0d0] text-[#111] shadow-sm cursor-pointer';
+          timeLeft = parseInt(tab.dataset.time, 10) * 60;
           updateDisplay();
         });
       });
 
-      // Events bindings
       document.querySelectorAll('.nav-item').forEach(b=>{
         b.addEventListener('click', (e) => {
             e.preventDefault();
@@ -1491,25 +2480,22 @@
       });
       document.querySelector('[data-template-id="exams-card"]').style.display='none';
       
-      // Today Tabs Logic
       document.querySelectorAll('.today-tab').forEach(btn => {
           btn.addEventListener('click', () => {
               document.querySelectorAll('.today-tab').forEach(b => {
-                  b.classList.remove('bg-white/10', 'text-white');
+                  b.classList.remove('active', 'bg-white/10', 'text-white');
                   b.classList.add('text-[#8f8f89]');
               });
-              btn.classList.add('bg-white/10', 'text-white');
+              btn.classList.add('active', 'bg-white/10', 'text-white');
               btn.classList.remove('text-[#8f8f89]');
               
               document.querySelectorAll('.today-tab-content').forEach(c => c.classList.add('hidden'));
               document.getElementById(btn.dataset.target).classList.remove('hidden');
-              
-              // Recalculate empty state
-              render(); 
+              updateTodayEmptyState();
           });
       });
       
-      document.getElementById('open-modal').onclick=openCreateModal;
+      document.getElementById('open-modal').onclick=()=>openCreateModal();
       document.getElementById('close-modal').onclick=closeModal;
       document.getElementById('cancel-modal').onclick=closeModal;
       document.getElementById('entry-type').onchange=updateFormFields;
@@ -1518,7 +2504,10 @@
       document.getElementById('close-action-modal').onclick=closeActionModal;
       document.getElementById('cancel-action-modal').onclick=closeActionModal;
       
-      document.getElementById('course-menu-btn').onclick=()=>document.getElementById('course-menu').classList.toggle('hidden');
+      document.getElementById('course-menu-btn').onclick=(e)=>{
+        e.stopPropagation();
+        document.getElementById('course-menu').classList.toggle('hidden');
+      };
       document.getElementById('course-edit-btn').onclick=()=>{
         const c=byType('course').find(x=>x.__backendId===state.selectedCourseId);
         document.getElementById('course-menu').classList.add('hidden');
@@ -1530,24 +2519,9 @@
       };
       document.getElementById('cancel-course-delete').onclick=()=>document.getElementById('course-delete-confirm').classList.add('hidden');
       
-      document.getElementById('add-assignment-btn').onclick=()=>{
-        openCreateModal();
-        document.getElementById('entry-type').value='assignment';
-        document.getElementById('entry-type').disabled=true;
-        updateFormFields();
-      };
-      document.getElementById('add-exam-btn').onclick=()=>{
-        openCreateModal();
-        document.getElementById('entry-type').value='exam';
-        document.getElementById('entry-type').disabled=true;
-        updateFormFields();
-      };
-      document.getElementById('add-goal-btn').onclick=()=>{
-        openCreateModal();
-        document.getElementById('entry-type').value='goal';
-        document.getElementById('entry-type').disabled=true;
-        updateFormFields();
-      };
+      document.getElementById('add-assignment-btn').onclick=()=>openCreateModal('assignment');
+      document.getElementById('add-exam-btn').onclick=()=>openCreateModal('exam');
+      document.getElementById('add-goal-btn').onclick=()=>openCreateModal('goal');
 
       document.getElementById('confirm-course-delete').onclick=async()=>{
         const course=byType('course').find(x=>x.__backendId===state.selectedCourseId);
@@ -1557,7 +2531,7 @@
         for(const a of getCourseActions(course.__backendId)){await mySdk.delete(a)}
         const r=await mySdk.delete(course);
         btn.disabled=false; btn.textContent='Delete';
-        if(r.isOk)closeCourseDetail(); else showInline(btn,'Could not delete');
+        if(r.isOk)closeCourseDetail(); else showToast(r.errorMessage || 'Could not delete course.', true);
       };
 
       document.getElementById('entry-form').onsubmit=async(e)=>{
@@ -1571,42 +2545,50 @@
         const original=btn.textContent;
         btn.textContent='Saving...';
 
-        let dbType=type;
-        let dbCategory=type==='budget'?document.getElementById('entry-category').value.trim():(type==='goal'?document.getElementById('goal-target').value:'');
+        const dueVal = document.getElementById('entry-due').value;
+        const dueDate = (type==='task'||type==='assignment'||type==='exam') ? (dueVal || null) : null;
+        const dbCategory = type==='goal' ? document.getElementById('goal-target').value : (state.editingRecord?.category || '');
 
         let result;
         if(state.editingRecord){
-          const record=state.editingRecord;
-          record.type=dbType;
-          record.title=title;
-          record.description=(type==='budget'||type==='goal')?'':document.getElementById('entry-description').value.trim();
-          record.due_date=(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-due').value:'';
-          if(type==='budget') record.amount=parseFloat(document.getElementById('entry-amount').value)||0;
-          record.instructor=type==='course'?document.getElementById('entry-instructor').value.trim():(type==='goal'?document.getElementById('goal-color').value:'');
-          record.parent_course=(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-parent-course').value.trim():'';
-          record.time_slot=(type==='assignment')?document.getElementById('entry-custom-type').value.trim():(type==='goal'?document.getElementById('goal-emoji').value:'');
-          record.category=dbCategory;
-          result=await mySdk.update(record);
+          const updated = {
+            ...state.editingRecord,
+            type,
+            title,
+            description: type==='goal' ? '' : document.getElementById('entry-description').value.trim(),
+            due_date: dueDate,
+            instructor: type==='course' ? document.getElementById('entry-instructor').value.trim() : (type==='goal' ? document.getElementById('goal-color').value : ''),
+            parent_course: (type==='task'||type==='assignment'||type==='exam') ? document.getElementById('entry-parent-course').value.trim() : '',
+            time_slot: type==='assignment' ? document.getElementById('entry-custom-type').value.trim() : (type==='goal' ? document.getElementById('goal-emoji').value : ''),
+            category: dbCategory
+          };
+          result=await mySdk.update(updated);
         }else{
           result=await mySdk.create({
-            type:dbType,
+            type,
             title,
-            description:(type==='budget'||type==='goal')?'':document.getElementById('entry-description').value.trim(),
-            due_date:(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-due').value:'',
-            completed:false,
-            amount:type==='budget'?(parseFloat(document.getElementById('entry-amount').value)||0):(type==='goal'?0:0),
-            category:dbCategory,
-            day:(type==='task'||type==='assignment')?'Not started':'',
-            time_slot:(type==='assignment')?document.getElementById('entry-custom-type').value.trim():(type==='goal'?document.getElementById('goal-emoji').value:''),
-            instructor:type==='course'?document.getElementById('entry-instructor').value.trim():(type==='goal'?document.getElementById('goal-color').value:''),
-            created_at:new Date().toISOString(),
-            parent_course:(type==='task'||type==='assignment'||type==='exam')?document.getElementById('entry-parent-course').value.trim():'',
+            description: type==='goal' ? '' : document.getElementById('entry-description').value.trim(),
+            due_date: dueDate,
+            completed: false,
+            amount: 0,
+            category: dbCategory,
+            day: (type==='task'||type==='assignment') ? 'Not started' : '',
+            time_slot: type==='assignment' ? document.getElementById('entry-custom-type').value.trim() : (type==='goal' ? document.getElementById('goal-emoji').value : ''),
+            instructor: type==='course' ? document.getElementById('entry-instructor').value.trim() : (type==='goal' ? document.getElementById('goal-color').value : ''),
+            created_at: new Date().toISOString(),
+            parent_course: (type==='task'||type==='assignment'||type==='exam') ? document.getElementById('entry-parent-course').value.trim() : '',
             cover_image_id: type==='course' ? COURSE_IMAGE_URLS[Math.floor(Math.random() * COURSE_IMAGE_URLS.length)] : ''
           });
         }
 
         btn.disabled=false; btn.textContent=original;
-        if(result.isOk)closeModal(); else {msg.textContent='Could not save. Try again.';msg.classList.remove('hidden')}
+        if(result.isOk){
+          closeModal();
+          if (type==='course' && state.selectedCourseId) renderSelectedCourse();
+        } else {
+          msg.textContent = result.errorMessage || 'Could not save. Try again.';
+          msg.classList.remove('hidden');
+        }
       };
 
       document.getElementById('action-form').onsubmit=async(e)=>{
@@ -1618,35 +2600,276 @@
         const original=btn.textContent;
         btn.textContent='Saving...';
 
+        const dueVal = document.getElementById('action-due').value;
         let result;
         if(state.editingAction){
-          const action=state.editingAction;
-          action.title=title;
-          action.description=document.getElementById('action-description').value.trim();
-          action.due_date=document.getElementById('action-due').value;
-          result=await mySdk.update(action);
+          const updated = {
+            ...state.editingAction,
+            title,
+            description: document.getElementById('action-description').value.trim(),
+            due_date: dueVal || null
+          };
+          result=await mySdk.update(updated);
         }else{
           result=await mySdk.create({
-            type:'course_action',
+            type: 'course_action',
             title,
-            description:document.getElementById('action-description').value.trim(),
-            due_date:document.getElementById('action-due').value,
-            completed:false,
-            amount:0,
-            category:'',
-            day:'',
-            time_slot:'',
-            instructor:'',
-            created_at:new Date().toISOString(),
-            parent_course:state.selectedCourseId
+            description: document.getElementById('action-description').value.trim(),
+            due_date: dueVal || null,
+            completed: false,
+            amount: 0,
+            category: '',
+            day: '',
+            time_slot: '',
+            instructor: '',
+            created_at: new Date().toISOString(),
+            parent_course: state.selectedCourseId
           });
         }
 
         btn.disabled=false; btn.textContent=original;
-        if(result.isOk)closeActionModal(); else {msg.textContent='Could not save. Try again.';msg.classList.remove('hidden')}
+        if(result.isOk)closeActionModal();
+        else {
+          msg.textContent = result.errorMessage || 'Could not save. Try again.';
+          msg.classList.remove('hidden');
+        }
       };
 
-      // Start initial load
+      document.getElementById('cal-prev-week').onclick = () => { calendarWeekOffset--; renderCalendar(); };
+      document.getElementById('cal-next-week').onclick = () => { calendarWeekOffset++; renderCalendar(); };
+      document.getElementById('cal-this-week').onclick = () => { calendarWeekOffset = 0; renderCalendar(); };
+
+      document.getElementById('open-settings').onclick = () => {
+          document.getElementById('gemini-key-input').value = getGeminiKey();
+          document.getElementById('settings-status').classList.add('hidden');
+          document.getElementById('settings-modal').classList.remove('hidden');
+          document.getElementById('settings-modal').classList.add('flex');
+      };
+      document.getElementById('close-settings').onclick = () => {
+          document.getElementById('settings-modal').classList.add('hidden');
+          document.getElementById('settings-modal').classList.remove('flex');
+      };
+      document.getElementById('clear-gemini-key').onclick = async () => {
+          const st = document.getElementById('settings-status');
+          await removeGeminiKeyFromCloud();
+          document.getElementById('gemini-key-input').value = '';
+          st.textContent = 'Key removed across all devices. Using Smart local mode.';
+          st.className = 'text-xs text-[#9fb398]';
+          st.classList.remove('hidden');
+          briefingLoadedOnce = false;
+          refreshDailyBriefing(false);
+      };
+      document.getElementById('test-save-gemini').onclick = async () => {
+          const val = document.getElementById('gemini-key-input').value.trim();
+          const st = document.getElementById('settings-status');
+          const btn = document.getElementById('test-save-gemini');
+          if (!val) { st.textContent = 'Paste an API key first.'; st.className = 'text-xs text-[#d98b7f]'; st.classList.remove('hidden'); return; }
+          btn.disabled = true;
+          btn.textContent = 'Testing...';
+          st.textContent = 'Saving key & contacting Gemini...';
+          st.className = 'text-xs text-[#9b9b95]';
+          st.classList.remove('hidden');
+          try {
+              const synced = await saveGeminiKeyToCloud(val);
+              await callGemini('Reply with OK');
+              st.textContent = synced
+                  ? 'Connected to Gemini AI & synced across your devices!'
+                  : 'Connected to Gemini AI (saved locally; cloud sync slow).';
+              st.className = 'text-xs text-[#86efac]';
+              briefingLoadedOnce = false;
+              refreshDailyBriefing(true);
+          } catch (err) {
+              const rawMsg = err?.message || 'Check key';
+              const extraHint = /ACCESS_TOKEN_TYPE_UNSUPPORTED|API_KEY_SERVICE_BLOCKED|not valid/i.test(rawMsg)
+                  ? ' — Tip: In Google Cloud Console → Credentials → edit this key → under API restrictions choose "Generative Language API" (not "Gemini API").'
+                  : '';
+              st.textContent = 'Key saved, but test failed: ' + rawMsg + extraHint;
+              st.className = 'text-xs text-[#d98b7f]';
+          } finally {
+              btn.disabled = false;
+              btn.textContent = 'Test & Save';
+          }
+      };
+
+      document.getElementById('ai-briefing-refresh').onclick = () => {
+          briefingLoadedOnce = false;
+          refreshDailyBriefing(true);
+      };
+      document.getElementById('open-breakdown-today').onclick = () => openBreakdownModal(null);
+      document.getElementById('open-breakdown-course').onclick = () => openBreakdownModal(state.selectedCourseId);
+      document.getElementById('close-breakdown').onclick = () => {
+          document.getElementById('breakdown-modal').classList.add('hidden');
+          document.getElementById('breakdown-modal').classList.remove('flex');
+      };
+
+      document.getElementById('generate-breakdown-btn').onclick = async () => {
+          const prompt = document.getElementById('breakdown-prompt').value.trim();
+          if (!prompt) return showToast('Enter an assignment or topic first.', true);
+          const btn = document.getElementById('generate-breakdown-btn');
+          const resBox = document.getElementById('breakdown-results');
+          const actBox = document.getElementById('breakdown-actions');
+          btn.disabled = true;
+          btn.textContent = 'Generating...';
+          let steps = [];
+          try {
+              if (getGeminiKey()) {
+                  const data = await callGemini(`Break this student task into 4 short, actionable steps. Return JSON array of strings only: ${JSON.stringify(prompt)}`, true);
+                  if (Array.isArray(data) && data.length) steps = data.map(String);
+              }
+          } catch (_) {}
+          if (!steps.length) steps = localBreakdownSteps(prompt);
+
+          resBox.innerHTML = '';
+          steps.forEach(s => {
+              const row = document.createElement('label');
+              row.className = 'flex items-start gap-2.5 p-2.5 rounded-xl bg-white/5 border border-white/10 text-xs cursor-pointer';
+              const cb = document.createElement('input');
+              cb.type = 'checkbox';
+              cb.checked = true;
+              cb.className = 'mt-0.5';
+              const span = document.createElement('span');
+              span.textContent = s;
+              row.appendChild(cb);
+              row.appendChild(span);
+              resBox.appendChild(row);
+          });
+          resBox.classList.remove('hidden');
+          actBox.classList.remove('hidden');
+          btn.disabled = false;
+          btn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4"></i> Generate Steps';
+          if (window.lucide) lucide.createIcons();
+      };
+
+      document.getElementById('save-breakdown-btn').onclick = async () => {
+          const rows = Array.from(document.querySelectorAll('#breakdown-results label'));
+          const selected = rows.filter(r => r.querySelector('input').checked).map(r => r.querySelector('span').textContent);
+          if (!selected.length) return;
+          const btn = document.getElementById('save-breakdown-btn');
+          btn.disabled = true;
+          btn.textContent = 'Adding...';
+          try {
+              for (const title of selected) {
+                  await mySdk.create({
+                      type: breakdownTargetCourseId ? 'course_action' : 'task',
+                      title,
+                      description: '',
+                      due_date: null,
+                      completed: false,
+                      amount: 0,
+                      category: '',
+                      day: breakdownTargetCourseId ? '' : 'Not started',
+                      time_slot: '',
+                      instructor: '',
+                      created_at: new Date().toISOString(),
+                      parent_course: breakdownTargetCourseId || ''
+                  });
+              }
+              document.getElementById('breakdown-modal').classList.add('hidden');
+              document.getElementById('breakdown-modal').classList.remove('flex');
+              showToast(`Added ${selected.length} steps!`);
+          } catch (err) {
+              showToast(err?.message || 'Could not add steps.', true);
+          } finally {
+              btn.disabled = false;
+              btn.textContent = 'Add Selected Steps';
+          }
+      };
+
+      document.getElementById('quick-add-form').onsubmit = async (e) => {
+          e.preventDefault();
+          const input = document.getElementById('quick-add-input');
+          const btn = document.getElementById('quick-add-btn');
+          const text = input.value.trim();
+          if (!text) return;
+          input.disabled = true;
+          btn.disabled = true;
+          btn.textContent = '...';
+
+          try {
+              let parsed = null;
+              if (getGeminiKey()) {
+                  try {
+                      const courses = byType('course').map(c => ({ id: c.__backendId, title: c.title }));
+                      parsed = await callGemini(`Parse this student planner entry into JSON {"type":"task"|"assignment"|"exam"|"habit","title":"string","due_date":"YYYY-MM-DD"|null,"parent_course":"course_id_or_empty"}. Today is ${getTodayDateKey()}. Courses: ${JSON.stringify(courses)}. Input: ${JSON.stringify(text)}`, true);
+                  } catch (_) {}
+              }
+              if (!parsed || !parsed.title) parsed = parseQuickAddLocal(text);
+
+              const validType = ['task', 'assignment', 'exam', 'habit'].includes(parsed.type) ? parsed.type : 'task';
+              const r = await mySdk.create({
+                  type: validType,
+                  title: parsed.title,
+                  description: '',
+                  due_date: parsed.due_date || null,
+                  completed: false,
+                  amount: 0,
+                  category: '',
+                  day: (validType === 'task' || validType === 'assignment') ? 'Not started' : '',
+                  time_slot: '',
+                  instructor: '',
+                  created_at: new Date().toISOString(),
+                  parent_course: parsed.parent_course || ''
+              });
+
+              if (r.isOk) {
+                  input.value = '';
+                  showToast(`Added ${validType}: ${parsed.title}`);
+              } else {
+                  showToast(r.errorMessage || 'Could not save quick item.', true);
+              }
+          } finally {
+              input.disabled = false;
+              btn.disabled = false;
+              btn.textContent = 'Add';
+          }
+      };
+
+      bindFocusReportHover('focus-today-report-btn', 'today');
+      bindFocusReportHover('focus-week-report-btn', 'week');
+
+      // Study Tab Sliding Playlist Deck
+      let currentPlaylistIdx = 0;
+      const totalPlaylists = 5;
+      const playlistTrack = document.getElementById('playlist-track');
+      const playlistCounter = document.getElementById('playlist-counter');
+      const playlistDots = document.querySelectorAll('.playlist-dot');
+      const goToPlaylist = (idx) => {
+          currentPlaylistIdx = (idx + totalPlaylists) % totalPlaylists;
+          if (playlistTrack) playlistTrack.style.transform = `translateX(-${currentPlaylistIdx * 100}%)`;
+          if (playlistCounter) playlistCounter.textContent = `${currentPlaylistIdx + 1} / ${totalPlaylists}`;
+          playlistDots.forEach((dot, i) => {
+              dot.className = i === currentPlaylistIdx
+                  ? 'playlist-dot h-2 w-6 rounded-full bg-[#d7e0d0] transition-all'
+                  : 'playlist-dot h-2 w-2 rounded-full bg-white/20 hover:bg-white/40 transition-all';
+          });
+      };
+      const prevPlaylistBtn = document.getElementById('playlist-prev');
+      const nextPlaylistBtn = document.getElementById('playlist-next');
+      if (prevPlaylistBtn) prevPlaylistBtn.onclick = () => goToPlaylist(currentPlaylistIdx - 1);
+      if (nextPlaylistBtn) nextPlaylistBtn.onclick = () => goToPlaylist(currentPlaylistIdx + 1);
+      playlistDots.forEach(dot => {
+          dot.onclick = () => goToPlaylist(parseInt(dot.dataset.slide, 10) || 0);
+      });
+      const playlistCard = document.getElementById('playlist-slider-card');
+      if (playlistCard) {
+          let touchStartX = 0;
+          playlistCard.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+          playlistCard.addEventListener('touchend', (e) => {
+              const dx = e.changedTouches[0].screenX - touchStartX;
+              if (Math.abs(dx) > 45) goToPlaylist(currentPlaylistIdx + (dx < 0 ? 1 : -1));
+          }, { passive: true });
+      }
+
+      let lastKnownDayKey = getTodayDateKey();
+      setInterval(() => {
+          const currentDayKey = getTodayDateKey();
+          if (currentDayKey !== lastKnownDayKey) {
+              lastKnownDayKey = currentDayKey;
+              document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+              render();
+          }
+      }, 30000);
+
       if(window.lucide) lucide.createIcons();
       await fetchRecords(); 
     });
