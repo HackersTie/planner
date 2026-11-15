@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Student Planner</title>
+  <title>Deskmode OS</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -187,7 +187,7 @@
     <div class="flex items-center gap-3 px-2 mb-8">
      <div class="w-9 h-9 rounded-full bg-[#d7e0d0] flex items-center justify-center text-[#111]"><i data-lucide="book-open" class="w-4 h-4"></i></div>
      <div>
-      <h1 data-template-id="brand-name" class="canva-text font-bold tracking-[-0.03em]">Student OS</h1>
+      <h1 data-template-id="brand-name" class="canva-text font-bold tracking-[-0.03em]">Deskmode OS</h1>
       <p data-template-id="brand-subtitle" class="canva-text text-xs text-[#8f8f89]">Dashboard</p>
      </div>
     </div>
@@ -210,7 +210,7 @@
     <header class="border-b border-white/10 bg-[#111]/90 backdrop-blur-md sticky top-0 z-30">
      <div class="px-5 md:px-8 py-4 flex flex-row items-center justify-between gap-4">
       <div>
-       <p data-template-id="top-eyebrow" class="canva-text uppercase tracking-[0.18em] text-[#9fb398] text-[10px] font-bold mb-1">Workspace</p>
+       <p data-template-id="top-eyebrow" class="canva-text uppercase tracking-[0.18em] text-[#9fb398] text-[10px] font-bold mb-1">Deskmode OS</p>
        <h2 data-template-id="page-title" class="canva-text font-extrabold tracking-[-0.05em] leading-none text-2xl md:text-3xl"></h2>
        <p id="today-date" class="text-xs text-[#9b9b95] mt-1.5"></p>
       </div>
@@ -253,7 +253,7 @@
         <div class="flex items-center gap-2">
          <span class="w-7 h-7 rounded-full bg-[#d7e0d0]/15 text-[#d7e0d0] flex items-center justify-center"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i></span>
          <h3 class="text-sm font-bold text-[#d7e0d0]">Daily Briefing</h3>
-         <span id="ai-briefing-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-[#9fb398] font-semibold">Smart</span>
+         <button id="ai-briefing-badge" type="button" title="Click to configure Gemini AI" class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-[#9fb398] font-semibold hover:bg-white/10 transition">Smart</button>
         </div>
         <div class="flex items-center gap-2">
          <button id="open-breakdown-today" type="button" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-[#d7e0d0] transition inline-flex items-center gap-1.5"><i data-lucide="list-tree" class="w-3.5 h-3.5"></i> Break Down Task</button>
@@ -954,7 +954,7 @@
             const { data, error } = await supabaseClient.from('records').select('*').order('created_at', { ascending: false });
             if (error) throw error;
             state.records = (data || []).map(item => ({ ...item, __backendId: item.id }));
-            const syncedKeyRow = state.records.find(r => r.type === 'config' && r.title === 'gemini_api_key');
+            const syncedKeyRow = findSyncedKeyRow();
             try {
                 if (syncedKeyRow && syncedKeyRow.description) {
                     localStorage.setItem(GEMINI_KEY_STORAGE, syncedKeyRow.description.trim());
@@ -962,6 +962,7 @@
                     localStorage.removeItem(GEMINI_KEY_STORAGE);
                 }
             } catch (_) {}
+            briefingLoadedOnce = false;
             saveLocalCache();
             setSyncStatus('Synced');
             render();
@@ -2138,33 +2139,40 @@
     // --- GEMINI AI HELPERS (WITH RELIABLE FALLBACK) ---
     const GEMINI_KEY_STORAGE = 'student_os_gemini_key';
     const GEMINI_MODELS = ['gemini-3.8-flash', 'gemini-2.5-flash'];
+    let lastGeminiError = '';
+
+    function findSyncedKeyRow() {
+        return state.records.find(r =>
+            String(r.type || '').trim().toLowerCase() === 'config' &&
+            String(r.title || '').trim().toLowerCase() === 'gemini_api_key' &&
+            String(r.description || '').trim().length > 0
+        );
+    }
 
     function getGeminiKey() {
-        const local = (localStorage.getItem(GEMINI_KEY_STORAGE) || '').trim();
-        if (local) return local;
-        const synced = state.records.find(r => r.type === 'config' && r.title === 'gemini_api_key');
+        const synced = findSyncedKeyRow();
         if (synced && synced.description) {
             const key = synced.description.trim();
             try { localStorage.setItem(GEMINI_KEY_STORAGE, key); } catch (_) {}
             return key;
         }
-        return '';
+        return (localStorage.getItem(GEMINI_KEY_STORAGE) || '').trim();
     }
 
-    function withTimeout(promise, ms = 8000, label = 'Request timed out') {
+    function withTimeout(promise, ms = 12000, label = 'Request timed out') {
         return Promise.race([
             promise,
             new Promise((_, reject) => setTimeout(() => reject(new Error(label)), ms))
         ]);
     }
 
-    async function fetchWithTimeout(url, options = {}, ms = 10000) {
+    async function fetchWithTimeout(url, options = {}, ms = 25000) {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), ms);
         try {
             return await fetch(url, { ...options, signal: controller.signal });
         } catch (err) {
-            if (err && err.name === 'AbortError') throw new Error('Gemini request timed out (10s)');
+            if (err && err.name === 'AbortError') throw new Error('Gemini request timed out (25s)');
             throw err;
         } finally {
             clearTimeout(timer);
@@ -2174,7 +2182,7 @@
     async function saveGeminiKeyToCloud(val) {
         try { localStorage.setItem(GEMINI_KEY_STORAGE, val); } catch (_) {}
         try {
-            const existing = state.records.find(r => r.type === 'config' && r.title === 'gemini_api_key');
+            const existing = findSyncedKeyRow();
             if (existing) {
                 await withTimeout(mySdk.update({ ...existing, description: val }), 7000, 'Cloud sync timed out');
             } else {
@@ -2202,8 +2210,9 @@
 
     async function removeGeminiKeyFromCloud() {
         try { localStorage.removeItem(GEMINI_KEY_STORAGE); } catch (_) {}
+        lastGeminiError = '';
         try {
-            const existing = state.records.find(r => r.type === 'config' && r.title === 'gemini_api_key');
+            const existing = findSyncedKeyRow();
             if (existing) {
                 await withTimeout(mySdk.delete(existing), 7000, 'Cloud delete timed out');
             }
@@ -2212,15 +2221,34 @@
         }
     }
 
+    function parseGeminiJsonText(text) {
+        const cleaned = text.replace(/^```json\s*/i, '').replace(/```$/i, '').trim();
+        try {
+            return JSON.parse(cleaned);
+        } catch (_) {
+            const match = cleaned.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+            if (match) return JSON.parse(match[1]);
+            throw new Error('Invalid JSON from AI');
+        }
+    }
+
     async function callGemini(prompt, expectJson = false) {
         const key = getGeminiKey();
         if (!key) throw new Error('NO_KEY');
 
-        const tryModel = async (modelName) => {
+        const tryGenerateContent = async (modelName, useLowThinking = true) => {
             const cleanName = modelName.replace(/^models\//, '');
+            const isGemini3 = /gemini-3/i.test(cleanName);
+            const genConfig = expectJson ? { responseMimeType: 'application/json' } : {};
+            if (!isGemini3) {
+                genConfig.temperature = expectJson ? 0.2 : 0.5;
+            }
+            if (useLowThinking && isGemini3) {
+                genConfig.thinkingConfig = { thinkingLevel: 'LOW' };
+            }
             const body = {
                 contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: expectJson ? { responseMimeType: 'application/json', temperature: 0.2 } : { temperature: 0.5 }
+                generationConfig: genConfig
             };
             const res = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${cleanName}:generateContent`, {
                 method: 'POST',
@@ -2229,30 +2257,78 @@
                     'x-goog-api-key': key
                 },
                 body: JSON.stringify(body)
-            }, 10000);
+            }, 25000);
             const data = await res.json();
             if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
-            const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            const parts = data?.candidates?.[0]?.content?.parts || [];
+            const textPart = parts.find(p => p.text && !p.thought) || parts.find(p => p.text);
+            const text = textPart?.text || '';
             if (!text) throw new Error('Empty AI response');
-            if (!expectJson) return text.trim();
-            const cleaned = text.replace(/^```json\s*/i, '').replace(/```$/i, '').trim();
-            return JSON.parse(cleaned);
+            lastGeminiError = '';
+            return expectJson ? parseGeminiJsonText(text) : text.trim();
+        };
+
+        const tryInteractionsApi = async (modelName) => {
+            const cleanName = modelName.replace(/^models\//, '');
+            const finalPrompt = expectJson ? `${prompt}\n\nReturn valid JSON only with no markdown formatting.` : prompt;
+            const res = await fetchWithTimeout('https://generativelanguage.googleapis.com/v1beta/interactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': key
+                },
+                body: JSON.stringify({
+                    model: cleanName,
+                    input: finalPrompt,
+                    store: false,
+                    generation_config: { thinking_level: 'low' }
+                })
+            }, 25000);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
+            let text = data?.output_text || '';
+            const items = Array.isArray(data?.outputs) ? data.outputs
+                : Array.isArray(data?.steps) ? data.steps
+                : Array.isArray(data?.output) ? data.output : [];
+            if (!text && items.length) {
+                for (let i = items.length - 1; i >= 0; i--) {
+                    const outItem = items[i];
+                    if (outItem?.type === 'thought') continue;
+                    if (typeof outItem?.text === 'string' && outItem.text) { text = outItem.text; break; }
+                    if (Array.isArray(outItem?.content)) {
+                        const tp = outItem.content.find(c => c.type === 'text' && c.text);
+                        if (tp) { text = tp.text; break; }
+                    }
+                }
+            }
+            if (!text) throw new Error('Empty Interactions API response');
+            lastGeminiError = '';
+            return expectJson ? parseGeminiJsonText(text) : text.trim();
         };
 
         let lastErr = null;
+        try {
+            return await tryInteractionsApi(GEMINI_MODELS[0]);
+        } catch (err) {
+            lastErr = err;
+        }
+
         for (const model of GEMINI_MODELS) {
             try {
-                return await tryModel(model);
+                return await tryGenerateContent(model, true);
             } catch (err) {
                 lastErr = err;
+                if (/thinking/i.test(err?.message || '')) {
+                    try { return await tryGenerateContent(model, false); } catch (e2) { lastErr = e2; }
+                }
             }
         }
 
-        // Auto-discover top 2 available Flash models if hardcoded names are ever retired
+        // Auto-discover available Flash models if model names change
         try {
             const listRes = await fetchWithTimeout('https://generativelanguage.googleapis.com/v1beta/models', {
                 headers: { 'x-goog-api-key': key }
-            }, 8000);
+            }, 10000);
             const listData = await listRes.json();
             const available = (listData?.models || [])
                 .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && /flash/i.test(m.name))
@@ -2262,7 +2338,7 @@
                 .slice(0, 2);
             for (const discovered of available) {
                 try {
-                    const out = await tryModel(discovered);
+                    const out = await tryGenerateContent(discovered, false);
                     GEMINI_MODELS.unshift(discovered);
                     return out;
                 } catch (err) {
@@ -2271,6 +2347,7 @@
             }
         } catch (_) {}
 
+        lastGeminiError = lastErr?.message || 'Gemini request failed';
         throw lastErr || new Error('Gemini request failed');
     }
 
@@ -2338,7 +2415,10 @@
         briefingLoadedOnce = true;
 
         if (!getGeminiKey()) {
-            if (badgeEl) badgeEl.textContent = 'Smart';
+            if (badgeEl) {
+                badgeEl.textContent = 'Smart (Add Key)';
+                badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-[#9fb398] font-semibold hover:bg-white/10 transition';
+            }
             bodyEl.textContent = localSummary();
             return;
         }
@@ -2353,10 +2433,16 @@
                 habitsLeft: habitsLeft.map(h => h.title)
             };
             const reply = await callGemini(`You are a concise student study coach. Given this JSON of pending items (${JSON.stringify(context)}), write a friendly 2-sentence daily briefing naming the top 2-3 priorities. No markdown bullets.`);
-            if (badgeEl) badgeEl.textContent = 'Gemini AI';
+            if (badgeEl) {
+                badgeEl.textContent = 'Gemini AI';
+                badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full bg-[#166534]/30 text-[#86efac] border border-[#166534]/50 font-semibold';
+            }
             bodyEl.textContent = reply;
         } catch (err) {
-            if (badgeEl) badgeEl.textContent = 'Smart';
+            if (badgeEl) {
+                badgeEl.textContent = 'AI Key Error (Tap ⚙️)';
+                badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full bg-[#2a1715] text-[#f0c0b8] border border-[#d98b7f]/40 font-semibold';
+            }
             bodyEl.textContent = localSummary();
         }
     }
@@ -2639,12 +2725,27 @@
       document.getElementById('cal-next-week').onclick = () => { calendarWeekOffset++; renderCalendar(); };
       document.getElementById('cal-this-week').onclick = () => { calendarWeekOffset = 0; renderCalendar(); };
 
-      document.getElementById('open-settings').onclick = () => {
-          document.getElementById('gemini-key-input').value = getGeminiKey();
-          document.getElementById('settings-status').classList.add('hidden');
+      const openSettingsModal = async () => {
           document.getElementById('settings-modal').classList.remove('hidden');
           document.getElementById('settings-modal').classList.add('flex');
+          if (!getGeminiKey() && supabaseClient) {
+              await fetchRecords();
+          }
+          document.getElementById('gemini-key-input').value = getGeminiKey();
+          const st = document.getElementById('settings-status');
+          if (lastGeminiError) {
+              const extraHint = /ACCESS_TOKEN_TYPE_UNSUPPORTED|API_KEY_SERVICE_BLOCKED|not valid|expired/i.test(lastGeminiError)
+                  ? ' — Fix: Generate a fresh unrestricted key in Google AI Studio (or restrict it to "Generative Language API" in Google Cloud Console).'
+                  : '';
+              st.textContent = 'Last AI error: ' + lastGeminiError + extraHint;
+              st.className = 'text-xs text-[#d98b7f]';
+              st.classList.remove('hidden');
+          } else {
+              st.classList.add('hidden');
+          }
       };
+      document.getElementById('open-settings').onclick = openSettingsModal;
+      document.getElementById('ai-briefing-badge').onclick = openSettingsModal;
       document.getElementById('close-settings').onclick = () => {
           document.getElementById('settings-modal').classList.add('hidden');
           document.getElementById('settings-modal').classList.remove('flex');
@@ -2681,7 +2782,7 @@
           } catch (err) {
               const rawMsg = err?.message || 'Check key';
               const extraHint = /ACCESS_TOKEN_TYPE_UNSUPPORTED|API_KEY_SERVICE_BLOCKED|not valid/i.test(rawMsg)
-                  ? ' — Tip: In Google Cloud Console → Credentials → edit this key → under API restrictions choose "Generative Language API" (not "Gemini API").'
+                  ? ' — Fix: In Google Cloud Console → APIs & Services → Credentials → edit this key → under API restrictions choose "Generative Language API" (not "Gemini API"), or create a new unrestricted key in AI Studio.'
                   : '';
               st.textContent = 'Key saved, but test failed: ' + rawMsg + extraHint;
               st.className = 'text-xs text-[#d98b7f]';
@@ -2691,7 +2792,10 @@
           }
       };
 
-      document.getElementById('ai-briefing-refresh').onclick = () => {
+      document.getElementById('ai-briefing-refresh').onclick = async () => {
+          if (supabaseClient) {
+              await fetchRecords();
+          }
           briefingLoadedOnce = false;
           refreshDailyBriefing(true);
       };
