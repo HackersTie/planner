@@ -712,25 +712,80 @@
   
   <!-- SETTINGS / GEMINI MODAL -->
   <div id="settings-modal" class="hidden fixed inset-0 z-[70] modal-backdrop items-center justify-center p-4">
-   <div class="w-full max-w-md rounded-[28px] bg-[#181818] border border-white/10 p-6 shadow-2xl">
-    <div class="flex justify-between items-start mb-4">
+   <div class="w-full max-w-md rounded-[28px] bg-[#181818] border border-white/10 p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-start mb-3">
      <div>
       <p class="uppercase tracking-[0.16em] text-[#9fb398] text-[11px] font-bold mb-1">AI & Preferences</p>
-      <h2 class="font-bold text-xl">Gemini API Settings</h2>
+      <h2 class="font-bold text-xl">Gemini 8×8 Rolling Pool</h2>
      </div>
      <button id="close-settings" type="button" class="focus-ring w-9 h-9 rounded-full bg-white/5 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
     </div>
-    <p class="text-xs text-[#9b9b95] leading-relaxed mb-4">Your key is saved in your Supabase database so it syncs automatically across your laptop and tablet—without exposing it in GitHub code. Without a key, smart local fallbacks still work.</p>
-    <div class="space-y-3">
+    <p class="text-xs text-[#9b9b95] leading-relaxed mb-4">Add up to <strong class="text-[#d7e0d0]">8 keys</strong> (create each in a <strong class="text-[#d7e0d0]">new project</strong> in Google AI Studio) × <strong class="text-[#d7e0d0]">8 models</strong> = <strong class="text-[#d7e0d0]">64 quota buckets</strong>. Exhausts all 8 intelligence-ranked models on Key 1 before rolling to Keys 2–8.</p>
+    <div class="space-y-2.5">
      <div>
-      <label for="gemini-key-input" class="block text-xs font-semibold mb-1.5">Gemini API Key</label>
-      <input id="gemini-key-input" type="text" spellcheck="false" autocomplete="off" placeholder="AQ.Ab8... or AIza..." class="focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-4 py-3 text-sm text-white font-mono">
+      <div class="flex items-center justify-between mb-1">
+       <label for="gemini-key-input-1" class="text-xs font-semibold">Key 1 (Primary)</label>
+       <span id="gemini-key-badge-1" class="text-[10px] font-semibold text-[#8f8f89]"></span>
+      </div>
+      <input id="gemini-key-input-1" type="text" spellcheck="false" autocomplete="off" placeholder="AQ.Ab8... or AIza..." class="gemini-key-slot focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-3.5 py-2.5 text-xs text-white font-mono">
      </div>
-     <p id="settings-status" class="text-xs hidden"></p>
+     <div>
+      <div class="flex items-center justify-between mb-1">
+       <label for="gemini-key-input-2" class="text-xs font-semibold">Key 2 (Backup)</label>
+       <span id="gemini-key-badge-2" class="text-[10px] font-semibold text-[#8f8f89]"></span>
+      </div>
+      <input id="gemini-key-input-2" type="text" spellcheck="false" autocomplete="off" placeholder="Optional — new project key" class="gemini-key-slot focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-3.5 py-2.5 text-xs text-white font-mono">
+     </div>
+     <div>
+      <div class="flex items-center justify-between mb-1">
+       <label for="gemini-key-input-3" class="text-xs font-semibold">Key 3 (Backup)</label>
+       <span id="gemini-key-badge-3" class="text-[10px] font-semibold text-[#8f8f89]"></span>
+      </div>
+      <input id="gemini-key-input-3" type="text" spellcheck="false" autocomplete="off" placeholder="Optional — new project key" class="gemini-key-slot focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-3.5 py-2.5 text-xs text-white font-mono">
+     </div>
+     <div id="extra-key-slots" class="hidden space-y-2.5 pt-1">
+      <div>
+       <div class="flex items-center justify-between mb-1">
+        <label for="gemini-key-input-4" class="text-xs font-semibold">Key 4 (Backup)</label>
+        <span id="gemini-key-badge-4" class="text-[10px] font-semibold text-[#8f8f89]"></span>
+       </div>
+       <input id="gemini-key-input-4" type="text" spellcheck="false" autocomplete="off" placeholder="Optional — new project key" class="gemini-key-slot focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-3.5 py-2.5 text-xs text-white font-mono">
+      </div>
+      <div>
+       <div class="flex items-center justify-between mb-1">
+        <label for="gemini-key-input-5" class="text-xs font-semibold">Key 5 (Backup)</label>
+        <span id="gemini-key-badge-5" class="text-[10px] font-semibold text-[#8f8f89]"></span>
+       </div>
+       <input id="gemini-key-input-5" type="text" spellcheck="false" autocomplete="off" placeholder="Optional — new project key" class="gemini-key-slot focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-3.5 py-2.5 text-xs text-white font-mono">
+      </div>
+      <div>
+       <div class="flex items-center justify-between mb-1">
+        <label for="gemini-key-input-6" class="text-xs font-semibold">Key 6 (Backup)</label>
+        <span id="gemini-key-badge-6" class="text-[10px] font-semibold text-[#8f8f89]"></span>
+       </div>
+       <input id="gemini-key-input-6" type="text" spellcheck="false" autocomplete="off" placeholder="Optional — new project key" class="gemini-key-slot focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-3.5 py-2.5 text-xs text-white font-mono">
+      </div>
+      <div>
+       <div class="flex items-center justify-between mb-1">
+        <label for="gemini-key-input-7" class="text-xs font-semibold">Key 7 (Backup)</label>
+        <span id="gemini-key-badge-7" class="text-[10px] font-semibold text-[#8f8f89]"></span>
+       </div>
+       <input id="gemini-key-input-7" type="text" spellcheck="false" autocomplete="off" placeholder="Optional — new project key" class="gemini-key-slot focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-3.5 py-2.5 text-xs text-white font-mono">
+      </div>
+      <div>
+       <div class="flex items-center justify-between mb-1">
+        <label for="gemini-key-input-8" class="text-xs font-semibold">Key 8 (Backup)</label>
+        <span id="gemini-key-badge-8" class="text-[10px] font-semibold text-[#8f8f89]"></span>
+       </div>
+       <input id="gemini-key-input-8" type="text" spellcheck="false" autocomplete="off" placeholder="Optional — new project key" class="gemini-key-slot focus-ring w-full rounded-xl bg-[#222] border border-white/10 px-3.5 py-2.5 text-xs text-white font-mono">
+      </div>
+     </div>
+     <button id="toggle-extra-keys" type="button" class="text-[11px] text-[#9fb398] font-semibold hover:underline">+ Show Key 4 – 8 slots</button>
+     <p id="settings-status" class="text-xs hidden pt-1"></p>
      <div class="flex justify-between items-center pt-2">
-      <button id="clear-gemini-key" type="button" class="text-xs text-[#d98b7f] font-semibold hover:underline">Remove Key</button>
+      <button id="clear-gemini-key" type="button" class="text-xs text-[#d98b7f] font-semibold hover:underline">Remove All Keys</button>
       <div class="flex gap-2">
-       <button id="test-save-gemini" type="button" class="focus-ring rounded-full px-5 py-2.5 bg-[#d7e0d0] text-[#111] text-xs font-bold hover:bg-white transition">Test & Save</button>
+       <button id="test-save-gemini" type="button" class="focus-ring rounded-full px-5 py-2.5 bg-[#d7e0d0] text-[#111] text-xs font-bold hover:bg-white transition">Test & Save All</button>
       </div>
      </div>
     </div>
@@ -882,7 +937,7 @@
      </div></td>
    </tr>
   </template>
-  
+
   <script>
     const COURSE_IMAGE_URLS = [
         "https://i.ibb.co/1YqVNZpm/c1.png",
@@ -908,6 +963,324 @@
         el.className = isError
             ? 'hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold bg-[#2a1715] text-[#f0c0b8] border border-[#d98b7f]/30'
             : 'hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold bg-[#1d241e] text-[#9fb398] border border-white/10';
+    }
+
+    // --- GEMINI AI HELPERS (8 KEYS × 8 MODELS = 64 SLOTS KEY-FIRST ROLLING ENGINE) ---
+    const GEMINI_KEY_STORAGE = 'student_os_gemini_key';
+    const GEMINI_KEYS_STORAGE = 'student_os_gemini_keys_v1';
+    const GEMINI_BRIEFING_CACHE_KEY = 'deskmode_daily_briefing_cache_v1';
+    const MAX_GEMINI_KEYS = 8;
+    // Ranked strictly from Highest Intelligence (#1) to Lowest Intelligence (#8)
+    const GEMINI_MODELS = [
+        { id: 'gemini-4-hydrogen', label: 'Gemini 4 Hydrogen' },
+        { id: 'gemini-3.8-flash', label: 'Gemini 3.8 Flash' },
+        { id: 'gemini-3.6-flash', label: 'Gemini 3.6 Flash' },
+        { id: 'gemini-3-flash-preview', label: 'Gemini 3 Flash' },
+        { id: 'gemini-3.5-flash-lite', label: 'Gemini 3.5 Flash-Lite' },
+        { id: 'gemini-3.1-flash-lite', label: 'Gemini 3.1 Flash-Lite' },
+        { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash' },
+        { id: 'gemini-2.5-flash-lite', label: 'Gemini 2.5 Flash-Lite' }
+    ];
+    const pairCooldowns = new Map(); // `${key}::${modelId}` -> timestamp
+    const keyDisabledUntil = new Map(); // key -> timestamp (for invalid/auth-rejected keys)
+    const keyLastStatus = new Map();
+    let lastActiveModelLabel = '';
+    let lastGeminiError = '';
+
+    function parseKeyList(raw) {
+        if (!raw) return [];
+        if (Array.isArray(raw)) return raw.map(k => String(k || '').trim()).filter(Boolean).slice(0, MAX_GEMINI_KEYS);
+        const str = String(raw).trim();
+        if (!str) return [];
+        if (str.startsWith('[')) {
+            try {
+                const arr = JSON.parse(str);
+                if (Array.isArray(arr)) return arr.map(k => String(k || '').trim()).filter(Boolean).slice(0, MAX_GEMINI_KEYS);
+            } catch (_) {}
+        }
+        return str.split(/[\n,]+/).map(k => k.trim()).filter(Boolean).slice(0, MAX_GEMINI_KEYS);
+    }
+
+    function getGeminiKeys() {
+        const storedList = parseKeyList(localStorage.getItem(GEMINI_KEYS_STORAGE));
+        if (storedList.length) return storedList;
+        const single = (localStorage.getItem(GEMINI_KEY_STORAGE) || '').trim();
+        if (single) return [single];
+        const cloudRow = state.records.find(r => (r.type || '').trim() === 'config' && (r.title || '').trim() === 'gemini_api_key');
+        return parseKeyList(cloudRow?.description);
+    }
+
+    function getGeminiKey() {
+        return getGeminiKeys()[0] || '';
+    }
+
+    function setGeminiKeys(keys) {
+        const clean = [...new Set(keys.map(k => String(k || '').trim()).filter(Boolean))].slice(0, MAX_GEMINI_KEYS);
+        try {
+            if (clean.length) {
+                localStorage.setItem(GEMINI_KEYS_STORAGE, JSON.stringify(clean));
+                localStorage.setItem(GEMINI_KEY_STORAGE, clean[0]);
+            } else {
+                localStorage.removeItem(GEMINI_KEYS_STORAGE);
+                localStorage.removeItem(GEMINI_KEY_STORAGE);
+            }
+        } catch (_) {}
+        return clean;
+    }
+
+    function syncLocalKeysFromRecords() {
+        const cloudRow = state.records.find(r => (r.type || '').trim() === 'config' && (r.title || '').trim() === 'gemini_api_key');
+        const cloudKeys = parseKeyList(cloudRow?.description);
+        if (cloudKeys.length) setGeminiKeys(cloudKeys);
+    }
+
+    function withTimeout(promise, ms = 12000, label = 'Request timed out') {
+        return Promise.race([
+            promise,
+            new Promise((_, reject) => setTimeout(() => reject(new Error(label)), ms))
+        ]);
+    }
+
+    async function saveGeminiKeysToCloud(keys) {
+        const clean = setGeminiKeys(keys);
+        const serialized = clean.length > 1 ? JSON.stringify(clean) : (clean[0] || '');
+        const existing = state.records.find(r => (r.type || '').trim() === 'config' && (r.title || '').trim() === 'gemini_api_key');
+
+        if (!supabaseClient) return false;
+        if (!clean.length) {
+            if (existing) {
+                await withTimeout(supabaseClient.from('records').delete().eq('id', existing.__backendId), 8000, 'Supabase delete timed out');
+                state.records = state.records.filter(r => r.__backendId !== existing.__backendId);
+                saveLocalCache();
+            }
+            return true;
+        }
+        if (existing) {
+            const { error } = await withTimeout(
+                supabaseClient.from('records').update({ description: serialized }).eq('id', existing.__backendId),
+                8000,
+                'Supabase update timed out'
+            );
+            if (error) throw error;
+            existing.description = serialized;
+            saveLocalCache();
+        } else {
+            const payload = {
+                type: 'config',
+                title: 'gemini_api_key',
+                description: serialized,
+                completed: false,
+                created_at: new Date().toISOString()
+            };
+            const { data, error } = await withTimeout(
+                supabaseClient.from('records').insert([payload]).select(),
+                8000,
+                'Supabase insert timed out'
+            );
+            if (error) throw error;
+            if (data && data[0]) {
+                state.records.unshift({ ...data[0], __backendId: data[0].id });
+                saveLocalCache();
+            }
+        }
+        return true;
+    }
+
+    async function fetchWithTimeout(url, options, timeoutMs = 15000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+            return await fetch(url, { ...options, signal: controller.signal });
+        } catch (e) {
+            if (e.name === 'AbortError') throw new Error('Connection timed out (15s). Check internet or API key.');
+            throw e;
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
+    function extractInteractionsText(data) {
+        if (typeof data?.output === 'string') return data.output;
+        if (typeof data?.text === 'string') return data.text;
+        const outputs = Array.isArray(data?.outputs) ? data.outputs : [];
+        for (let i = outputs.length - 1; i >= 0; i--) {
+            const o = outputs[i];
+            if (typeof o?.text === 'string' && o.text.trim()) return o.text;
+            const parts = o?.content?.parts || o?.parts || [];
+            const joined = parts.map(p => p?.text || '').join('').trim();
+            if (joined) return joined;
+        }
+        const steps = Array.isArray(data?.steps) ? data.steps : [];
+        for (let i = steps.length - 1; i >= 0; i--) {
+            const s = steps[i];
+            if (typeof s?.text === 'string' && s.text.trim()) return s.text;
+            const joined = (s?.content?.parts || []).map(p => p?.text || '').join('').trim();
+            if (joined) return joined;
+        }
+        return '';
+    }
+
+    function isKeyExhausted(key, now = Date.now()) {
+        if ((keyDisabledUntil.get(key) || 0) > now) return true;
+        return GEMINI_MODELS.every(m => (pairCooldowns.get(`${key}::${m.id}`) || 0) > now);
+    }
+
+    function getEarliestKeyRetryTime(key) {
+        const disabled = keyDisabledUntil.get(key) || 0;
+        if (disabled > Date.now()) return disabled;
+        let earliest = Infinity;
+        for (const m of GEMINI_MODELS) {
+            const t = pairCooldowns.get(`${key}::${m.id}`) || 0;
+            if (t < earliest) earliest = t;
+        }
+        return earliest;
+    }
+
+    async function callGeminiWithSingleKey(key, prompt, expectJson = false) {
+        const now = Date.now();
+        if ((keyDisabledUntil.get(key) || 0) > now) {
+            throw new Error('Key disabled due to earlier auth error');
+        }
+
+        let lastErr = null;
+        let authFailed = false;
+
+        // Vertical Roll: Exhaust all 8 intelligence-ranked models on this single key first
+        for (const modelObj of GEMINI_MODELS) {
+            const model = modelObj.id;
+            const pairKey = `${key}::${model}`;
+            if ((pairCooldowns.get(pairKey) || 0) > Date.now()) continue;
+
+            try {
+                const generationConfig = {};
+                if (expectJson) generationConfig.responseMimeType = 'application/json';
+                if (model.startsWith('gemini-3') || model.startsWith('gemini-4')) {
+                    generationConfig.thinkingConfig = { thinkingLevel: 'LOW' };
+                } else {
+                    generationConfig.temperature = expectJson ? 0.2 : 0.5;
+                }
+
+                const body = {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig
+                };
+                const res = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': key
+                    },
+                    body: JSON.stringify(body)
+                }, 15000);
+                const data = await res.json();
+                if (!res.ok) {
+                    const msg = data?.error?.message || `HTTP ${res.status}`;
+                    const err = new Error(res.status === 401 ? 'API key rejected (401).' : msg);
+                    err.status = res.status;
+                    throw err;
+                }
+                const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                if (!text) throw new Error('Empty AI response');
+
+                if (!expectJson) {
+                    lastActiveModelLabel = modelObj.label;
+                    keyLastStatus.set(key, `Ready (${modelObj.label}) ✓`);
+                    return text.trim();
+                }
+                const cleaned = text.replace(/^```json\s*/i, '').replace(/```$/i, '').trim();
+                const parsed = JSON.parse(cleaned);
+                lastActiveModelLabel = modelObj.label;
+                keyLastStatus.set(key, `Ready (${modelObj.label}) ✓`);
+                return parsed;
+            } catch (err) {
+                lastErr = err;
+                const msg = err.message || '';
+                if (err.status === 401 || (err.status === 403 && /api key|permission|unauthenticated|forbidden/i.test(msg))) {
+                    authFailed = true;
+                    keyDisabledUntil.set(key, Date.now() + 300000);
+                    keyLastStatus.set(key, 'Invalid / Restricted');
+                    break;
+                } else if (err.status === 429) {
+                    // Rate-limited on this specific model; cool down ONLY this (key, model) pair and roll down to next model
+                    pairCooldowns.set(pairKey, Date.now() + 65000);
+                } else if (err.status === 404 || err.status === 400 || err.status === 403) {
+                    // Model not enabled/deprecated on this project; skip this model for 1 hour and continue down ladder
+                    pairCooldowns.set(pairKey, Date.now() + 3600000);
+                } else if (err.status >= 500) {
+                    pairCooldowns.set(pairKey, Date.now() + 20000);
+                }
+            }
+        }
+
+        // Interactions API fallback if key is valid and not all models are rate-limited
+        const interactionsPair = `${key}::interactions-3.8`;
+        if (!authFailed && (pairCooldowns.get(interactionsPair) || 0) <= Date.now()) {
+            try {
+                const res = await fetchWithTimeout('https://generativelanguage.googleapis.com/v1beta/interactions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': key
+                    },
+                    body: JSON.stringify({
+                        model: 'gemini-3.8-flash',
+                        input: expectJson ? `${prompt}\nRespond with valid JSON only.` : prompt
+                    })
+                }, 15000);
+                const data = await res.json();
+                if (!res.ok) {
+                    const err = new Error(data?.error?.message || `HTTP ${res.status}`);
+                    err.status = res.status;
+                    throw err;
+                }
+                const text = extractInteractionsText(data);
+                if (!text) throw new Error('Empty Interactions response');
+                if (!expectJson) {
+                    lastActiveModelLabel = 'Gemini 3.8 Flash';
+                    keyLastStatus.set(key, 'Ready (Gemini 3.8 Flash) ✓');
+                    return text.trim();
+                }
+                const cleaned = text.replace(/^```json\s*/i, '').replace(/```$/i, '').trim();
+                const parsed = JSON.parse(cleaned);
+                lastActiveModelLabel = 'Gemini 3.8 Flash';
+                keyLastStatus.set(key, 'Ready (Gemini 3.8 Flash) ✓');
+                return parsed;
+            } catch (err2) {
+                lastErr = err2;
+                if (err2.status === 429) pairCooldowns.set(interactionsPair, Date.now() + 65000);
+                else pairCooldowns.set(interactionsPair, Date.now() + 3600000);
+            }
+        }
+
+        if (!authFailed && isKeyExhausted(key)) {
+            keyLastStatus.set(key, 'All 8 models cooling down');
+        }
+        throw lastErr || new Error('All 8 models exhausted on this key');
+    }
+
+    async function callGemini(prompt, expectJson = false) {
+        const keys = getGeminiKeys();
+        if (!keys.length) throw new Error('NO_KEY');
+
+        // Horizontal Switch: Preserve Key 1 -> Key 8 order so each key's 8 models are exhausted before moving to the next key
+        const now = Date.now();
+        const activeKeys = keys.filter(k => !isKeyExhausted(k, now));
+        const ordered = activeKeys.length
+            ? activeKeys
+            : [...keys].sort((a, b) => getEarliestKeyRetryTime(a) - getEarliestKeyRetryTime(b));
+
+        let lastErr = null;
+        for (const k of ordered) {
+            try {
+                const res = await callGeminiWithSingleKey(k, prompt, expectJson);
+                lastGeminiError = '';
+                return res;
+            } catch (err) {
+                lastErr = err;
+            }
+        }
+        lastGeminiError = lastErr?.message || 'All 64 model-key slots exhausted';
+        throw lastErr || new Error('All 64 model-key slots exhausted');
     }
 
     function showToast(message, isError = false) {
@@ -954,15 +1327,7 @@
             const { data, error } = await supabaseClient.from('records').select('*').order('created_at', { ascending: false });
             if (error) throw error;
             state.records = (data || []).map(item => ({ ...item, __backendId: item.id }));
-            const syncedKeyRow = findSyncedKeyRow();
-            try {
-                if (syncedKeyRow && syncedKeyRow.description) {
-                    localStorage.setItem(GEMINI_KEY_STORAGE, syncedKeyRow.description.trim());
-                } else {
-                    localStorage.removeItem(GEMINI_KEY_STORAGE);
-                }
-            } catch (_) {}
-            briefingLoadedOnce = false;
+            syncLocalKeysFromRecords();
             saveLocalCache();
             setSyncStatus('Synced');
             render();
@@ -2044,32 +2409,6 @@
       document.getElementById('action-modal').classList.remove('flex');
       document.getElementById('action-form-message').classList.add('hidden');
     }
-    
-    function updateClock() {
-        const now = new Date();
-        const h = String(now.getHours()).padStart(2, '0');
-        const m = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-        const flipH = document.getElementById('flip-h');
-        const flipM = document.getElementById('flip-m');
-        const flipS = document.getElementById('flip-s');
-        if(flipH) flipH.textContent = h;
-        if(flipM) flipM.textContent = m;
-        if(flipS) flipS.textContent = s;
-    }
-
-    document.addEventListener('click', () => {
-        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
-        const pop = document.getElementById('focus-report-popover');
-        if (pop) pop.classList.add('hidden');
-    });
-    window.addEventListener('scroll', () => {
-        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
-        const tip = document.getElementById('notes-tooltip');
-        if (tip) tip.classList.add('hidden');
-        const pop = document.getElementById('focus-report-popover');
-        if (pop) pop.classList.add('hidden');
-    }, true);
 
     // --- CALENDAR WEEKLY TIMELINE ---
     let calendarWeekOffset = 0;
@@ -2136,221 +2475,6 @@
         }
     }
 
-    // --- GEMINI AI HELPERS (WITH RELIABLE FALLBACK) ---
-    const GEMINI_KEY_STORAGE = 'student_os_gemini_key';
-    const GEMINI_MODELS = ['gemini-3.8-flash', 'gemini-2.5-flash'];
-    let lastGeminiError = '';
-
-    function findSyncedKeyRow() {
-        return state.records.find(r =>
-            String(r.type || '').trim().toLowerCase() === 'config' &&
-            String(r.title || '').trim().toLowerCase() === 'gemini_api_key' &&
-            String(r.description || '').trim().length > 0
-        );
-    }
-
-    function getGeminiKey() {
-        const synced = findSyncedKeyRow();
-        if (synced && synced.description) {
-            const key = synced.description.trim();
-            try { localStorage.setItem(GEMINI_KEY_STORAGE, key); } catch (_) {}
-            return key;
-        }
-        return (localStorage.getItem(GEMINI_KEY_STORAGE) || '').trim();
-    }
-
-    function withTimeout(promise, ms = 12000, label = 'Request timed out') {
-        return Promise.race([
-            promise,
-            new Promise((_, reject) => setTimeout(() => reject(new Error(label)), ms))
-        ]);
-    }
-
-    async function fetchWithTimeout(url, options = {}, ms = 25000) {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), ms);
-        try {
-            return await fetch(url, { ...options, signal: controller.signal });
-        } catch (err) {
-            if (err && err.name === 'AbortError') throw new Error('Gemini request timed out (25s)');
-            throw err;
-        } finally {
-            clearTimeout(timer);
-        }
-    }
-
-    async function saveGeminiKeyToCloud(val) {
-        try { localStorage.setItem(GEMINI_KEY_STORAGE, val); } catch (_) {}
-        try {
-            const existing = findSyncedKeyRow();
-            if (existing) {
-                await withTimeout(mySdk.update({ ...existing, description: val }), 7000, 'Cloud sync timed out');
-            } else {
-                await withTimeout(mySdk.create({
-                    type: 'config',
-                    title: 'gemini_api_key',
-                    description: val,
-                    due_date: null,
-                    completed: false,
-                    amount: 0,
-                    category: 'system',
-                    day: '',
-                    time_slot: '',
-                    instructor: '',
-                    created_at: new Date().toISOString(),
-                    parent_course: ''
-                }), 7000, 'Cloud sync timed out');
-            }
-            return true;
-        } catch (e) {
-            console.warn('Cloud key sync warning:', e);
-            return false;
-        }
-    }
-
-    async function removeGeminiKeyFromCloud() {
-        try { localStorage.removeItem(GEMINI_KEY_STORAGE); } catch (_) {}
-        lastGeminiError = '';
-        try {
-            const existing = findSyncedKeyRow();
-            if (existing) {
-                await withTimeout(mySdk.delete(existing), 7000, 'Cloud delete timed out');
-            }
-        } catch (e) {
-            console.warn('Cloud key delete warning:', e);
-        }
-    }
-
-    function parseGeminiJsonText(text) {
-        const cleaned = text.replace(/^```json\s*/i, '').replace(/```$/i, '').trim();
-        try {
-            return JSON.parse(cleaned);
-        } catch (_) {
-            const match = cleaned.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
-            if (match) return JSON.parse(match[1]);
-            throw new Error('Invalid JSON from AI');
-        }
-    }
-
-    async function callGemini(prompt, expectJson = false) {
-        const key = getGeminiKey();
-        if (!key) throw new Error('NO_KEY');
-
-        const tryGenerateContent = async (modelName, useLowThinking = true) => {
-            const cleanName = modelName.replace(/^models\//, '');
-            const isGemini3 = /gemini-3/i.test(cleanName);
-            const genConfig = expectJson ? { responseMimeType: 'application/json' } : {};
-            if (!isGemini3) {
-                genConfig.temperature = expectJson ? 0.2 : 0.5;
-            }
-            if (useLowThinking && isGemini3) {
-                genConfig.thinkingConfig = { thinkingLevel: 'LOW' };
-            }
-            const body = {
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: genConfig
-            };
-            const res = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${cleanName}:generateContent`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-goog-api-key': key
-                },
-                body: JSON.stringify(body)
-            }, 25000);
-            const data = await res.json();
-            if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
-            const parts = data?.candidates?.[0]?.content?.parts || [];
-            const textPart = parts.find(p => p.text && !p.thought) || parts.find(p => p.text);
-            const text = textPart?.text || '';
-            if (!text) throw new Error('Empty AI response');
-            lastGeminiError = '';
-            return expectJson ? parseGeminiJsonText(text) : text.trim();
-        };
-
-        const tryInteractionsApi = async (modelName) => {
-            const cleanName = modelName.replace(/^models\//, '');
-            const finalPrompt = expectJson ? `${prompt}\n\nReturn valid JSON only with no markdown formatting.` : prompt;
-            const res = await fetchWithTimeout('https://generativelanguage.googleapis.com/v1beta/interactions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-goog-api-key': key
-                },
-                body: JSON.stringify({
-                    model: cleanName,
-                    input: finalPrompt,
-                    store: false,
-                    generation_config: { thinking_level: 'low' }
-                })
-            }, 25000);
-            const data = await res.json();
-            if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
-            let text = data?.output_text || '';
-            const items = Array.isArray(data?.outputs) ? data.outputs
-                : Array.isArray(data?.steps) ? data.steps
-                : Array.isArray(data?.output) ? data.output : [];
-            if (!text && items.length) {
-                for (let i = items.length - 1; i >= 0; i--) {
-                    const outItem = items[i];
-                    if (outItem?.type === 'thought') continue;
-                    if (typeof outItem?.text === 'string' && outItem.text) { text = outItem.text; break; }
-                    if (Array.isArray(outItem?.content)) {
-                        const tp = outItem.content.find(c => c.type === 'text' && c.text);
-                        if (tp) { text = tp.text; break; }
-                    }
-                }
-            }
-            if (!text) throw new Error('Empty Interactions API response');
-            lastGeminiError = '';
-            return expectJson ? parseGeminiJsonText(text) : text.trim();
-        };
-
-        let lastErr = null;
-        try {
-            return await tryInteractionsApi(GEMINI_MODELS[0]);
-        } catch (err) {
-            lastErr = err;
-        }
-
-        for (const model of GEMINI_MODELS) {
-            try {
-                return await tryGenerateContent(model, true);
-            } catch (err) {
-                lastErr = err;
-                if (/thinking/i.test(err?.message || '')) {
-                    try { return await tryGenerateContent(model, false); } catch (e2) { lastErr = e2; }
-                }
-            }
-        }
-
-        // Auto-discover available Flash models if model names change
-        try {
-            const listRes = await fetchWithTimeout('https://generativelanguage.googleapis.com/v1beta/models', {
-                headers: { 'x-goog-api-key': key }
-            }, 10000);
-            const listData = await listRes.json();
-            const available = (listData?.models || [])
-                .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && /flash/i.test(m.name))
-                .map(m => m.name.replace(/^models\//, ''))
-                .filter(name => !GEMINI_MODELS.includes(name))
-                .reverse()
-                .slice(0, 2);
-            for (const discovered of available) {
-                try {
-                    const out = await tryGenerateContent(discovered, false);
-                    GEMINI_MODELS.unshift(discovered);
-                    return out;
-                } catch (err) {
-                    lastErr = err;
-                }
-            }
-        } catch (_) {}
-
-        lastGeminiError = lastErr?.message || 'Gemini request failed';
-        throw lastErr || new Error('Gemini request failed');
-    }
-
     function parseQuickAddLocal(input) {
         const lower = input.toLowerCase();
         let type = 'task';
@@ -2386,6 +2510,26 @@
         return { type, title: cleanTitle, due_date: dueDate, parent_course: matchedCourse ? matchedCourse.__backendId : '' };
     }
 
+    function getCachedBriefing() {
+        try {
+            const raw = localStorage.getItem(GEMINI_BRIEFING_CACHE_KEY);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.date === getTodayDateKey() && parsed.text) return parsed;
+        } catch (_) {}
+        return null;
+    }
+
+    function setCachedBriefing(text, mode) {
+        try {
+            localStorage.setItem(GEMINI_BRIEFING_CACHE_KEY, JSON.stringify({
+                date: getTodayDateKey(),
+                text,
+                mode
+            }));
+        } catch (_) {}
+    }
+
     let briefingLoadedOnce = false;
     async function refreshDailyBriefing(forceAi = false) {
         const bodyEl = document.getElementById('ai-briefing-body');
@@ -2411,19 +2555,32 @@
             return parts.join(' ');
         };
 
-        if (!forceAi && briefingLoadedOnce) return;
-        briefingLoadedOnce = true;
-
-        if (!getGeminiKey()) {
+        const keys = getGeminiKeys();
+        if (!keys.length) {
             if (badgeEl) {
-                badgeEl.textContent = 'Smart (Add Key)';
+                badgeEl.textContent = 'Smart';
                 badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-[#9fb398] font-semibold hover:bg-white/10 transition';
             }
             bodyEl.textContent = localSummary();
             return;
         }
 
-        if (forceAi) bodyEl.textContent = 'Thinking...';
+        if (!forceAi) {
+            const cached = getCachedBriefing();
+            if (cached && cached.mode === 'ai') {
+                if (badgeEl) {
+                    badgeEl.textContent = `Gemini AI (${keys.length}×8 = ${keys.length * 8})`;
+                    badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full bg-[#166534]/30 text-[#86efac] font-semibold hover:brightness-110 transition';
+                }
+                bodyEl.textContent = cached.text;
+                briefingLoadedOnce = true;
+                return;
+            }
+            if (briefingLoadedOnce) return;
+        }
+        briefingLoadedOnce = true;
+
+        bodyEl.textContent = 'Thinking with Gemini AI...';
         try {
             const context = {
                 today: getTodayDateKey(),
@@ -2434,14 +2591,17 @@
             };
             const reply = await callGemini(`You are a concise student study coach. Given this JSON of pending items (${JSON.stringify(context)}), write a friendly 2-sentence daily briefing naming the top 2-3 priorities. No markdown bullets.`);
             if (badgeEl) {
-                badgeEl.textContent = 'Gemini AI';
-                badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full bg-[#166534]/30 text-[#86efac] border border-[#166534]/50 font-semibold';
+                badgeEl.textContent = lastActiveModelLabel
+                    ? `${lastActiveModelLabel} (${keys.length}×8)`
+                    : `Gemini AI (${keys.length}×8)`;
+                badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full bg-[#166534]/30 text-[#86efac] font-semibold hover:brightness-110 transition';
             }
             bodyEl.textContent = reply;
+            setCachedBriefing(reply, 'ai');
         } catch (err) {
             if (badgeEl) {
                 badgeEl.textContent = 'AI Key Error (Tap ⚙️)';
-                badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full bg-[#2a1715] text-[#f0c0b8] border border-[#d98b7f]/40 font-semibold';
+                badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full bg-[#2a1715] text-[#f0c0b8] border border-[#d98b7f]/30 font-semibold hover:brightness-110 transition';
             }
             bodyEl.textContent = localSummary();
         }
@@ -2466,6 +2626,32 @@
             `Review, polish & finalize: ${clean}`
         ];
     }
+
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const flipH = document.getElementById('flip-h');
+        const flipM = document.getElementById('flip-m');
+        const flipS = document.getElementById('flip-s');
+        if(flipH) flipH.textContent = h;
+        if(flipM) flipM.textContent = m;
+        if(flipS) flipS.textContent = s;
+    }
+
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+        const pop = document.getElementById('focus-report-popover');
+        if (pop) pop.classList.add('hidden');
+    });
+    window.addEventListener('scroll', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+        const tip = document.getElementById('notes-tooltip');
+        if (tip) tip.classList.add('hidden');
+        const pop = document.getElementById('focus-report-popover');
+        if (pop) pop.classList.add('hidden');
+    }, true);
 
     document.addEventListener('DOMContentLoaded', async () => {
       const hour=new Date().getHours();
@@ -2542,6 +2728,38 @@
           updateDisplay();
         });
       });
+
+      // Spotify Playlist Slider
+      let playlistIndex = 0;
+      const playlistTotal = 5;
+      function updatePlaylistSlider(nextIdx) {
+        playlistIndex = (nextIdx + playlistTotal) % playlistTotal;
+        const track = document.getElementById('playlist-track');
+        const counter = document.getElementById('playlist-counter');
+        if (track) track.style.transform = `translateX(-${playlistIndex * 100}%)`;
+        if (counter) counter.textContent = `${playlistIndex + 1} / ${playlistTotal}`;
+        document.querySelectorAll('.playlist-dot').forEach((dot, i) => {
+          dot.className = i === playlistIndex
+            ? 'playlist-dot h-2 w-6 rounded-full bg-[#d7e0d0] transition-all'
+            : 'playlist-dot h-2 w-2 rounded-full bg-white/20 hover:bg-white/40 transition-all';
+        });
+      }
+      const plPrev = document.getElementById('playlist-prev');
+      const plNext = document.getElementById('playlist-next');
+      if (plPrev) plPrev.onclick = () => updatePlaylistSlider(playlistIndex - 1);
+      if (plNext) plNext.onclick = () => updatePlaylistSlider(playlistIndex + 1);
+      document.querySelectorAll('.playlist-dot').forEach(dot => {
+        dot.onclick = () => updatePlaylistSlider(parseInt(dot.dataset.slide, 10) || 0);
+      });
+      const sliderCard = document.getElementById('playlist-slider-card');
+      if (sliderCard) {
+        let touchStartX = 0;
+        sliderCard.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+        sliderCard.addEventListener('touchend', (e) => {
+          const dx = e.changedTouches[0].clientX - touchStartX;
+          if (Math.abs(dx) > 45) updatePlaylistSlider(playlistIndex + (dx < 0 ? 1 : -1));
+        }, { passive: true });
+      }
 
       document.querySelectorAll('.nav-item').forEach(b=>{
         b.addEventListener('click', (e) => {
@@ -2725,80 +2943,140 @@
       document.getElementById('cal-next-week').onclick = () => { calendarWeekOffset++; renderCalendar(); };
       document.getElementById('cal-this-week').onclick = () => { calendarWeekOffset = 0; renderCalendar(); };
 
-      const openSettingsModal = async () => {
-          document.getElementById('settings-modal').classList.remove('hidden');
-          document.getElementById('settings-modal').classList.add('flex');
-          if (!getGeminiKey() && supabaseClient) {
-              await fetchRecords();
+      const populateKeyInputs = () => {
+          const keys = getGeminiKeys();
+          for (let i = 1; i <= MAX_GEMINI_KEYS; i++) {
+              const inp = document.getElementById(`gemini-key-input-${i}`);
+              const badge = document.getElementById(`gemini-key-badge-${i}`);
+              const val = keys[i - 1] || '';
+              if (inp) inp.value = val;
+              if (badge) {
+                  badge.textContent = val ? (keyLastStatus.get(val) || 'Saved') : '';
+                  badge.className = 'text-[10px] font-semibold ' + (
+                      badge.textContent.includes('Ready') ? 'text-[#86efac]' :
+                      badge.textContent.includes('cooling') || badge.textContent.includes('Rate') ? 'text-[#fbbf24]' :
+                      badge.textContent.includes('Invalid') ? 'text-[#d98b7f]' : 'text-[#8f8f89]'
+                  );
+              }
           }
-          document.getElementById('gemini-key-input').value = getGeminiKey();
+          if (keys.length > 3) {
+              document.getElementById('extra-key-slots')?.classList.remove('hidden');
+              const toggleBtn = document.getElementById('toggle-extra-keys');
+              if (toggleBtn) toggleBtn.textContent = '− Hide Key 4 – 8 slots';
+          }
+      };
+
+      const openSettingsModal = async () => {
+          populateKeyInputs();
           const st = document.getElementById('settings-status');
-          if (lastGeminiError) {
-              const extraHint = /ACCESS_TOKEN_TYPE_UNSUPPORTED|API_KEY_SERVICE_BLOCKED|not valid|expired/i.test(lastGeminiError)
-                  ? ' — Fix: Generate a fresh unrestricted key in Google AI Studio (or restrict it to "Generative Language API" in Google Cloud Console).'
-                  : '';
-              st.textContent = 'Last AI error: ' + lastGeminiError + extraHint;
-              st.className = 'text-xs text-[#d98b7f]';
+          if (lastGeminiError && getGeminiKeys().length) {
+              st.textContent = 'Last AI status: ' + lastGeminiError;
+              st.className = 'text-xs text-[#d98b7f] pt-1';
               st.classList.remove('hidden');
           } else {
               st.classList.add('hidden');
           }
+          document.getElementById('settings-modal').classList.remove('hidden');
+          document.getElementById('settings-modal').classList.add('flex');
+          if (supabaseClient) {
+              try {
+                  const { data } = await supabaseClient.from('records').select('*').eq('type', 'config').eq('title', 'gemini_api_key').limit(1);
+                  if (data && data[0]?.description) {
+                      setGeminiKeys(parseKeyList(data[0].description));
+                      populateKeyInputs();
+                  }
+              } catch (_) {}
+          }
       };
+
       document.getElementById('open-settings').onclick = openSettingsModal;
       document.getElementById('ai-briefing-badge').onclick = openSettingsModal;
+      document.getElementById('toggle-extra-keys').onclick = (e) => {
+          const box = document.getElementById('extra-key-slots');
+          if (!box) return;
+          box.classList.toggle('hidden');
+          e.currentTarget.textContent = box.classList.contains('hidden') ? '+ Show Key 4 – 8 slots' : '− Hide Key 4 – 8 slots';
+      };
       document.getElementById('close-settings').onclick = () => {
           document.getElementById('settings-modal').classList.add('hidden');
           document.getElementById('settings-modal').classList.remove('flex');
       };
       document.getElementById('clear-gemini-key').onclick = async () => {
+          pairCooldowns.clear();
+          keyDisabledUntil.clear();
+          keyLastStatus.clear();
+          lastActiveModelLabel = '';
+          setGeminiKeys([]);
+          localStorage.removeItem(GEMINI_BRIEFING_CACHE_KEY);
+          populateKeyInputs();
           const st = document.getElementById('settings-status');
-          await removeGeminiKeyFromCloud();
-          document.getElementById('gemini-key-input').value = '';
-          st.textContent = 'Key removed across all devices. Using Smart local mode.';
-          st.className = 'text-xs text-[#9fb398]';
+          try { await saveGeminiKeysToCloud([]); } catch (_) {}
+          st.textContent = 'All keys removed across devices. Using Smart local mode.';
+          st.className = 'text-xs text-[#9fb398] pt-1';
           st.classList.remove('hidden');
-          briefingLoadedOnce = false;
           refreshDailyBriefing(false);
       };
       document.getElementById('test-save-gemini').onclick = async () => {
-          const val = document.getElementById('gemini-key-input').value.trim();
+          const collected = [];
+          for (let i = 1; i <= MAX_GEMINI_KEYS; i++) {
+              const v = (document.getElementById(`gemini-key-input-${i}`)?.value || '').trim();
+              if (v) collected.push(v);
+          }
           const st = document.getElementById('settings-status');
           const btn = document.getElementById('test-save-gemini');
-          if (!val) { st.textContent = 'Paste an API key first.'; st.className = 'text-xs text-[#d98b7f]'; st.classList.remove('hidden'); return; }
-          btn.disabled = true;
-          btn.textContent = 'Testing...';
-          st.textContent = 'Saving key & contacting Gemini...';
-          st.className = 'text-xs text-[#9b9b95]';
+          if (!collected.length) { st.textContent = 'Paste at least one API key first.'; st.className = 'text-xs text-[#d98b7f] pt-1'; st.classList.remove('hidden'); return; }
+          const uniqueKeys = setGeminiKeys(collected);
+          pairCooldowns.clear();
+          keyDisabledUntil.clear();
+          localStorage.removeItem(GEMINI_BRIEFING_CACHE_KEY);
+          btn.disabled = true; btn.textContent = 'Testing...';
+          st.textContent = `Syncing ${uniqueKeys.length} key${uniqueKeys.length > 1 ? 's' : ''} (${uniqueKeys.length * 8} model slots) & testing...`;
+          st.className = 'text-xs text-[#9fb398] pt-1';
           st.classList.remove('hidden');
           try {
-              const synced = await saveGeminiKeyToCloud(val);
-              await callGemini('Reply with OK');
-              st.textContent = synced
-                  ? 'Connected to Gemini AI & synced across your devices!'
-                  : 'Connected to Gemini AI (saved locally; cloud sync slow).';
-              st.className = 'text-xs text-[#86efac]';
-              briefingLoadedOnce = false;
-              refreshDailyBriefing(true);
+              let cloudSaved = false;
+              try {
+                  cloudSaved = await saveGeminiKeysToCloud(uniqueKeys);
+              } catch (cloudErr) {
+                  console.warn('Cloud key sync warning:', cloudErr);
+              }
+              let workingCount = 0;
+              let firstErr = null;
+              for (const k of uniqueKeys) {
+                  try {
+                      await callGeminiWithSingleKey(k, 'Reply with OK');
+                      workingCount++;
+                  } catch (e) {
+                      if (!firstErr) firstErr = e;
+                  }
+              }
+              populateKeyInputs();
+              if (workingCount > 0) {
+                  const totalSlots = workingCount * GEMINI_MODELS.length;
+                  st.textContent = cloudSaved
+                      ? `${workingCount}/${uniqueKeys.length} key${workingCount > 1 ? 's' : ''} (${totalSlots} model slots) connected & synced across devices!`
+                      : `${workingCount}/${uniqueKeys.length} key${workingCount > 1 ? 's' : ''} (${totalSlots} model slots) connected & saved locally!`;
+                  st.className = 'text-xs text-[#86efac] pt-1';
+                  st.classList.remove('hidden');
+                  refreshDailyBriefing(true);
+              } else {
+                  throw firstErr || new Error('None of the keys responded.');
+              }
           } catch (err) {
-              const rawMsg = err?.message || 'Check key';
-              const extraHint = /ACCESS_TOKEN_TYPE_UNSUPPORTED|API_KEY_SERVICE_BLOCKED|not valid/i.test(rawMsg)
-                  ? ' — Fix: In Google Cloud Console → APIs & Services → Credentials → edit this key → under API restrictions choose "Generative Language API" (not "Gemini API"), or create a new unrestricted key in AI Studio.'
+              const msg = err.message || 'Check keys';
+              const hint = msg.includes('401')
+                  ? ' (Tip: If you restricted this key in Google Cloud, select "Generative Language API", not "Gemini API".)'
                   : '';
-              st.textContent = 'Key saved, but test failed: ' + rawMsg + extraHint;
-              st.className = 'text-xs text-[#d98b7f]';
+              st.textContent = 'Keys saved, but test failed: ' + msg + hint;
+              st.className = 'text-xs text-[#d98b7f] pt-1';
+              st.classList.remove('hidden');
           } finally {
               btn.disabled = false;
-              btn.textContent = 'Test & Save';
+              btn.textContent = 'Test & Save All';
           }
       };
 
-      document.getElementById('ai-briefing-refresh').onclick = async () => {
-          if (supabaseClient) {
-              await fetchRecords();
-          }
-          briefingLoadedOnce = false;
-          refreshDailyBriefing(true);
-      };
+      document.getElementById('ai-briefing-refresh').onclick = () => refreshDailyBriefing(true);
       document.getElementById('open-breakdown-today').onclick = () => openBreakdownModal(null);
       document.getElementById('open-breakdown-course').onclick = () => openBreakdownModal(state.selectedCourseId);
       document.getElementById('close-breakdown').onclick = () => {
@@ -2812,8 +3090,7 @@
           const btn = document.getElementById('generate-breakdown-btn');
           const resBox = document.getElementById('breakdown-results');
           const actBox = document.getElementById('breakdown-actions');
-          btn.disabled = true;
-          btn.textContent = 'Generating...';
+          btn.disabled = true; btn.textContent = 'Generating...';
           let steps = [];
           try {
               if (getGeminiKey()) {
@@ -2828,19 +3105,15 @@
               const row = document.createElement('label');
               row.className = 'flex items-start gap-2.5 p-2.5 rounded-xl bg-white/5 border border-white/10 text-xs cursor-pointer';
               const cb = document.createElement('input');
-              cb.type = 'checkbox';
-              cb.checked = true;
-              cb.className = 'mt-0.5';
+              cb.type = 'checkbox'; cb.checked = true; cb.className = 'mt-0.5';
               const span = document.createElement('span');
               span.textContent = s;
-              row.appendChild(cb);
-              row.appendChild(span);
+              row.appendChild(cb); row.appendChild(span);
               resBox.appendChild(row);
           });
           resBox.classList.remove('hidden');
           actBox.classList.remove('hidden');
-          btn.disabled = false;
-          btn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4"></i> Generate Steps';
+          btn.disabled = false; btn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4"></i> Generate Steps';
           if (window.lucide) lucide.createIcons();
       };
 
@@ -2849,34 +3122,27 @@
           const selected = rows.filter(r => r.querySelector('input').checked).map(r => r.querySelector('span').textContent);
           if (!selected.length) return;
           const btn = document.getElementById('save-breakdown-btn');
-          btn.disabled = true;
-          btn.textContent = 'Adding...';
-          try {
-              for (const title of selected) {
-                  await mySdk.create({
-                      type: breakdownTargetCourseId ? 'course_action' : 'task',
-                      title,
-                      description: '',
-                      due_date: null,
-                      completed: false,
-                      amount: 0,
-                      category: '',
-                      day: breakdownTargetCourseId ? '' : 'Not started',
-                      time_slot: '',
-                      instructor: '',
-                      created_at: new Date().toISOString(),
-                      parent_course: breakdownTargetCourseId || ''
-                  });
-              }
-              document.getElementById('breakdown-modal').classList.add('hidden');
-              document.getElementById('breakdown-modal').classList.remove('flex');
-              showToast(`Added ${selected.length} steps!`);
-          } catch (err) {
-              showToast(err?.message || 'Could not add steps.', true);
-          } finally {
-              btn.disabled = false;
-              btn.textContent = 'Add Selected Steps';
+          btn.disabled = true; btn.textContent = 'Adding...';
+          for (const title of selected) {
+              await mySdk.create({
+                  type: breakdownTargetCourseId ? 'course_action' : 'task',
+                  title,
+                  description: '',
+                  due_date: null,
+                  completed: false,
+                  amount: 0,
+                  category: '',
+                  day: breakdownTargetCourseId ? '' : 'Not started',
+                  time_slot: '',
+                  instructor: '',
+                  created_at: new Date().toISOString(),
+                  parent_course: breakdownTargetCourseId || ''
+              });
           }
+          btn.disabled = false; btn.textContent = 'Add Selected Steps';
+          document.getElementById('breakdown-modal').classList.add('hidden');
+          document.getElementById('breakdown-modal').classList.remove('flex');
+          showToast(`Added ${selected.length} steps!`);
       };
 
       document.getElementById('quick-add-form').onsubmit = async (e) => {
@@ -2885,85 +3151,44 @@
           const btn = document.getElementById('quick-add-btn');
           const text = input.value.trim();
           if (!text) return;
-          input.disabled = true;
-          btn.disabled = true;
-          btn.textContent = '...';
+          input.disabled = true; btn.disabled = true; btn.textContent = '...';
 
-          try {
-              let parsed = null;
-              if (getGeminiKey()) {
-                  try {
-                      const courses = byType('course').map(c => ({ id: c.__backendId, title: c.title }));
-                      parsed = await callGemini(`Parse this student planner entry into JSON {"type":"task"|"assignment"|"exam"|"habit","title":"string","due_date":"YYYY-MM-DD"|null,"parent_course":"course_id_or_empty"}. Today is ${getTodayDateKey()}. Courses: ${JSON.stringify(courses)}. Input: ${JSON.stringify(text)}`, true);
-                  } catch (_) {}
-              }
-              if (!parsed || !parsed.title) parsed = parseQuickAddLocal(text);
+          let parsed = null;
+          if (getGeminiKey()) {
+              try {
+                  const courses = byType('course').map(c => ({ id: c.__backendId, title: c.title }));
+                  parsed = await callGemini(`Parse this student planner entry into JSON {"type":"task"|"assignment"|"exam"|"habit","title":"string","due_date":"YYYY-MM-DD"|null,"parent_course":"course_id_or_empty"}. Today is ${getTodayDateKey()}. Courses: ${JSON.stringify(courses)}. Input: ${JSON.stringify(text)}`, true);
+              } catch (_) {}
+          }
+          if (!parsed || !parsed.title) parsed = parseQuickAddLocal(text);
 
-              const validType = ['task', 'assignment', 'exam', 'habit'].includes(parsed.type) ? parsed.type : 'task';
-              const r = await mySdk.create({
-                  type: validType,
-                  title: parsed.title,
-                  description: '',
-                  due_date: parsed.due_date || null,
-                  completed: false,
-                  amount: 0,
-                  category: '',
-                  day: (validType === 'task' || validType === 'assignment') ? 'Not started' : '',
-                  time_slot: '',
-                  instructor: '',
-                  created_at: new Date().toISOString(),
-                  parent_course: parsed.parent_course || ''
-              });
+          const validType = ['task','assignment','exam','habit'].includes(parsed.type) ? parsed.type : 'task';
+          const r = await mySdk.create({
+              type: validType,
+              title: parsed.title,
+              description: '',
+              due_date: parsed.due_date || null,
+              completed: false,
+              amount: 0,
+              category: '',
+              day: (validType === 'task' || validType === 'assignment') ? 'Not started' : '',
+              time_slot: '',
+              instructor: '',
+              created_at: new Date().toISOString(),
+              parent_course: parsed.parent_course || ''
+          });
 
-              if (r.isOk) {
-                  input.value = '';
-                  showToast(`Added ${validType}: ${parsed.title}`);
-              } else {
-                  showToast(r.errorMessage || 'Could not save quick item.', true);
-              }
-          } finally {
-              input.disabled = false;
-              btn.disabled = false;
-              btn.textContent = 'Add';
+          input.disabled = false; btn.disabled = false; btn.textContent = 'Add';
+          if (r.isOk) {
+              input.value = '';
+              showToast(`Added ${validType}: ${parsed.title}`);
+          } else {
+              showToast(r.errorMessage || 'Could not save quick item.', true);
           }
       };
 
       bindFocusReportHover('focus-today-report-btn', 'today');
       bindFocusReportHover('focus-week-report-btn', 'week');
-
-      // Study Tab Sliding Playlist Deck
-      let currentPlaylistIdx = 0;
-      const totalPlaylists = 5;
-      const playlistTrack = document.getElementById('playlist-track');
-      const playlistCounter = document.getElementById('playlist-counter');
-      const playlistDots = document.querySelectorAll('.playlist-dot');
-      const goToPlaylist = (idx) => {
-          currentPlaylistIdx = (idx + totalPlaylists) % totalPlaylists;
-          if (playlistTrack) playlistTrack.style.transform = `translateX(-${currentPlaylistIdx * 100}%)`;
-          if (playlistCounter) playlistCounter.textContent = `${currentPlaylistIdx + 1} / ${totalPlaylists}`;
-          playlistDots.forEach((dot, i) => {
-              dot.className = i === currentPlaylistIdx
-                  ? 'playlist-dot h-2 w-6 rounded-full bg-[#d7e0d0] transition-all'
-                  : 'playlist-dot h-2 w-2 rounded-full bg-white/20 hover:bg-white/40 transition-all';
-          });
-      };
-      const prevPlaylistBtn = document.getElementById('playlist-prev');
-      const nextPlaylistBtn = document.getElementById('playlist-next');
-      if (prevPlaylistBtn) prevPlaylistBtn.onclick = () => goToPlaylist(currentPlaylistIdx - 1);
-      if (nextPlaylistBtn) nextPlaylistBtn.onclick = () => goToPlaylist(currentPlaylistIdx + 1);
-      playlistDots.forEach(dot => {
-          dot.onclick = () => goToPlaylist(parseInt(dot.dataset.slide, 10) || 0);
-      });
-      const playlistCard = document.getElementById('playlist-slider-card');
-      if (playlistCard) {
-          let touchStartX = 0;
-          playlistCard.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-          playlistCard.addEventListener('touchend', (e) => {
-              const dx = e.changedTouches[0].screenX - touchStartX;
-              if (Math.abs(dx) > 45) goToPlaylist(currentPlaylistIdx + (dx < 0 ? 1 : -1));
-          }, { passive: true });
-      }
-
       let lastKnownDayKey = getTodayDateKey();
       setInterval(() => {
           const currentDayKey = getTodayDateKey();
